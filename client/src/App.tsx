@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import HomePage from './components/HomePage/HomePage'
 import LoginPage from './components/LogIn/LoginPage'
+import { ChakraProvider } from '@chakra-ui/react';
 
 interface UserInterface {
   email: string,
@@ -19,11 +20,13 @@ const dummyUser = {
 const App = () => {
   const [user, setUser] = useState<UserInterface | null>(dummyUser)
   return (
-    <div id="app">
-      {
-        user ?  <HomePage /> : <LoginPage />
-      }
-    </div>
+    <ChakraProvider>
+      <div id="app">
+        {
+          user ?  <HomePage /> : <LoginPage />
+        }
+      </div>
+    </ChakraProvider>
   )
 }
 
