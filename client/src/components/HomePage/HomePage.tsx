@@ -3,10 +3,11 @@ import Calendar from './Calendar/Calendar'
 import Menu from './Menu/Menu'
 import SideBar from './SideBar/SideBar'
 
+import styles from './HomePage.module.css';
+
 const HomePage = () => {
   return (
-    <div id="home-page">
-      <h2>Libre</h2>
+    <div className={styles.homepage} id="home-page">
       <Menu />
       <Calendar />
       <SideBar />
