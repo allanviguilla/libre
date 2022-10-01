@@ -1,0 +1,9 @@
+.calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #CCC5B9;
+  grid-area: calendar;
+  text-align: center;
+  height: 100vh;
+}
