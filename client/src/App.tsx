@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
@@ -37,9 +38,7 @@ const App = () => {
   return (
     <div id="app">
       <h2>Libre</h2>
-      <button onClick={signInWithGoogle}>
-        Login
-      </button>
+      <GoogleButton onClick={signInWithGoogle}/>
     </div>
   )
 }
