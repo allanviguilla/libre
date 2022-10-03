@@ -3,6 +3,19 @@ import { authentication, db } from '../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
 
+// implement after discussion with Kat
+// interface _tokenResponse {
+//   displayName: string;
+//   email: string;
+//   photoUrl: string;
+//   oauthAccessToken: string;
+//   refreshToken: string;
+// }
+
+// interface signInResponse {
+//   _tokenResponse: Object<any>
+// }
+
 const App = () => {
 
   const signInWithGoogle = () => {
