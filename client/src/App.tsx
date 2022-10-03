@@ -29,13 +29,13 @@ const App = () => {
 
   // TODO: set state of user after user-login
 
-  // show calendar view
+  // to show calendar view:
   // const [user, setUser] = useState<UserInterface | null>(dummyUser);
 
-  // show user login view
+  // to show user login view:
   const [user, setUser] = useState<UserInterface | null>(null);
 
-  console.log(user);
+  // console.log(user);
   return (
     <ChakraProvider>
       <div id="app">
