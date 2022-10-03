@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const App = () => {
 
@@ -14,12 +14,11 @@ const App = () => {
     provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly');
     provider.addScope('https://www.googleapis.com/auth/calendar.readonly');
     signInWithPopup(authentication, provider)
-    .then((res:any) => {
+    .then((res: any) => {
       const { displayName, email, photoUrl, oauthAccessToken, refreshToken } = res._tokenResponse;
       getDoc(doc(db, "users", email))
-        .then((userData) => {
+        .then((userData: any) => {
           const friends = (userData.data() === undefined) ? [] : userData.data().friends;
-
           setDoc(doc(db, "users", email), {
             displayName: displayName,
             email: email,
