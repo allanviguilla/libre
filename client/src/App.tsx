@@ -1,44 +1,49 @@
-import React, { useState } from 'react';
-import GoogleButton from 'react-google-button';
-import { authentication, db } from '../../configs/config';
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import React, { useState } from 'react'
+import HomePage from './components/HomePage/HomePage'
+import LoginPage from './components/LogIn/LoginPage'
+import { ChakraProvider } from '@chakra-ui/react';
+
+interface UserInterface {
+  email: string,
+  displayName: string,
+  photoUrl: string,
+  oauthAccessToken: string,
+  refreshToken: string,
+  friends: Array<string>,
+  bio?: string,
+  profile?: string
+
+}
+
+const dummyUser = {
+  email: 'hackreactor@gmail.com',
+  displayName: 'eric do',
+  oauthAccessToken: 'insert access token here',
+  refreshToken: 'insert refresh token here',
+  friends: ['hepner.thomas2@gmail.com'],
+  bio: 'im better than julien',
+  profile: 'ericprofile.com'
+}
 
 const App = () => {
 
-  const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/calendar.events');
-    provider.addScope('https://www.googleapis.com/auth/calendar');
-    provider.addScope('https://www.googleapis.com/auth/calendar.settings.readonly');
-    provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly');
-    provider.addScope('https://www.googleapis.com/auth/calendar.readonly');
-    signInWithPopup(authentication, provider)
-    .then((res: any) => {
-      const { displayName, email, photoUrl, oauthAccessToken, refreshToken } = res._tokenResponse;
-      getDoc(doc(db, "users", email))
-        .then((userData: any) => {
-          const friends = (userData.data() === undefined) ? [] : userData.data().friends;
-          setDoc(doc(db, "users", email), {
-            displayName: displayName,
-            email: email,
-            photoUrl: photoUrl,
-            oauthAccessToken: oauthAccessToken,
-            refreshToken: refreshToken,
-            friends: friends,
-          })
-        })
-    })
-    .catch(err => {
-      console.log('error signing in: ', err)
-    })
-  }
+  // TODO: set state of user after user-login
 
+  // show calendar view
+  // const [user, setUser] = useState<UserInterface | null>(dummyUser);
+
+  // show user login view
+  const [user, setUser] = useState<UserInterface | null>(null);
+
+  console.log(user);
   return (
-    <div id="app">
-      <h2>Libre</h2>
-      <GoogleButton onClick={signInWithGoogle}/>
-    </div>
+    <ChakraProvider>
+      <div id="app">
+        {
+          user ?  <HomePage /> : <LoginPage />
+        }
+      </div>
+    </ChakraProvider>
   )
 }
 
