@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
