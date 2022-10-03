@@ -6,4 +6,5 @@
   grid-area: calendar;
   text-align: center;
   height: 100vh;
+  flex-direction: column;
 }
