@@ -5,27 +5,26 @@ import Example from './containers/Example/Example';
 import { ChakraProvider } from '@chakra-ui/react';
 
 interface UserInterface {
+  displayName: string,
   email: string,
-  name: string,
+  photoUrl: string,
+  oauthAccessToken: string,
+  refreshToken: string,
+  friends: Array<string>,
   bio?: string,
-  profile: string
-}
+  profile?: string
 
-const dummyUser = {
-  email: 'hackreactor@gmail.com',
-  name: 'eric do',
-  bio: 'im better than julien',
-  profile: 'ericprofile.com'
 }
 
 const App = () => {
-  const [user, setUser] = useState<UserInterface | null>(dummyUser)
+  const [user, setUser] = useState<UserInterface | null>(null);
+
   return (
     <ChakraProvider>
       <div id="app">
         <Example />
         {
-          user ?  <HomePage /> : <LoginPage />
+          user ?  <HomePage /> : <LoginPage setUser={setUser}/>
         }
       </div>
     </ChakraProvider>
