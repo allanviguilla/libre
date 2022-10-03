@@ -15,7 +15,7 @@ const Calendar = () => {
   return (
     <div className={styles.calendar} id="calendar">
       <h2>CALENDAR HERE</h2>
-      <div className='calendar-main'>
+      <div className={styles.calendarMain}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
