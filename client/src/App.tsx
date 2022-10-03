@@ -3,19 +3,6 @@ import { authentication, db } from '../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { collection, doc, setDoc, addDoc, getDoc } from "firebase/firestore";
 
-// implement after discussion with Kat
-// interface _tokenResponse {
-//   displayName: string;
-//   email: string;
-//   photoUrl: string;
-//   oauthAccessToken: string;
-//   refreshToken: string;
-// }
-
-// interface signInResponse {
-//   _tokenResponse: Object<any>
-// }
-
 const App = () => {
 
   const signInWithGoogle = () => {
@@ -26,11 +13,12 @@ const App = () => {
     provider.addScope('https://www.googleapis.com/auth/calendar.events.readonly');
     provider.addScope('https://www.googleapis.com/auth/calendar.readonly');
     signInWithPopup(authentication, provider)
-    .then(res => {
+    .then((res:any) => {
       const { displayName, email, photoUrl, oauthAccessToken, refreshToken } = res._tokenResponse;
       getDoc(doc(db, "users", email))
         .then((userData) => {
           const friends = (userData.data() === undefined) ? [] : userData.data().friends;
+
           setDoc(doc(db, "users", email), {
             displayName: displayName,
             email: email,
