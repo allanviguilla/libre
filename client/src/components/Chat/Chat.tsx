@@ -9,12 +9,20 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import {config} from '../../../../configs/config';
 
-// import { doc, setDoc } from "firebase/firestore";
+
+// =================== IMPORT AND WRITE DOCUMENTS FIREBASE ===========
+import { doc, setDoc, updateDoc, getFirestore } from "firebase/firestore";
 
 // // Initialize Firebase
-firebase.initializeApp(config);
-
+const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
+
+const chatRef = doc(firestore, "chat-test-db", "alpha-chat");
+
+// Set the "capital" field of the city 'DC'
+await setDoc(chatRef, {
+  text: "hello, setDoc",
+});
 
 const Chat = () => {
   return (
@@ -24,6 +32,9 @@ const Chat = () => {
     </div>
   )
 }
+
+
+
 
 
 function ChatRoom() {
