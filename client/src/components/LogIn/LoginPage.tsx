@@ -1,11 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
+import { signin } from '../../redux/actions/currUser';
+
 const LoginPage = (props) => {
-  const { setUser } = props;
+  const { currUser, signin } = props;
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -30,8 +33,9 @@ const LoginPage = (props) => {
             refreshToken: refreshToken,
             friends: friends,
           })
-          // set the state of the app to include the user information
-          setUser({ displayName, email, photoUrl, oauthAccessToken, refreshToken, friends });
+
+          // set the redux state with user information
+          signin({ displayName, email, photoUrl, oauthAccessToken, refreshToken, friends });
         })
     })
     .catch(err => {
@@ -47,4 +51,15 @@ const LoginPage = (props) => {
   )
 }
 
-export default LoginPage;
+// map state
+function mapStatetoProps(state) {
+  const { currUser } = state;
+  return { currUser };
+};
+
+// map methods to update the state
+const mapDispatchToProps =  { signin };
+
+
+// export default LoginPage;
+export default connect(mapStatetoProps, mapDispatchToProps)(LoginPage);
