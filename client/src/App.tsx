@@ -17,7 +17,7 @@ interface UserInterface {
 }
 
 const App = () => {
-  const [user, setUser] = useState<UserInterface | null>(null);
+  const [user, setUser] = useState<UserInterface | null>({});
 
   return (
     <ChakraProvider>
