@@ -22,11 +22,10 @@ const App = () => {
   return (
     <ChakraProvider>
       <div id="app">
-        <HomePage />
-        {/* <Example />
+        <Example />
         {
           user ?  <HomePage /> : <LoginPage setUser={setUser}/>
-        } */}
+        }
       </div>
     </ChakraProvider>
   )
