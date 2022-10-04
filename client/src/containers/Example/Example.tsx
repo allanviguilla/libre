@@ -1,30 +1,31 @@
-import { connect } from 'react-redux';
-import { login, logout } from '../../redux/actions/currUser'
 import React from 'react';
+import { connect } from 'react-redux';
+import { signin, logout } from '../../redux/actions/currUser';
+
 
 // define the UI component
 function Example(props) {
   // get thecurrUser state and methods from redux via props
-  const { currUser, login, logout } = props;
+  const { currUser, signin, logout } = props;
 
-  function handleLogin(){
+  function handleSignin(){
     //when login. pass the user info to reudx
     //now login as a dummy user
-    const dummyUser = {name:'Tom', email:'tom@gmail.com'}
-    login(dummyUser)
+    const dummyUser = {displayName:'Tom', email:'tom@gmail.com'};
+    signin(dummyUser);
   }
 
   function handleLogout(){
     //when logout. reset the currUser in redux to null
-    logout()
+    logout();
   }
 
   return (
     <div>
       <h2>
-        { currUser ? `Current User Info: ${currUser.name}`:'Please login'}
+        { currUser ? `Current User Info: ${currUser.displayName}`:'Please login'}
       </h2>
-      <button onClick={handleLogin}>login</button>
+      <button onClick={handleSignin}>signin</button><br></br>
       <button onClick={handleLogout}>logout</button>
     </div>
   )
@@ -39,6 +40,6 @@ function mapStatetoProps(state) {
 };
 
 // map methods to update the state
-const mapDispatchToProps =  {login,logout}
+const mapDispatchToProps =  {signin, logout}
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Example)
