@@ -14,6 +14,17 @@ const firebaseConfig = {
   measurementId: "G-4EXC8ENWYY"
 };
 
+// James's config
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBzC-epjFPwzW88k_jzeiJrgtiG680xj80",
+//   authDomain: "chat-demo-firebase-40936.firebaseapp.com",
+//   projectId: "chat-demo-firebase-40936",
+//   storageBucket: "chat-demo-firebase-40936.appspot.com",
+//   messagingSenderId: "724324090088",
+//   appId: "1:724324090088:web:201e4a1692d8c28c44495d",
+//   measurementId: "G-FDWEL1E98M"
+// };
+
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
