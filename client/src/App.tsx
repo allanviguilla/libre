@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import HomePage from './components/HomePage/HomePage'
 import LoginPage from './components/LogIn/LoginPage'
 import Example from './containers/Example/Example';
+import Chat from './components/Chat/Chat';
 import { ChakraProvider } from '@chakra-ui/react';
 
 interface UserInterface {
@@ -26,6 +27,7 @@ const App = (props) => {
       <div id="app">
         {/* <Example /> */}
         { currUser ?  <HomePage /> : <LoginPage/> }
+        <Chat />
       </div>
     </ChakraProvider>
   )
