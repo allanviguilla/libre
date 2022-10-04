@@ -37,5 +37,6 @@ export const friendsReqResponse = [
     refreshToken: "placeholder",
     friends: ['allanviguilla@gmail.com'],
     groups: [1, 2, 4]
-  }
+  },
+
 ]

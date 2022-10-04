@@ -12,6 +12,7 @@
 .friendList {
   display: flex;
   flex-direction: column;
+  height: 80%;
 }
 
 .friendDiv {
@@ -37,4 +38,8 @@
 
 .checkboxRound:checked {
   background-color: var(--color-orange);
+}
+
+.friendListHeader {
+
 }

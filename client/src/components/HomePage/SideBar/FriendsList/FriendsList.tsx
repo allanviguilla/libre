@@ -7,12 +7,15 @@ import { friendsReqResponse } from '../dummyData';
 const FriendsList = () => {
   return (
     <div className={styles.friendsList}>
-      <h2>FriendsList</h2>
-      <div><button>Add Friend</button></div>
-      <HStack>
-        <input type="text" placeholder='Search friends list ...' ></input>
-        <BsSearch size={20}/>
-      </HStack>
+      <div className={styles.friendListHeader}>
+        <h2>FriendsList</h2>
+        <button>Add Friend</button>
+        <HStack>
+          <input type="text" placeholder='Search friends list ...' ></input>
+          <BsSearch size={20}/>
+        </HStack>
+      </div>
+
       <VStack>
         {
           friendsReqResponse.map((friend) =>
