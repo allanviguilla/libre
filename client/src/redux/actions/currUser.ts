@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "../constant";
+import { SIGNIN, LOGOUT } from "../constant";
 
-export const login = (data) => ({ type: LOGIN, data });
+export const signin = (data) => ({ type: SIGNIN, data });
 export const logout = () => ({ type: LOGOUT, data: null });
