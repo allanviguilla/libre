@@ -12,3 +12,16 @@
 .calendarMain{
   width: 80%;
 }
+
+#newEventForm {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  border: solid gray 1px;
+}
+
+.description {
+  height: 50px;
+}
