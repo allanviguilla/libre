@@ -21,7 +21,6 @@ interface UserInterface {
 
 const App = (props) => {
   const { currUser } = props;
-
   return (
     <ChakraProvider>
       <div id="app">
