@@ -26,23 +26,6 @@ const Notifications = () => {
     getAllDocs()
   }, [])
 
-  const addFriend = () => {
-    // console.log('add friend func')
-    let num = 0
-    let id = '' + num;
-    setDoc(doc(db, 'notifications', id), {
-      id: num,
-      recieverEmail: '',
-      senderDisplayName: '',
-      senderEmail: '',
-      status: '',
-      type: '',
-      friendGroup: '',
-      eventInvite: ''
-    })
-    num++;
-  }
-
   const mappedArray = docs.map((doc, i) => {
    return <Notification key={i} doc={doc} />
   })
@@ -50,7 +33,6 @@ const Notifications = () => {
   return (
     <div>
       {mappedArray}
-      <button onClick={addFriend}>send friend request</button>
     </div>
   )
 }

@@ -2,13 +2,31 @@ import React from 'react';
 
 const Notification = ({ doc }) => {
 
-  const { senderDisplayName } = doc
+  const { senderDisplayName, type } = doc
 
-  // check type property to see what kind of request
+  // accept:
+  // decline:
+
   return (
     <div>
-      {senderDisplayName} has sent an invitation to  [ event name ]
-
+      {type === 'eventInvitation' ?
+        <div>
+          {senderDisplayName} has sent an invitation to [event name]
+          <button>Accept</button>
+          <button>Decline</button>
+        </div>
+        :
+        null
+      }
+      {type === 'friendRequest' ?
+        <div>
+          {senderDisplayName} has sent you a friend request!
+          <button>Accept</button>
+          <button>Decline</button>
+          </div>
+        :
+        null
+      }
     </div>
   )
 }
