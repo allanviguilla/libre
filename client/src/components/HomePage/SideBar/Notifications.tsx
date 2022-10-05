@@ -36,7 +36,6 @@ const Notifications = ( props ) => {
   return (
     <div>
       {mappedArray}
-      <button>send friend request</button>
     </div>
   )
 }
