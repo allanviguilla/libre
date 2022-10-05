@@ -4,14 +4,21 @@ import styles from './../Sidebar.module.css';
 import { BsChatDots } from 'react-icons/bs';
 import{ RiDeleteBin5Line } from 'react-icons/ri'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
+import Chat from "../../../Chat/Chat";
 
 const FriendEntry = ({ friend }) => {
   const [clicked, setClicked] = useState(false);
+  // console.log(clicked);
+
+  const [isChat, setIsChat] = useState(false);
 
   return (
     <div className={styles.friendDiv}>
       <HStack className={clicked ? styles.friendClicked : styles.friend}>
-        <div><input onClick={() => setClicked(!clicked)} type="checkbox" className={styles.checkboxRound}></input></div>
+        <div><input onClick={() => {
+          setClicked(!clicked);
+          setIsChat(false);
+          }} type="checkbox" className={styles.checkboxRound}></input></div>
         <div style={{width: '100%'}}>
           <p>{friend.displayName}</p>
         </div>
@@ -24,7 +31,10 @@ const FriendEntry = ({ friend }) => {
               <p>bio here </p>
             </HStack>
             <HStack>
-              <BsChatDots />
+              <BsChatDots onClick={() => {
+                setIsChat(true);
+              }}/>
+              {isChat ? <Chat /> : null}
               <RiDeleteBin5Line />
             </HStack>
           </Stack>

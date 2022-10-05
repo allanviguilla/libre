@@ -27,8 +27,9 @@ const LoginPage = (props) => {
 
       // save user information into database
       getDoc(doc(db, "users", email))
-        .then((userData: any) => {
+      .then((userData: any) => {
           const friends = userData.data() === undefined ? [] : userData.data().friends;
+          const friendGroups = userData.data() === undefined ? [] : userData.data().friendGroups;
           setDoc(doc(db, "users", email), {
             displayName: displayName,
             email: email,
@@ -36,6 +37,7 @@ const LoginPage = (props) => {
             oauthAccessToken: oauthAccessToken,
             refreshToken: refreshToken,
             friends: friends,
+            friendGroups: friendGroups,
           })
 
           // set the redux state with user information
