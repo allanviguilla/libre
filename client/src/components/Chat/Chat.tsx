@@ -34,7 +34,7 @@ await setDoc(chatRef, {
 // BUT
 // our desired schema is
 // COLLECTION has DOCUMENTS, in which each is a CHAT ROOM
-  // 
+  //
 // where each CHAT ROOM is an object that contains a conversation info (like users, and emails)
 // and a chat history array of objects, in which each object is a TEXT message
 
@@ -48,10 +48,10 @@ const Chat = () => {
 }
 
 function ChatRoom() {
-  // choose the message collection
+  // grab documents from chat-test-db
   const messagesRef = firestore.collection('chat-test-db');
 
-  // query to return 25 items order by time
+  // order messages ref around with
   const query = messagesRef.orderBy('createdAt').limit(25);
 
   // collect the data
