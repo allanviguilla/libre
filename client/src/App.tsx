@@ -26,7 +26,6 @@ const App = (props) => {
       <div id="app">
         {/* <Example /> */}
         { currUser ?  <HomePage /> : <LoginPage/> }
-        <Chat />
       </div>
     </ChakraProvider>
   )
