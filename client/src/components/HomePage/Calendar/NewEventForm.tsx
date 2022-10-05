@@ -19,11 +19,14 @@ import {
   Flex,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc, setDoc, addDoc, getDoc, collection, writeBatch
+} from "firebase/firestore";
 import { authentication, db } from '../../../../../configs/config';
 import styles from './Calendar.module.css';
 import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
+import { addListener } from "process";
 
 interface Props {
   isOpen: boolean;
@@ -44,15 +47,33 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     const attendeesArray = attendees.split(',')
 
     // save calendar event into database
-    setDoc(doc(db, "events", currUser.email), {
+    addDoc(collection(db, "events"), {
+        hostEmail: currUser.email,
         attendeesArray,
         startTime,
         endTime,
         location,
         description,
       })
+      .then((docRef) => {
+        for (let i = 0; i < attendeesArray.length; i++) {
+          addDoc(collection(db, "notifications"), {
+            eventId: docRef.id,
+            receiverEmail: attendeesArray[i],
+            senderDisplayName: currUser.displayName,
+            senderEmail: currUser.email,
+            type: 'event-invitation',
+            status: 'awaiting',
+          })
+        }
+      })
       .then(() => {
         onClose();
+        alert("Your event has been created!");
+      })
+      .catch((error) => {
+        onClose();
+        alert("Your event was not created - please try again!");
       })
 
   }
