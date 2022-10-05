@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import {
   Modal,
@@ -17,15 +18,18 @@ import {
   VStack,
   FormErrorMessage,
 } from '@chakra-ui/react';
-
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { authentication, db } from '../../../../../configs/config';
 import styles from './Calendar.module.css';
+import { computeSegDraggable } from "@fullcalendar/react";
+import { resolve } from "path";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const NewEventForm = ({isOpen, onClose}) => {
+const NewEventForm = ({isOpen, onClose, currUser}) => {
 
   const {
     handleSubmit,
@@ -33,15 +37,23 @@ const NewEventForm = ({isOpen, onClose}) => {
     formState: { errors, isSubmitting },
   } = useForm()
 
-
   function onSubmit(values) {
-    console.log(values);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
-        resolve()
-      }, 3000)
-    })
+
+    const { attendees, startTime, endTime, location, description } = values;
+    const attendeesArray = attendees.split(',')
+
+    // save calendar event into database
+    setDoc(doc(db, "events", currUser.email), {
+        attendeesArray,
+        startTime,
+        endTime,
+        location,
+        description,
+      })
+      .then(() => {
+        onClose();
+      })
+
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -139,4 +151,11 @@ const NewEventForm = ({isOpen, onClose}) => {
   )
 }
 
-export default NewEventForm;
+// map Redux state
+function mapStatetoProps(state) {
+  const { currUser } = state;
+  return { currUser };
+};
+
+// export default LoginPage;
+export default connect(mapStatetoProps, {})(NewEventForm);
