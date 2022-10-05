@@ -1,22 +1,55 @@
 .login {
   display: grid;
-  /* grid-template-columns: repeat(2, 2fr 1fr); */
+  grid-template-columns: repeat(2, 50% 50%);
+  grid-template-areas: "main product";
+}
+
+.main {
+  padding: 5rem;
+  grid-area: main;
+}
+
+.product {
+  display: grid;
+  place-items: center;
+  grid-area: product;
+}
+
+.card {
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  width: calc(100% - 12rem);
+  height: calc(100% - 12rem);
 }
 
 .h1 {
   /* background-color: var(--color-orange); */
   /* color: white; */
-  padding: 0 2rem;
+  color: var(--color-orange);
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 10rem;
+  line-height: 13rem;
 }
 
 .h3 {
   font-weight: 700;
   font-size: 3rem;
+  line-height: 3rem;
+}
+
+.button {
+  margin: 3rem 0;
 }
 
 .canvas {
-  clip-path: polygon(0 0, 100% 0, 100% 19%, 0 50%);
   width: 100%;
+}
+
+.canvasContainer {
+  clip-path: polygon(0 0, 100% 0, 100% 10%, 0 50%);
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  z-index: -1;
 }

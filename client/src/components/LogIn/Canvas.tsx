@@ -35,14 +35,18 @@ const Canvas = () => {
           col(x, y, R(x,y,t), G(x,y,t), B(x,y,t));
         }
       }
-      t = t + 0.02;
+      t = t + 0.07;
       window.requestAnimationFrame(run);
     }
 
     run();
   });
 
-  return <canvas className={styles.canvas} ref={canvasRef} width="32" height="32"/>
+  return (
+    <div className={styles.canvasContainer}>
+      <canvas className={styles.canvas} ref={canvasRef} width="32" height="32"/>
+    </div>
+  )
 }
 
 export default Canvas;
