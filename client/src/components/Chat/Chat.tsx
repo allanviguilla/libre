@@ -32,7 +32,7 @@ function ChatRoom() {
 
   const [messages] = useCollectionData(query, {idField: 'id'});
 
-  console.log(messages);
+  // console.log(messages);
 
   const [formValue, setFormValue] = useState('');
 

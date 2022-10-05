@@ -16,6 +16,7 @@ import {
   Stack,
   HStack,
   VStack,
+  Flex,
   FormErrorMessage,
 } from '@chakra-ui/react';
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -63,9 +64,11 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
           <ModalCloseButton />
           <ModalBody>
             <form id={styles.newEventForm} onSubmit={handleSubmit(onSubmit)}>
-              <VStack spacing='24px'>
+              <VStack spacing='1.75rem'>
               <FormControl isInvalid={errors.eventName}>
-                <FormLabel htmlFor='name'>Event Name *</FormLabel>
+                <FormLabel htmlFor='name' className={styles.red}>
+                  Event Name *
+                </FormLabel>
                 <Input
                   id='name'
                   placeholder='event name'
@@ -80,7 +83,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors.attendees}>
-                <FormLabel htmlFor='attendees'>Attendees *</FormLabel>
+                <FormLabel htmlFor='attendees'>
+                  Attendees *
+                </FormLabel>
                 <Input
                   id='attendees'
                   placeholder='who will be attending the event'
@@ -107,7 +112,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='endTime'>Event End Time *</FormLabel>
+                <FormLabel htmlFor='endTime'>
+                  Event End Time *
+                </FormLabel>
                 <Input
                   id='endTime'
                   placeholder='end time of the event'
@@ -118,7 +125,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='location'>Location *</FormLabel>
+                <FormLabel htmlFor='location'>
+                  Location *
+                </FormLabel>
                 <Input
                   id='location'
                   placeholder='event location'
@@ -130,7 +139,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='description'>Description</FormLabel>
+                <FormLabel htmlFor='description'>
+                  Description
+                </FormLabel>
                 <Input
                   id='descroiption'
                   placeholder='event description'
@@ -138,14 +149,24 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                   type='text'
                 />
               </FormControl>
-              </VStack>
               <HStack mt={6}>
-                <Button isLoading={isSubmitting} type='submit'>Submit</Button>
-                <Button onClick={onClose} type='submit'>Cancel</Button>
+                <Button
+                  className={styles.button}
+                  isLoading={isSubmitting}
+                  type='submit'
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={onClose} type='submit'
+                  className={`${styles.button} ${styles.cancel}`}
+                >
+                  Cancel
+                </Button>
               </HStack>
+              </VStack>
             </form>
           </ModalBody>
-
         </ModalContent>
       </Modal>
   )

@@ -43,6 +43,10 @@ const Calendar = () => {
           ]}
           select={onFormOpen}
           eventClick={onDetailOpen}
+        //   datesSet={(dateInfo) => {
+        //     console.log(dateInfo.start) //start of the range the calendar date
+        //     console.log(dateInfo.end) //end of the range the calendar date
+        // }}
           />
       </div>
     </div>

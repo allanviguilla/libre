@@ -13,15 +13,31 @@
   width: 80%;
 }
 
-#newEventForm {
+.input {
+  outline: 2px solid gray;
+  margin: 0.25rem 0;
+  width: 100%;
+}
+
+.button {
+  color: white;
+  font-weight: 900;
+  background-color: var(--color-orange) !important;
+  border-radius: 5px;
+  padding: 0.25rem 1.25rem;
+  margin: 1.5rem 0.3rem 1.5rem 0.3rem;
+  text-transform: uppercase;
+}
+
+.cancel {
+  background-color: var(--color-dark-gray) !important;
+}
+
+/* #newEventForm {
   display: flex;
   flex-direction: column;
-}
+} */
 
-input {
+/* input {
   border: solid gray 1px;
-}
-
-.description {
-  height: 50px;
-}
+} */
