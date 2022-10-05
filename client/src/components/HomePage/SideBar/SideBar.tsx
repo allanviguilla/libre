@@ -1,4 +1,6 @@
-import React from 'react';
+import React from 'react'
+import Notifications from './Notifications'
+
 import { connect } from 'react-redux';
 import FriendsList from './FriendsList/FriendsList';
 import styles from './Sidebar.module.css'
@@ -15,7 +17,7 @@ const SideBar = (props) => {
           sideBar === 'chats' ?
             <h2>chats</h2> :
             sideBar === 'notifications' ?
-              <h2>notifications</h2> :
+              <Notifications />:
               sideBar === 'account' ?
                 <h2>account</h2> : null
       }
