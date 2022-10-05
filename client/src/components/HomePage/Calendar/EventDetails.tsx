@@ -12,17 +12,21 @@ import {
   Input,
   Stack,
   HStack,
-  VStack
+  VStack,
+  Flex
 } from '@chakra-ui/react';
 
 import styles from './Calendar.module.css';
+import { ParsedEvent } from "../../Utilities/parser";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  detail: ParsedEvent;
 }
 
-const EventDetails = ({isOpen, onClose}) => {
+const EventDetails = ({ detail, isOpen, onClose}) => {
+  console.log('EVENT DETAIL', detail)
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -30,14 +34,25 @@ const EventDetails = ({isOpen, onClose}) => {
         <ModalHeader>Event Detail</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <p>Event name: MVP Standup </p>
-          <p>Event start time: 10/03/2022 09:30 AM </p>
-          <p>Event end time: 10/03/2022 10:30 AM </p>
-          <p>Location: Thomas's Google Meet Room</p>
-          <p>Organizer: Thomas Herpner</p>
-          <p>Attendees: Nick, Kat, Allen, Qingzhou, James, Dan</p>
+        <Flex wrap="wrap" gap="1.75rem">
+          <p><span style={{fontWeight: "700"}}>Event name:</span>{detail.title}</p>
+          <p><span style={{fontWeight: "700"}}>Start time:</span> {detail.start} </p>
+          <p><span style={{fontWeight: "700"}}>End time:</span> {detail.end}</p>
+          <p><span style={{fontWeight: "700"}}>Location:</span> {detail.location}</p>
+          <p><span style={{fontWeight: "700"}}>Description:</span> {detail.extendedProps.description}</p>
+          <p><span style={{fontWeight: "700"}}>Organizer:</span> {detail.extendedProps.organizer}</p>
+          <p><span style={{fontWeight: "700"}}>Attendees:</span>
+            {
+              detail.extendedProps.attendees.map((attendee) =>
+                <p>{attendee}</p>
+              )
+            }
+          </p>
+        </Flex>
         </ModalBody>
-        <button onClick={onClose}>Close</button>
+        <Flex justify="center">
+        <button className={`${styles.button} ${styles.cancel}`} onClick={onClose}>Close</button>
+        </Flex>
       </ModalContent>
     </Modal>
   )
