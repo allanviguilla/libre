@@ -55,26 +55,28 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         location,
         description,
       })
-      .then((docRef) => {
-        for (let i = 0; i < attendeesArray.length; i++) {
-          addDoc(collection(db, "notifications"), {
-            eventId: docRef.id,
-            receiverEmail: attendeesArray[i],
-            senderDisplayName: currUser.displayName,
-            senderEmail: currUser.email,
-            type: 'event-invitation',
-            status: 'awaiting',
-          })
-        }
-      })
-      .then(() => {
-        onClose();
-        alert("Your event has been created!");
-      })
-      .catch((error) => {
-        onClose();
-        alert("Your event was not created - please try again!");
-      })
+
+    // save notifications
+    .then((docRef) => {
+      for (let i = 0; i < attendeesArray.length; i++) {
+        addDoc(collection(db, "notifications"), {
+          eventId: docRef.id,
+          receiverEmail: attendeesArray[i],
+          senderDisplayName: currUser.displayName,
+          senderEmail: currUser.email,
+          type: 'event-invitation',
+          status: 'awaiting',
+        })
+      }
+    })
+    .then(() => {
+      onClose();
+      alert("Your event has been created!");
+    })
+    .catch((error) => {
+      onClose();
+      alert("Your event was not created - please try again!");
+    })
 
   }
   return (
