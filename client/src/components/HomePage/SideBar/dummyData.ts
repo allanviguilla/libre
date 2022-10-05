@@ -26,7 +26,7 @@ export const friendsReqResponse = [
     photoUrl: "https://lh3.googleusercontent.com/a/ALm5wu17DPJ8pfuPyGIirPP5Qp66OBjRRQT8TaRF40ZX=s96-c",
     oauthAccessToken: "placeholder",
     refreshToken: "placeholder",
-    friends: ['allanviguilla@gmail.com', 'dantan510@gmail.com'],
+    friends: ['allanviguilla@gmail.com', 'dantan510@gmail.com', 'james.emerson.vo.2503@gmail.com'],
     groups: [1, 2, 4]
   },
   {
@@ -38,5 +38,13 @@ export const friendsReqResponse = [
     friends: ['allanviguilla@gmail.com'],
     groups: [1, 2, 4]
   },
-
+  {
+    displayName: 'James Vo',
+    email: 'james.emerson.vo.2503@gmail.com',
+    photoUrl: "https://lh3.googleusercontent.com/a/ALm5wu17DPJ8pfuPyGIirPP5Qp66OBjRRQT8TaRF40ZX=s96-c",
+    oauthAccessToken: "placeholder",
+    refreshToken: "placeholder",
+    friends: ['allanviguilla@gmail.com', 'dantan510@gmail.com', 'hepner.thomas2@gmail.com'],
+    groups: [1, 2, 4]
+  },
 ]

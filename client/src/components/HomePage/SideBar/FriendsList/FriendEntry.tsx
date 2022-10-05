@@ -6,11 +6,12 @@ import{ RiDeleteBin5Line } from 'react-icons/ri'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 import Chat from "../../../Chat/Chat";
 
-const FriendEntry = ({ friend }) => {
+const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
   // console.log(clicked);
 
   const [isChat, setIsChat] = useState(false);
+  const {friend} = props;
 
   return (
     <div className={styles.friendDiv}>
@@ -34,7 +35,7 @@ const FriendEntry = ({ friend }) => {
               <BsChatDots onClick={() => {
                 setIsChat(true);
               }}/>
-              {isChat ? <Chat /> : null}
+              {isChat ? <Chat friend={friend}/> : null}
               <RiDeleteBin5Line />
             </HStack>
           </Stack>
