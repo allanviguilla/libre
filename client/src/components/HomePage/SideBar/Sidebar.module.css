@@ -23,6 +23,15 @@
   margin-top: 5%;
 }
 
+.friend {
+
+}
+
+.friendClicked {
+  border-bottom: solid 1px white;
+}
+
+
 .checkboxRound {
   width: 1.3em;
   height: 1.3em;

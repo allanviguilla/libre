@@ -3,6 +3,7 @@ import { BsSearch } from 'react-icons/bs';
 import { HStack, VStack } from '@chakra-ui/react'
 import styles from './../Sidebar.module.css'
 import { friendsReqResponse } from '../dummyData';
+import FriendEntry from './FriendEntry';
 
 const FriendsList = () => {
   return (
@@ -15,14 +16,10 @@ const FriendsList = () => {
           <BsSearch size={20}/>
         </HStack>
       </div>
-
       <VStack>
         {
           friendsReqResponse.map((friend) =>
-            <HStack className={styles.friendDiv}>
-              <div><input type="checkbox" className={styles.checkboxRound}></input></div>
-              <div style={{width: '100%'}} onClick={() => {console.log('clicked')}}><p>{friend.displayName}</p></div>
-            </HStack>
+            <FriendEntry friend={friend} />
           )
         }
       </VStack>
