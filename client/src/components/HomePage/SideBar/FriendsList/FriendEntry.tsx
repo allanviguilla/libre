@@ -7,7 +7,6 @@ import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 
 const FriendEntry = ({ friend }) => {
   const [clicked, setClicked] = useState(false);
-  console.log(clicked);
 
   return (
     <div className={styles.friendDiv}>

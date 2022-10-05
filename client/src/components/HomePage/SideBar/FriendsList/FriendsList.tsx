@@ -19,7 +19,7 @@ const FriendsList = () => {
       <VStack>
         {
           friendsReqResponse.map((friend) =>
-            <FriendEntry friend={friend} />
+            <FriendEntry key={friend.displayName} friend={friend} />
           )
         }
       </VStack>
