@@ -42,8 +42,8 @@ const firestore = firebase.firestore();
 
 const Chat = (props) => {
   const {friend, currUser} = props;
-  console.log('friend ', friend);
-  console.log('currUser ', currUser);
+  // console.log('friend ', friend);
+  // console.log('currUser ', currUser);
 
   return (
     <div id="chat">
@@ -66,9 +66,8 @@ function ChatRoom(props) {
   // what is current user email?
   // what is friend email they are chatting with?
   const identifier = [currUser.email, friend.email].sort().join('-');
-  console.log(identifier);
 
-  // 1. look up the doc
+  // 1. look up chat history for the DM between two friends
   getDoc(doc(db, "chats", identifier))
   .then((chatData: any) => {
     // console.log("Chat Data: ", chatData.data());
@@ -134,18 +133,50 @@ function ChatRoom(props) {
 
   const [formValue, setFormValue] = useState('');
 
+  // const sendMessage = async(e) => {
+  //   e.preventDefault();
+
+  //   // const { uid } = auth.currentUser;
+
+  //   await messagesRef.add({
+  //     text: formValue,
+  //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  //     // uid
+  //   })
+
+  //   setFormValue('');
+  // }
+
   const sendMessage = async(e) => {
     e.preventDefault();
 
-    // const { uid } = auth.currentUser;
+    console.log('IDENTIFIER ', identifier);
 
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      // uid
+    // get the chat identifier from the Chat component state
+    getDoc(doc(db, "chats", identifier))
+    .then((chatData: any) => {
+      // // console.log("Chat Data: ", chatData.data());
+      // // get the document that the has the chat history between two friends
+      chatData = chatData.data();
+      // // add message to chat history
+
+      const text = e.target[0].value;
+      const messageObject = {
+        createdAt: '',
+        text,
+        email: currUser.email,
+      };
+      const chatHistory = chatData === undefined ? [] : chatData.chatHistory;
+      chatHistory.push(messageObject);
+
+      const members = chatData === undefined ? [] : [currUser.email, friend.email ].sort();
+
+      // overwrite the existing document with the new chat history object
+      setDoc(doc(db, "chats", identifier), {
+        members,
+        chatHistory,
+      })
     })
-
-    setFormValue('');
   }
 
   return(
