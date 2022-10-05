@@ -65,8 +65,6 @@ const Calendar = (props) => {
     }
   }, [state.dateRange])
 
-  console.log('CALENDAR STATE -------', state);
-
   return (
     <div className={styles.calendar} id="calendar">
       <h2>CALENDAR HERE</h2>

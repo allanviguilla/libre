@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
 import { HStack, VStack } from '@chakra-ui/react'
 import styles from './../Sidebar.module.css'
 import { friendsReqResponse } from '../dummyData';
 import FriendEntry from './FriendEntry';
+import { connect } from 'react-redux';
 
-const FriendsList = () => {
+const FriendsList = (props) => {
+  const { currUser } = props;
+
   return (
     <div className={styles.friendsList}>
       <div className={styles.friendListHeader}>
@@ -18,7 +21,7 @@ const FriendsList = () => {
       </div>
       <VStack>
         {
-          friendsReqResponse.map((friend) =>
+          currUser.friends.map((friend) =>
             <FriendEntry key={friend.displayName} friend={friend} />
           )
         }
@@ -27,4 +30,11 @@ const FriendsList = () => {
   )
 }
 
-export default FriendsList;
+function mapStatetoProps(state) {
+  const { currUser } = state;
+  return { currUser };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);
