@@ -9,12 +9,34 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import {config} from '../../../../configs/config';
 
-// import { doc, setDoc } from "firebase/firestore";
+
+// =================== IMPORT AND WRITE DOCUMENTS FIREBASE ===========
+import { doc, setDoc, updateDoc, getFirestore } from "firebase/firestore";
 
 // // Initialize Firebase
-firebase.initializeApp(config);
-
+const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
+
+
+// ========= create a document
+// there is NO api to create a new COLLECTION
+// but the BIG question, can we create a COLLECTION from a DOCUMENT
+// because a DOCUMENT can create a COLLECTION on the console?
+
+const chatRef = doc(firestore, "chat-test-db", "alpha-chat");
+
+// Set the "capital" field of the city 'DC'
+await setDoc(chatRef, {
+  text: "hello, setDoc",
+});
+
+// COLLECTION has DOCUMENTS, in which each is a TEXT message
+// BUT
+// our desired schema is
+// COLLECTION has DOCUMENTS, in which each is a CHAT ROOM
+  //
+// where each CHAT ROOM is an object that contains a conversation info (like users, and emails)
+// and a chat history array of objects, in which each object is a TEXT message
 
 const Chat = () => {
   return (
@@ -25,11 +47,14 @@ const Chat = () => {
   )
 }
 
-
 function ChatRoom() {
+  // grab documents from chat-test-db
   const messagesRef = firestore.collection('chat-test-db');
+
+  // order messages ref around with
   const query = messagesRef.orderBy('createdAt').limit(25);
 
+  // collect the data
   const [messages] = useCollectionData(query, {idField: 'id'});
 
   // console.log(messages);
