@@ -34,10 +34,15 @@ const NewEventForm = ({isOpen, onClose}) => {
   } = useForm()
 
 
-  function onSubmit(event) {
-    console.log(event);
+  function onSubmit(values) {
+    console.log(values);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2))
+        resolve()
+      }, 3000)
+    })
   }
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -47,97 +52,88 @@ const NewEventForm = ({isOpen, onClose}) => {
           <ModalBody>
             <form id={styles.newEventForm} onSubmit={handleSubmit(onSubmit)}>
               <VStack spacing='24px'>
-              {/* <FormControl isInvalid={errors.eventName}>                 */}
-              <FormControl>
-                <FormLabel htmlFor='eventName'>Event Name *</FormLabel>
+              <FormControl isInvalid={errors.eventName}>
+                <FormLabel htmlFor='name'>Event Name *</FormLabel>
                 <Input
-                  id='eventName'
+                  id='name'
                   placeholder='event name'
-                  {...register('eventName', {
+                  {...register('name', {
                     required: 'This is required',
-                    // minLength: { value: 4, message: 'Minimum length should be 4' },
+                    minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                   type='text'
                 />
-                {/* <FormErrorMessage>
+                <FormErrorMessage>
                   {errors.eventName && errors.eventName.message}
-                </FormErrorMessage> */}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={errors.attendees}>
+                <FormLabel htmlFor='attendees'>Attendees *</FormLabel>
+                <Input
+                  id='attendees'
+                  placeholder='who will be attending the event'
+                  {...register('attendees', {
+                    required: 'This is required',
+                  })}
+                  type='email'
+                  multiple
+                  required
+                />
+                <FormErrorMessage>
+                  {errors.eventName && errors.eventName.message}
+                </FormErrorMessage>
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='eventStartTime'>Event Start Time *</FormLabel>
+                <FormLabel htmlFor='startTime'>Event Start Time *</FormLabel>
                 <Input
-                  id='eventStartTime'
+                  id='startTime'
                   placeholder='start time of the event'
-                  {...register('eventStartTime', {
+                  {...register('startTime', {
                     required: 'This is required',
-                    // minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                   type='datetime-local'
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='eventEndTime'>Event End Time *</FormLabel>
+                <FormLabel htmlFor='endTime'>Event End Time *</FormLabel>
                 <Input
-                  id='eventEndTime'
+                  id='endTime'
                   placeholder='end time of the event'
-                  {...register('eventEndTime', {
+                  {...register('endTime', {
                     required: 'This is required',
-                    // minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                   type='datetime-local'
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='eventLocation'>Location *</FormLabel>
+                <FormLabel htmlFor='location'>Location *</FormLabel>
                 <Input
-                  id='eventLocation'
+                  id='location'
                   placeholder='event location'
-                  {...register('eventLocation', {
+                  {...register('location', {
                     required: 'This is required',
-                    // minLength: { value: 4, message: 'Minimum length should be 4' },
+                    minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                   type='text'
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='eventDescription'>Description</FormLabel>
+                <FormLabel htmlFor='description'>Description</FormLabel>
                 <Input
-                  id='eventDescription'
+                  id='descroiption'
                   placeholder='event description'
+                  {...register('description')}
                   type='text'
                 />
-              </FormControl>
-                {/* <label>Event name:<input type="text" name="eventName" required></input></label>
-                <label>Event start time:
-                  <input
-                    type="datetime-local"
-                    id="event-start-time"
-                    name="event-start-time"
-                    required
-                    ></input>
-                </label>
-                <label>Event end time:
-                  <input
-                    type="datetime-local"
-                    id="event-start-time"
-                    name="event-start-time"
-                    required
-                    ></input>
-                </label>
-                <label>Event location:<input type="text" name="eventLocation" required></input></label>
-                <label>Event description:<input className={styles.description} type="text" name="eventDescription" required></input></label> */}
-              <FormControl>
-                <p>* indicates required fields.</p><br></br>
               </FormControl>
               </VStack>
+              <HStack mt={6}>
+                <Button isLoading={isSubmitting} type='submit'>Submit</Button>
+                <Button onClick={onClose} type='submit'>Cancel</Button>
+              </HStack>
             </form>
           </ModalBody>
-          <HStack>
-            {/* <button type="submit">Submit</button> */}
-            {/* <button onClick={onClose}>Cancel</button> */}
-            <Button isLoading={isSubmitting} type='submit'>Submit</Button>
-            <Button onClick={onClose} type='submit'>Cancel</Button>
-          </HStack>
+
         </ModalContent>
       </Modal>
   )
