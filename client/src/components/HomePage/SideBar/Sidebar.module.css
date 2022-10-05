@@ -8,3 +8,47 @@
   text-align: center;
   height: 100vh;
 }
+
+.friendList {
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+}
+
+.friendDiv {
+  border: solid 1px white;
+  padding: 2%;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 5%;
+}
+
+.friend {
+
+}
+
+.friendClicked {
+  border-bottom: solid 1px white;
+}
+
+
+.checkboxRound {
+  width: 1.3em;
+  height: 1.3em;
+  background-color: white;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid #ddd;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.checkboxRound:checked {
+  background-color: var(--color-orange);
+}
+
+.friendListHeader {
+
+}
