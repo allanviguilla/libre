@@ -7,6 +7,10 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 
 import { signin } from '../../redux/actions/currUser';
 
+import styles from './LoginPage.module.css';
+
+import Canvas from './Canvas';
+
 const LoginPage = (props) => {
   const { currUser, signin } = props;
 
@@ -43,10 +47,15 @@ const LoginPage = (props) => {
     })
   }
 
+  //ANIMATION CODE
+
+
   return (
-    <div id="login-page">
-      <h2>Libre</h2>
+    <div id="login-page" className={styles.login}>
+      <h1 className={styles.h1}>LIBRE</h1>
+      <h3 className={styles.h3}>A NEW WAY TO SHARE FREE TIME WITH FRIENDS.</h3>
       <GoogleButton onClick={signInWithGoogle}/>
+      <Canvas />
     </div>
   )
 }

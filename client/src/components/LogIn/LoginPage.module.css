@@ -1,0 +1,22 @@
+.login {
+  display: grid;
+  /* grid-template-columns: repeat(2, 2fr 1fr); */
+}
+
+.h1 {
+  background-color: var(--color-orange);
+  color: white;
+  padding: 0 2rem;
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.h3 {
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.canvas {
+  clip-path: polygon(0 0, 100% 0, 100% 19%, 0 50%);
+  width: 100%;
+}
