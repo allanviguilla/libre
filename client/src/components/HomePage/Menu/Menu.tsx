@@ -1,36 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../../../redux/actions/currUser';
-
+import { toggleSideBar } from '../../../redux/actions/sideBar';
+import Profile from './Profile/Profile';
 import styles from './Menu.module.css';
+import { Button, List, ListItem, ListIcon, Link } from '@chakra-ui/react';
+import { BiLogOut } from 'react-icons/bi';
+import { MdGroups } from 'react-icons/md';
+import { BsChatDots, BsCalendar3 } from 'react-icons/bs';
+import { IoNotificationsOutline, IoSettingsOutline } from 'react-icons/io5';
+import { FiUsers } from 'react-icons/fi';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 
 const Menu = (props) => {
+  const { currUser, logout, toggleSideBar } = props;
 
-  const { currUser, logout } = props;
+  function changeSideBar(e, sideBar){
+    toggleSideBar(sideBar)
+  }
 
-  function handleLogout(){
+  function handleLogout() {
     //when logout. reset the currUser in redux to null
     logout();
   }
 
   return (
-
     <div className={styles.menu} id="menu">
-      <div>
-        <h2>Menu</h2>
-      </div>
-      <div>
-        { `Signed in as ${currUser.displayName}` }
-        <br></br>
-        {`Email: ${currUser.email}`}
-        <br></br>
-        <img src={currUser.photoUrl} alt="Profile Photo"></img>
-        <br></br>
-      </div>
-      <div>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-
+      <Profile currUser={currUser} />
+      <br />
+      <List spacing={3}>
+        <ListItem>
+          <ListIcon as={BsCalendar3} />
+          <Link>Your Calendar</Link>
+        </ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'friends')}}>
+          <ListIcon as={FiUsers} />
+          <Link>Friends</Link>
+        </ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'groups')}}>
+          <ListIcon as={HiOutlineUserGroup} />
+          <Link>Groups</Link>
+        </ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'chats')}}>
+          <ListIcon as={BsChatDots} />
+          <Link>Chats</Link>
+        </ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'notifications')}}>
+          <ListIcon  as={IoNotificationsOutline} />
+          <Link>Notifications</Link>
+        </ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'account')}}>
+          <ListIcon  as={IoSettingsOutline} />
+          <Link>Account</Link>
+        </ListItem>
+        <ListItem onClick={handleLogout}>
+          <ListIcon as={BiLogOut} />
+          <Link>Logout</Link>
+        </ListItem>
+      </List>
     </div>
   )
 }
@@ -44,6 +71,6 @@ function mapStatetoProps(state) {
 };
 
 // map methods to update the state
-const mapDispatchToProps =  { logout };
+const mapDispatchToProps = { logout, toggleSideBar };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Menu);
