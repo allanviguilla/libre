@@ -13,7 +13,7 @@ import {config, db} from '../../../../configs/config';
 
 
 // =================== IMPORT AND WRITE DOCUMENTS FIREBASE ===========
-import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, deleteField } from "firebase/firestore";
+import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, deleteField, getDoc } from "firebase/firestore";
 
 // // Initialize Firebase
 const firebaseApp = firebase.initializeApp(config);
@@ -47,7 +47,7 @@ const Chat = (props) => {
 
   return (
     <div id="chat">
-      <ChatRoom2 />
+      <ChatRoom friend={friend} currUser={currUser}/>
     </div>
   )
 }
@@ -60,12 +60,30 @@ function ChatRoom2() {
   );
 }
 
-function ChatRoom() {
-
+function ChatRoom(props) {
+  const {friend, currUser} = props;
   // 0. get or create unique identifier for a chat conversation
-    // what is current user email?
-    // what is friend email they are chatting with?
+  // what is current user email?
+  // what is friend email they are chatting with?
+  const identifier = [currUser.email, friend.email].sort().join('-');
+  console.log(identifier);
+
   // 1. look up the doc
+  getDoc(doc(db, "chats", identifier))
+  .then((chatData: any) => {
+    // console.log("Chat Data: ", chatData.data());
+    const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
+    const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
+    setDoc(doc(db, "chats", identifier), {
+      // members
+      members,
+      chatHistory,
+    })
+  })
+  .catch(() => {
+    // create a new doc with desired inputs
+  })
+
   // 2. then display the history chat
   // 3. catch create a history chat
 
