@@ -1,8 +1,9 @@
-import { HStack, VStack } from "@chakra-ui/react";
+import { HStack, Stack, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import styles from './../Sidebar.module.css';
 import { BsChatDots } from 'react-icons/bs';
 import{ RiDeleteBin5Line } from 'react-icons/ri'
+import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 
 const FriendEntry = ({ friend }) => {
   const [clicked, setClicked] = useState(false);
@@ -18,11 +19,16 @@ const FriendEntry = ({ friend }) => {
       </HStack>
       <HStack>
         { clicked ?
-          <div>
-
-            <BsChatDots />
-            <RiDeleteBin5Line />
-          </div>
+          <Stack>
+            <HStack>
+              <Avatar name={friend.displayName} src={friend.photoUrl} />
+              <p>bio here </p>
+            </HStack>
+            <HStack>
+              <BsChatDots />
+              <RiDeleteBin5Line />
+            </HStack>
+          </Stack>
         : null}
       </HStack>
     </div>
