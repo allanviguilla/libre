@@ -22,7 +22,6 @@ const firestore = firebase.firestore();
 
 const Chat = (props) => {
   const {friend, currUser} = props;
-  console.log('currUser ', currUser);
   return (
     <div id="chat">
       <ChatRoom friend={friend} currUser={currUser}/>
@@ -100,6 +99,7 @@ function ChatRoom(props) {
           return <ChatMessage
           key={index}
           message={msg}
+          currUserEmail={currUser.email}
           />
           }
           )}
@@ -116,10 +116,10 @@ function ChatRoom(props) {
 
 function ChatMessage(props) {
   // const { text, uid, id } = props.message;
-  const { text, email } = props.message;
+  const { text, email, currUserEmail } = props.message;
 
 
-  const messageClass = email ? 'sent':'received';
+  const messageClass = email === currUserEmail ? 'sent':'received';
 
   return (
     <div className={`message ${messageClass}`}>
