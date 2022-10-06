@@ -20,9 +20,6 @@ import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, de
 const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
-const timeStamp = firebase.firestore.Timestamp.now();
-console.log('timeStamp ', timeStamp);
-
 
 // const chatRef = doc(firestore, "chat-test-db", "alpha-chat");
 
@@ -66,7 +63,6 @@ function ChatRoom(props) {
   // 1. look up chat history for the DM between two friends
   getDoc(doc(db, "chats", identifier))
   .then((chatData: any) => {
-    // console.log("Chat Data: ", chatData.data());
     const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
     const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
     setDoc(doc(db, "chats", identifier), {
@@ -100,9 +96,10 @@ function ChatRoom(props) {
       // get the document that the has the chat history between two friends
       chatData = chatData.data();
       // add message to chat history
+      const timeStamp = getTimeStamp();
       const text = e.target[0].value;
       const messageObject = {
-        createdAt: '',
+        createdAt: timeStamp,
         text,
         email: currUser.email,
       };
@@ -151,6 +148,11 @@ function ChatMessage(props) {
       <p>{text}</p>
     </div>
   )
+}
+
+const getTimeStamp = () => {
+  const timeStamp = firebase.firestore.Timestamp.now();
+  return timeStamp;
 }
 
 // ================== REDUX ==========
