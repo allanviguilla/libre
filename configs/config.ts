@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+export const apiKey = "AIzaSyAuze6v4dAbSu-xrHeKXMU8w3iaWT6sOfw";
+
 const firebaseConfig = {
   // Including the API Key is not a security risk per Google Cloud.
   // https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public

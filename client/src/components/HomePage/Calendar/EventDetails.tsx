@@ -35,8 +35,7 @@ interface Props {
   detail: ParsedEvent;
 }
 
-const EventDetails = ({ detail, isOpen, onClose }) => {
-  console.log('EVENT DETAIL', detail)
+const EventDetails = ({ detail, isOpen, onClose}) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />

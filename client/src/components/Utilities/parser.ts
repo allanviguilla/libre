@@ -22,7 +22,7 @@ export const parseInfo = (info) => {
   console.log(info)
   parsed.title = info._def.title;
   parsed.start = new Date(info._instance.range.start).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
-  parsed.end = new Date(info._instance.range.end).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});;
+  parsed.end = new Date(info._instance.range.end).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
   parsed.extendedProps = info._def.extendedProps;
 
   return parsed;
