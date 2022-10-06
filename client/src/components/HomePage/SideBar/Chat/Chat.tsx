@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+// import admin from 'firebase-admin';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import {config, db} from '../../../../configs/config';
+import {config, db} from '../../../../../../configs/config';
 
 
 // =================== IMPORT AND WRITE DOCUMENTS FIREBASE ===========
@@ -19,11 +20,9 @@ import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, de
 const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
+const timeStamp = firebase.firestore.Timestamp.now();
+console.log('timeStamp ', timeStamp);
 
-// ========= create a document
-// there is NO api to create a new COLLECTION
-// but the BIG question, can we create a COLLECTION from a DOCUMENT
-// because a DOCUMENT can create a COLLECTION on the console?
 
 // const chatRef = doc(firestore, "chat-test-db", "alpha-chat");
 
@@ -62,9 +61,6 @@ function ChatRoom2() {
 
 function ChatRoom(props) {
   const {friend, currUser} = props;
-  // 0. get or create unique identifier for a chat conversation
-  // what is current user email?
-  // what is friend email they are chatting with?
   const identifier = [currUser.email, friend.email].sort().join('-');
 
   // 1. look up chat history for the DM between two friends
@@ -80,47 +76,7 @@ function ChatRoom(props) {
     })
   })
   .catch(() => {
-    // create a new doc with desired inputs
   })
-
-  // 2. then display the history chat
-  // 3. catch create a history chat
-
-
-  // const db = firestore.collection('chat-test-db');
-  //
-  // let found: firebase.firestore.DocumentData;
-  // // Print each document
-  // db.get()
-  // .then((snapshot) => {
-  //   snapshot.forEach((doc) => {
-  //     console.log('doc id ', doc.id);
-  //     const data = doc.data();
-  //     // console.log(Object.keys(data));
-  //     console.log(doc.data());
-  //     // if (doc.id === 'room-alpha-1') {
-  //     //   found = doc.data();
-  //     // }
-  //   })
-  // })
-  // if (found) {
-  //   console.log('found ', found);
-  // }
-
-  // 1. look up the doc
-  // 2. then display the history chat
-  // 3. catch create a history chat
-
-
-  // addDoc
-  // await addDoc(
-  //   collection(db, 'chat-test-db'), {
-  //     emails: [],
-  //     users: [],
-  //     chatHistory: [{}],
-  //   }
-  // )
-
 
   // grab documents from chat-test-db
   const messagesRef = firestore.collection('chat-test-db');
@@ -133,20 +89,6 @@ function ChatRoom(props) {
 
   const [formValue, setFormValue] = useState('');
 
-  // const sendMessage = async(e) => {
-  //   e.preventDefault();
-
-  //   // const { uid } = auth.currentUser;
-
-  //   await messagesRef.add({
-  //     text: formValue,
-  //     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  //     // uid
-  //   })
-
-  //   setFormValue('');
-  // }
-
   const sendMessage = async(e) => {
     e.preventDefault();
 
@@ -155,11 +97,9 @@ function ChatRoom(props) {
     // get the chat identifier from the Chat component state
     getDoc(doc(db, "chats", identifier))
     .then((chatData: any) => {
-      // // console.log("Chat Data: ", chatData.data());
-      // // get the document that the has the chat history between two friends
+      // get the document that the has the chat history between two friends
       chatData = chatData.data();
-      // // add message to chat history
-
+      // add message to chat history
       const text = e.target[0].value;
       const messageObject = {
         createdAt: '',
@@ -168,9 +108,7 @@ function ChatRoom(props) {
       };
       const chatHistory = chatData === undefined ? [] : chatData.chatHistory;
       chatHistory.push(messageObject);
-
       const members = chatData === undefined ? [] : [currUser.email, friend.email ].sort();
-
       // overwrite the existing document with the new chat history object
       setDoc(doc(db, "chats", identifier), {
         members,
