@@ -1,8 +1,9 @@
-import { StylesProvider } from '@chakra-ui/react';
 import { collection, getDoc, setDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
 import React from 'react';
 import styles from './Notification.module.css';
+import { BsCheckCircleFill, BsXLg } from 'react-icons/bs'
+import { IconButton } from '@chakra-ui/react'
 
 const Notification = ({ document, currUser, getAllDocs }) => {
   // console.log('document : ', document);
@@ -22,16 +23,16 @@ const Notification = ({ document, currUser, getAllDocs }) => {
         getAllDocs()
       })
       .catch((err) => {
-        console.log('did not update')
+        console.log('did not update :', err)
       })
 
     if (type === 'friend-request') {
       const userRef = doc(db, 'users', email)
       getDoc(userRef)
-        .then((userData:any) => {
+        .then((userData: any) => {
           const friends = userData.data().friends.slice()
           friends.push(document.senderEmail)
-          updateDoc(userRef, { friends: friends})
+          updateDoc(userRef, { friends: friends })
         })
         .catch(err => console.log(err))
     }
@@ -54,10 +55,30 @@ const Notification = ({ document, currUser, getAllDocs }) => {
 
   return (
     <div className={styles.notificationCard}>
-      {type === 'event-invitation' ?
-        `${senderDisplayName} has sent an invitation to event name` : `${senderDisplayName} has sent you a friend request!`}
-      <button onClick={acceptRequest}>Accept</button>
-      <button onClick={declineRequest}>Decline</button>
+      <div className={styles.notificationText}>
+        {type === 'event-invitation' ?
+          `${senderDisplayName} has sent an invitation to event name` : `${senderDisplayName} has sent you a friend request!`}
+      </div>
+      <div className={styles.notificationButtons}>
+        <IconButton
+          variant='outline'
+          colorScheme='orange'
+          aria-label='Accept Button'
+          fontSize='20px'
+          size='lg'
+          icon={<BsCheckCircleFill />}
+          onClick={acceptRequest}
+        />
+        <IconButton
+          variant='outline'
+          colorScheme='orange'
+          aria-label='Decline Button'
+          fontSize='20px'
+          size='lg'
+          icon={<BsXLg />}
+          onClick={declineRequest}
+        />
+      </div>
     </div>
   )
 }

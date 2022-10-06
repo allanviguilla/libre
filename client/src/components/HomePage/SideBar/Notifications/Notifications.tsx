@@ -38,6 +38,7 @@ const Notifications = (props) => {
 
   return (
     <div>
+      <p>Notifications</p>
       {mappedArray}
     </div>
   )
