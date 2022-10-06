@@ -34,7 +34,8 @@
 }
 
 .h3 {
-  opacity: 0.9;
+  color: var(---color-dark);
+  opacity: 0.85;
   font-weight: 700;
   font-size: 3rem;
   line-height: 3rem;
