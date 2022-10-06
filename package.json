@@ -9,6 +9,7 @@
     "server": "nodemon --exec ts-node server/index.ts"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.3.4",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -24,6 +25,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "esbuild": "^0.15.10",
+    "esbuild-darwin-64": "^0.15.10",
     "express": "^4.18.1",
     "firebase": "^9.10.0",
     "framer-motion": "^7.5.1",

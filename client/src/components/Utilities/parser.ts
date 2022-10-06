@@ -1,6 +1,7 @@
 export const parseEvents = (events) => {
   let aggParsed = [];
   events.forEach((event) => {
+    console.log('...........EVENT..........',event)
     let parsed = {color: 'orange'} as ParsedEvent;
     parsed.title = event.summary;
     parsed.start = event.start.date ? event.start.date : event.start.dateTime;
