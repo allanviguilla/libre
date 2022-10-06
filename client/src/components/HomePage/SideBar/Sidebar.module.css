@@ -9,12 +9,6 @@
   height: 100vh;
 }
 
-.friendList {
-  display: flex;
-  flex-direction: column;
-  height: 80%;
-}
-
 .friendDiv {
   border: solid 1px white;
   padding: 2%;
@@ -49,6 +43,41 @@
   background-color: var(--color-orange);
 }
 
-.friendListHeader {
+.friendsList {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
+.friendListHeader {
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.friendsItems{
+  /* height: 100%; */
+  padding: 0 2rem;
+  /* overflow-y: scroll; */
+}
+
+.h2 {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 2rem;
+}
+
+.button {
+  border-radius: 25px;
+  padding: 0.75rem;
+  background-color: var(--color-orange);
+  text-transform: uppercase;
+}
+
+.input {
+  color: var(--color-dark-gray);
+  border-radius: 25px;
+  padding: 0.75rem;
 }

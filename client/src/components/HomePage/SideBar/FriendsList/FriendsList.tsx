@@ -9,14 +9,14 @@ const FriendsList = () => {
   return (
     <div className={styles.friendsList}>
       <div className={styles.friendListHeader}>
-        <h2>FriendsList</h2>
-        <button>Add Friend</button>
+        <h2 className={styles.h2}>My Friends</h2>
+        <button className={styles.button}>Add Friend +</button>
         <HStack>
-          <input type="text" placeholder='Search friends list ...' ></input>
+          <input className={styles.input} type="text" placeholder='Search friends list ...' ></input>
           <BsSearch size={20}/>
         </HStack>
       </div>
-      <VStack>
+      <VStack className={styles.friendsItems}>
         {
           friendsReqResponse.map((friend) =>
             <FriendEntry key={friend.displayName} friend={friend} />
