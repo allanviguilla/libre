@@ -20,22 +20,6 @@ import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, de
 const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
-
-// const chatRef = doc(firestore, "chat-test-db", "alpha-chat");
-
-// // Set the "capital" field of the city 'DC'
-// await setDoc(chatRef, {
-//   text: "hello, setDoc",
-// });
-
-// COLLECTION has DOCUMENTS, in which each is a TEXT message
-// BUT
-// our desired schema is
-// COLLECTION has DOCUMENTS, in which each is a CHAT ROOM
-  //
-// where each CHAT ROOM is an object that contains a conversation info (like users, and emails)
-// and a chat history array of objects, in which each object is a TEXT message
-
 const Chat = (props) => {
   const {friend, currUser} = props;
   // console.log('friend ', friend);
@@ -72,6 +56,11 @@ function ChatRoom(props) {
     })
   })
   .catch(() => {
+    const members = [currUser.email, friend.email ].sort();
+    setDoc(doc(db, "chats", identifier), {
+      // members
+      members,
+    })
   })
 
   // grab documents from chat-test-db
@@ -85,10 +74,8 @@ function ChatRoom(props) {
 
   const [formValue, setFormValue] = useState('');
 
-  const sendMessage = async(e) => {
+  const sendMessage = async(e: { preventDefault: () => void; target: { value: any; }[]; }) => {
     e.preventDefault();
-
-    console.log('IDENTIFIER ', identifier);
 
     // get the chat identifier from the Chat component state
     getDoc(doc(db, "chats", identifier))
