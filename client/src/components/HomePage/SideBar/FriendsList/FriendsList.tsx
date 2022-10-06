@@ -7,11 +7,14 @@ import { connect } from 'react-redux';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
 import { getEvents, getToken } from '../../../Utilities/http';
+import { addAttendee, removeAttendee } from '../../../../redux/actions/attendees'
 
 const FriendsList = (props) => {
   const [friends, setFriends] = useState([]);
 
-  const { currUser } = props;
+  const { currUser, attendees, addAttendee, removeAttendee } = props;
+
+  console.log(attendees)
 
   useEffect(() => {
     let hold = [];
@@ -33,6 +36,15 @@ const FriendsList = (props) => {
     })
   }, [currUser])
 
+
+  const handleAddAttendee = () => {
+    addAttendee({email:'qingzhouyan@gmail.com', photoUrl:'xxx.sdax.com'})
+  }
+
+  const handleRemoveAttendee = () => {
+    removeAttendee({email:'qingzhouyan@gmail.com', photoUrl:'xxx.sdax.com'})
+  }
+
   return (
     <div className={styles.friendsList}>
       <div className={styles.friendListHeader}>
@@ -40,7 +52,7 @@ const FriendsList = (props) => {
         <button>Add Friend</button>
         <HStack>
           <input type="text" placeholder='Search friends list ...' ></input>
-          <BsSearch size={20}/>
+          <BsSearch size={20} />
         </HStack>
       </div>
       <VStack>
@@ -50,15 +62,22 @@ const FriendsList = (props) => {
           )
         }
       </VStack>
+      <button onClick={handleAddAttendee}>add attendee</button>
+      <button onClick={handleRemoveAttendee}>remove attendee</button>
     </div>
   )
 }
 
+
 function mapStatetoProps(state) {
-  const { currUser } = state;
-  return { currUser };
+  const { currUser, attendees } = state;
+  return { currUser, attendees };
 };
 
-const mapDispatchToProps = {};
+// addAttendee({email:'qingzhou@gmail.com', .....}) email is required
+// when add, shift the new attendee to the first of the list
+// removeAttendee({email:'qingzhou@gmail.com', .....}) email is required
+// remove the attendee from the list
+const mapDispatchToProps = { addAttendee, removeAttendee };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);
