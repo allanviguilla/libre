@@ -20,7 +20,7 @@ const LoginPage = (props) => {
     signInWithPopup(authentication, provider)
     .then((res: any) => {
       const { displayName, email, photoUrl, oauthAccessToken, refreshToken } = res._tokenResponse;
-
+      console.log(res);
       // save user information into database
       getDoc(doc(db, "users", email))
       .then((userData: any) => {

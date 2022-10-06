@@ -1,7 +1,7 @@
 import { DateRange } from "../HomePage/Calendar/Calendar";
 import axios from "axios";
 import { parseEvents } from "./parser";
-import { apiKey } from "../../../../configs/config";
+import { config } from "../../../../configs/config";
 import { isDataView } from "util/types";
 const calAPI = 'https://www.googleapis.com/calendar/v3/calendars';
 
@@ -48,6 +48,7 @@ export const postEvent = (email: string, token: string, eventData: Object,) => {
 
 }
 
+const { apiKey } = config;
 const tokenAPI = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
 
 export const getToken = (refreshToken) => {
