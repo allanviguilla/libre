@@ -24,6 +24,12 @@ import {
 } from '@chakra-ui/react';
 import { MultiSelect } from 'chakra-multiselect';
 import {
+  AsyncCreatableSelect,
+  AsyncSelect,
+  CreatableSelect,
+  Select,
+} from "chakra-react-select";
+import {
   doc, setDoc, addDoc, getDoc, collection, writeBatch
 } from "firebase/firestore";
 import { authentication, db } from '../../../../../configs/config';
@@ -49,47 +55,59 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
   function onSubmit(values) {
 
     const { attendees, startTime, endTime, location, description } = values;
-    const attendeesArray = attendees.split(',')
+    // const attendeesArray = attendees.split(',')
+
+    console.log('attendees on submit... ', attendees);
+    console.log('startTime... ', startTime);
+    console.log('endTime... ', endTime);
+    console.log('location... ', location);
+    console.log('description... ', description);
 
     // save calendar event into database
-    addDoc(collection(db, "events"), {
-        hostEmail: currUser.email,
-        attendeesArray,
-        startTime,
-        endTime,
-        location,
-        description,
-      })
-      .then((docRef) => {
-        for (let i = 0; i < attendeesArray.length; i++) {
-          addDoc(collection(db, "notifications"), {
-            eventId: docRef.id,
-            receiverEmail: attendeesArray[i],
-            senderDisplayName: currUser.displayName,
-            senderEmail: currUser.email,
-            type: 'event-invitation',
-            status: 'awaiting',
-          })
-        }
-      })
-      .then(() => {
-        onClose();
-        alert("Your event has been created!");
-      })
-      .catch((error) => {
-        onClose();
-        alert("Your event was not created - please try again!");
-      })
+    // addDoc(collection(db, "events"), {
+    //     hostEmail: currUser.email,
+    //     attendeesArray,
+    //     startTime,
+    //     endTime,
+    //     location,
+    //     description,
+    //   })
+    //   .then((docRef) => {
+    //     for (let i = 0; i < attendeesArray.length; i++) {
+    //       addDoc(collection(db, "notifications"), {
+    //         eventId: docRef.id,
+    //         receiverEmail: attendeesArray[i],
+    //         senderDisplayName: currUser.displayName,
+    //         senderEmail: currUser.email,
+    //         type: 'event-invitation',
+    //         status: 'awaiting',
+    //       })
+    //     }
+    //   })
+    //   .then(() => {
+    //     onClose();
+    //     alert("Your event has been created!");
+    //   })
+    //   .catch((error) => {
+    //     onClose();
+    //     alert("Your event was not created - please try again!");
+    //   })
 
   }
 
   const [friends, setFriends] = useState([]);
+  const [attendeesFormInput, setAttendeesFromInput] = useState([]);
 
-  const [value, setValue] = useState([])
+  const [value, setValue] = useState([]);
+
+  let attendeesArr = [];
+  // let sample = ["nicolastiennguyen@gmail.com", "qingzhouyan@gmail.com", "hepner.thomas2@gmail.com", "james.emerson.vo.2503@gmail.com", "kathryn.kuroko@gmail.com"];
 
   useEffect(() => {
     let hold = [];
+    attendeesArr = [];
     currUser.friends.map((friend, i) => {
+      attendeesArr.push({ value: friend, label: friend });
       getDoc(doc(db, "users", friend))
         .then((res) => {
           const friend = res.data();
@@ -105,6 +123,8 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         })
         .catch((err) => console.log(err))
     })
+    setAttendeesFromInput(attendeesArr);
+    console.log('attendeesArr', attendeesArr);
   }, [currUser]);
 
   return (
@@ -138,7 +158,6 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                   Attendees *
                 </FormLabel>
                 <FormLabel htmlFor='attendees-avatars'>
-                Invite your friends.
                 <AvatarGroup size='md' max={5}>
                     {
                       friends.map((friend) =>
@@ -147,15 +166,25 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                     }
                   </AvatarGroup>
                 </FormLabel>
+                <Select
+                  isMulti
+                  options={attendeesFormInput}
+                  id="attendees"
+                  {...register('attendees', {
+                    required: 'This is required',
+                  })}
+                  placeholder="Invite your friends."
+                  closeMenuOnSelect={false}
+                  hasStickyGroupHeaders
+                />
                 {/* <MultiSelect
-                  options={options}
+                  options={sample}
                   value={value}
-                  label='Choose an item'
                   onChange={setValue}
                 /> */}
                 {/* <Input
                   id='attendees'
-                  placeholder='who will be attending the event'
+                  placeholder='Who will be attending the event'
                   {...register('attendees', {
                     required: 'This is required',
                   })}
