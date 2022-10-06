@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import {
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -19,6 +22,7 @@ import {
   Flex,
   FormErrorMessage,
 } from '@chakra-ui/react';
+import { MultiSelect } from 'chakra-multiselect';
 import {
   doc, setDoc, addDoc, getDoc, collection, writeBatch
 } from "firebase/firestore";
@@ -27,6 +31,7 @@ import styles from './Calendar.module.css';
 import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
 import { addListener } from "process";
+import { getEvents, getToken } from '../../Utilities/http';
 
 interface Props {
   isOpen: boolean;
@@ -77,6 +82,31 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       })
 
   }
+
+  const [friends, setFriends] = useState([]);
+
+  const [value, setValue] = useState([])
+
+  useEffect(() => {
+    let hold = [];
+    currUser.friends.map((friend, i) => {
+      getDoc(doc(db, "users", friend))
+        .then((res) => {
+          const friend = res.data();
+          getToken(friend.refreshToken)
+            .then((res) => {
+              friend.oauthAccessToken = res;
+            })
+          hold.push(friend);
+          console.log(hold);
+          if (hold.length === currUser.friends.length) {
+            setFriends(hold)
+          }
+        })
+        .catch((err) => console.log(err))
+    })
+  }, [currUser]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -107,7 +137,23 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 <FormLabel htmlFor='attendees'>
                   Attendees *
                 </FormLabel>
-                <Input
+                <FormLabel htmlFor='attendees-avatars'>
+                Invite your friends.
+                <AvatarGroup size='md' max={3}>
+                    {
+                      friends.map((friend) =>
+                        <Avatar name={friend.name} src={friend.photoUrl} />
+                      )
+                    }
+                  </AvatarGroup>
+                </FormLabel>
+                {/* <MultiSelect
+                  options={options}
+                  value={value}
+                  label='Choose an item'
+                  onChange={setValue}
+                /> */}
+                {/* <Input
                   id='attendees'
                   placeholder='who will be attending the event'
                   {...register('attendees', {
@@ -116,7 +162,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                   type='email'
                   multiple
                   required
-                />
+                /> */}
                 <FormErrorMessage>
                   {errors.eventName && errors.eventName.message}
                 </FormErrorMessage>
