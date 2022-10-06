@@ -23,14 +23,12 @@ const FriendsList = (props) => {
           getToken(friend.refreshToken)
             .then((res) => {
               friend.oauthAccessToken = res;
-
             })
-            hold.push(friend);
-            console.log(hold);
-            if (hold.length === currUser.friends.length) {
-              setFriends(hold)
-            }
-
+          hold.push(friend);
+          console.log(hold);
+          if (hold.length === currUser.friends.length) {
+            setFriends(hold)
+          }
         })
         .catch((err) => console.log(err))
     })

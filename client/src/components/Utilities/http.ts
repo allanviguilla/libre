@@ -26,11 +26,12 @@ export const getEvents = (email:string, dateRange:DateRange, token:string) => {
 const tokenAPI = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
 
 export const getToken = (refreshToken) => {
-  return axios.post(tokenAPI,
-    {
-      grant_type: 'refresh_token',
-      refresh_token: refreshToken
-    })
+  const config = {
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken
+  };
+
+  return axios.post(tokenAPI, config)
     .then(res => res.data.access_token)
     .catch(err => console.log(err))
 }
