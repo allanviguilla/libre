@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
+import { OAuth2Client } from 'google-auth-library';
 import { useForm } from 'react-hook-form';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
@@ -11,10 +12,12 @@ import {
 } from "firebase/firestore";
 import { authentication, db } from '../../../../../configs/config';
 import styles from './Calendar.module.css';
-import { postEvent, getToken } from '../../Utilities/http.ts';
+// import { postEvent } from '../../Utilities/http.ts';
 import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
 import { addListener } from "process";
+import axios from "axios";
+import { format, parseISO } from 'date-fns';
 
 interface Props {
   isOpen: boolean;
@@ -31,20 +34,50 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
 
   function onSubmit(values) {
 
-    const { attendees, startTime, endTime, location, description } = values;
+    let { attendees, startTime, endTime, location, name, description } = values;
     const attendeesArray = attendees.split(',')
 
+    startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
+    endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
+    const requestBody = {
+      "end": {
+        "dateTime": endTime,
+        "timeZone": "America/Los_Angeles"
+      },
+      "start": {
+        "dateTime": startTime,
+        "timeZone": "America/Los_Angeles"
+      },
+      "attendees": attendeesArray,
+      "description": description,
+      "location": location,
+      // "status": "awaiting",
+      "summary": name,
+      // "iCalUID": "64kebt4dy284mtdekuqn"
+    };
+    const requestConfig = {
+      headers: {
+        'Authorization': `Bearer ${currUser.oauthAccessToken}`
+      }
+    };
+
+
     // save calendar event into Firestore
+    console.log("1");
     addDoc(collection(db, "events"), {
-        hostEmail: currUser.email,
-        attendeesArray,
-        startTime,
-        endTime,
-        location,
-        description,
-      })
+      hostEmail: currUser.email,
+      attendeesArray,
+      startTime,
+      endTime,
+      location,
+      description,
+    })
+
     // save notifications into Firestore
     .then((docRef) => {
+      console.log("2");
       console.log(docRef);
       for (let i = 0; i < attendeesArray.length; i++) {
         addDoc(collection(db, "notifications"), {
@@ -55,22 +88,28 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
           type: 'event-invitation',
           status: 'awaiting',
         })
-        // save event into each user's Google Calendar via API
-        // and email them an update
-        const access_token = getToken(currUser.refresh_token);
-
       }
     })
+
+    // save calendar event into user's Google Calendar
     .then(() => {
+      console.log("3");
+      return axios.post(url, requestBody, requestConfig);
+    })
+
+    .then(() => {
+      console.log("4");
       onClose();
       alert("Your event has been created!");
     })
+
     .catch((error) => {
       onClose();
+      console.log(error);
       alert("Your event was not created - please try again!");
     })
-
   }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
