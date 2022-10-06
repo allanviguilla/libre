@@ -36,6 +36,10 @@ interface Props {
 }
 
 const EventDetails = ({ detail, isOpen, onClose}) => {
+  const {attendees} = detail.extendedProps
+  console.log(attendees)
+
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -75,8 +79,8 @@ const EventDetails = ({ detail, isOpen, onClose}) => {
                         <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />
                         <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' />
                         {
-                      detail.extendedProps.attendees.map((attendee) =>
-                      <Avatar name={attendee} src='https://bit.ly/code-beast' />
+                      detail.extendedProps.attendees.map((attendee, index) =>
+                      <Avatar key={index} name={attendee} src='https://bit.ly/code-beast' />
                       )
                     }
                       </AvatarGroup>
