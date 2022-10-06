@@ -5,9 +5,29 @@ import styles from './../Sidebar.module.css'
 import { friendsReqResponse } from '../dummyData';
 import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from '../../../../../../configs/config';
+import { getEvents, getToken } from '../../../Utilities/http';
 
 const FriendsList = (props) => {
+  const [friends, setFriends] = useState([]);
+
   const { currUser } = props;
+
+  useEffect(() => {
+    const hold = [];
+    currUser.friends.map((friend, i) => {
+      getDoc(doc(db, "users", friend))
+        .then((res) => {
+          const friendRes = res.data();
+          const accessToken = getToken(friendRes.refreshToken);
+          const friend = {...friendRes}
+          friend.oauthAccessToken = accessToken;
+
+        })
+        .catch((err) => console.log(err))
+    })
+  }, [currUser])
 
   return (
     <div className={styles.friendsList}>
@@ -20,11 +40,11 @@ const FriendsList = (props) => {
         </HStack>
       </div>
       <VStack>
-        {
+        {/* {
           currUser.friends.map((friend) =>
             <FriendEntry key={friend.displayName} friend={friend} />
           )
-        }
+        } */}
       </VStack>
     </div>
   )

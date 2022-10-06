@@ -16,7 +16,6 @@ export const getEvents = (email:string, dateRange:DateRange, token:string) => {
     headers: {
       'Authorization': `Bearer ${token}`
     }
-
   };
 
   return axios.get(eventAPI, config)
@@ -24,18 +23,14 @@ export const getEvents = (email:string, dateRange:DateRange, token:string) => {
     .catch((err) => console.log(err))
 }
 
-const tokenAPI = 'https://securetoken.googleapis.com/v1/token';
+const tokenAPI = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
 
 export const getToken = (refreshToken) => {
-
-  return axios.get(tokenAPI,
+  return axios.post(tokenAPI,
     {
-      params: {
-        key: apiKey,
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken
-      }
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken
     })
-    .then(res => console.log(res))
+    .then(res => res.data.access_token)
     .catch(err => console.log(err))
 }
