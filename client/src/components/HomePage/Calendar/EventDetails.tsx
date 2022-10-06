@@ -17,13 +17,16 @@ import {
 } from '@chakra-ui/react';
 
 import styles from './Calendar.module.css';
+import { ParsedEvent } from "../../Utilities/parser";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  detail: ParsedEvent;
 }
 
-const EventDetails = ({isOpen, onClose}) => {
+const EventDetails = ({ detail, isOpen, onClose}) => {
+  console.log('EVENT DETAIL', detail)
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -32,12 +35,19 @@ const EventDetails = ({isOpen, onClose}) => {
         <ModalCloseButton />
         <ModalBody>
         <Flex wrap="wrap" gap="1.75rem">
-          <p><span style={{fontWeight: "700"}}>Event name:</span> MVP Standup </p>
-          <p><span style={{fontWeight: "700"}}>Start time:</span> 10/03/2022 09:30 AM </p>
-          <p><span style={{fontWeight: "700"}}>End time:</span> 10/03/2022 10:30 AM </p>
-          <p><span style={{fontWeight: "700"}}>Location:</span> Thomas's Google Meet Room</p>
-          <p><span style={{fontWeight: "700"}}>Organizer:</span> Thomas Herpner</p>
-          <p><span style={{fontWeight: "700"}}>Attendees:</span> Nick -Awaiting, Kat -Going, Allen -Going, Qingzhou -Going, James -Declined, Dan -Declined</p>
+          <p><span style={{fontWeight: "700"}}>Event name:</span>{detail.title}</p>
+          <p><span style={{fontWeight: "700"}}>Start time:</span> {detail.start} </p>
+          <p><span style={{fontWeight: "700"}}>End time:</span> {detail.end}</p>
+          <p><span style={{fontWeight: "700"}}>Location:</span> {detail.location}</p>
+          <p><span style={{fontWeight: "700"}}>Description:</span> {detail.extendedProps.description}</p>
+          <p><span style={{fontWeight: "700"}}>Organizer:</span> {detail.extendedProps.organizer}</p>
+          <p><span style={{fontWeight: "700"}}>Attendees:</span>
+            {
+              detail.extendedProps.attendees.map((attendee) =>
+                <p>{attendee}</p>
+              )
+            }
+          </p>
         </Flex>
         </ModalBody>
         <Flex justify="center">
