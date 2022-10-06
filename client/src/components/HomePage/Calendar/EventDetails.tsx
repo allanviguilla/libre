@@ -26,7 +26,6 @@ interface Props {
 }
 
 const EventDetails = ({ detail, isOpen, onClose}) => {
-  console.log('EVENT DETAIL', detail)
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
