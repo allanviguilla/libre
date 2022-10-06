@@ -1,7 +1,7 @@
 export const parseEvents = (events) => {
   let aggParsed = [];
   events.forEach((event) => {
-    console.log('...........EVENT..........',event)
+    // console.log('...........EVENT..........',event)
     let parsed = {color: 'orange'} as ParsedEvent;
     parsed.title = event.summary;
     parsed.start = event.start.date ? event.start.date : event.start.dateTime;
@@ -19,7 +19,7 @@ export const parseEvents = (events) => {
 
 export const parseInfo = (info) => {
   let parsed = {color: 'orange'} as ParsedEvent;
-  console.log(info)
+  // console.log(info)
   parsed.title = info._def.title;
   parsed.start = new Date(info._instance.range.start).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
   parsed.end = new Date(info._instance.range.end).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});

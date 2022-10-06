@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -28,6 +28,10 @@ import {
 import { MinusIcon, AddIcon } from '@chakra-ui/icons'
 import styles from './Calendar.module.css';
 import { ParsedEvent } from "../../Utilities/parser";
+import { getAuth } from "firebase/auth";
+import { authentication, db } from '../../../../../configs/config';
+import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore";
+
 
 interface Props {
   isOpen: boolean;
@@ -35,10 +39,24 @@ interface Props {
   detail: ParsedEvent;
 }
 
-const EventDetails = ({ detail, isOpen, onClose}) => {
-  const {attendees} = detail.extendedProps
-  console.log(attendees)
+const EventDetails = ({ detail, isOpen, onClose }) => {
+  const { attendees } = detail.extendedProps
+  const [attendeesAvatar, setAttendeesAvatar] = useState({})
 
+  useEffect(() => {
+    const getAttendeesAvatar = async () => {
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("email", "in", attendees))
+      const querySnapshot = await getDocs(q);
+      const avatars = {}
+      querySnapshot.forEach(doc => avatars[doc.id] = doc.data()['photoUrl'])
+      setAttendeesAvatar(avatars)
+    }
+
+    if(attendees.length !== 0) {
+      getAttendeesAvatar()
+    }
+  }, [attendees])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -72,28 +90,25 @@ const EventDetails = ({ detail, isOpen, onClose}) => {
                   <AccordionButton style={{ paddingLeft: 0 }}>
                     <Box flex='1' textAlign='left' >
                       <span style={{ fontWeight: "700" }}>Attendees: </span>
-                      <AvatarGroup size='md' max={2}style={{display:"inline-flex"}} >
-                        <Avatar name='Ryan Florence' src='https://bit.ly/ryan-florence' />
-                        <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
-                        <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
-                        <Avatar name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />
-                        <Avatar name='Christian Nwamba' src='https://bit.ly/code-beast' />
+                      <AvatarGroup size='md' max={2} style={{ display: "inline-flex" }} >
                         {
-                      detail.extendedProps.attendees.map((attendee, index) =>
-                      <Avatar key={index} name={attendee} src='https://bit.ly/code-beast' />
-                      )
-                    }
+                          detail.extendedProps.attendees.map((attendee, index) =>
+                            <Avatar key={attendee} name={attendee}
+                            src={attendeesAvatar[attendee] ? attendeesAvatar[attendee] : ''} />
+                          )
+                        }
                       </AvatarGroup>
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
                   <AccordionPanel pb={4}>
                     {
-                      detail.extendedProps.attendees.map((attendee) =>
-                      <Flex alignItems='center' gap='4' marginBottom="0.5em">
-                        <Avatar name='Christian Nwamba' size='sm' src='https://bit.ly/code-beast' />
-                        <span>{attendee}</span>
-                      </Flex>
+                      detail.extendedProps.attendees.map((attendee, index) =>
+                        <Flex key={attendee} alignItems='center' gap='4' marginBottom="0.5em">
+                          <Avatar name={attendee} size='sm'
+                          src={attendeesAvatar[attendee] ? attendeesAvatar[attendee] : ''} />
+                          <span>{attendee}</span>
+                        </Flex>
                       )
                     }
                   </AccordionPanel>
