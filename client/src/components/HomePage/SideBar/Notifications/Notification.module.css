@@ -1,0 +1,17 @@
+.notificationCard {
+  margin: 10px;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+.notificationText {
+  font-size: 15px;
+  padding: 20px;
+}
+
+.notificationButtons {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 10px;
+  font-size: 10px;
+}
