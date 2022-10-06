@@ -139,7 +139,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 </FormLabel>
                 <FormLabel htmlFor='attendees-avatars'>
                 Invite your friends.
-                <AvatarGroup size='md' max={3}>
+                <AvatarGroup size='md' max={5}>
                     {
                       friends.map((friend) =>
                         <Avatar name={friend.name} src={friend.photoUrl} />
