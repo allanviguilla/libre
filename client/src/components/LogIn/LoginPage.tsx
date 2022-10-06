@@ -23,7 +23,7 @@ const LoginPage = (props) => {
     provider.addScope('https://www.googleapis.com/auth/calendar.readonly');
     signInWithPopup(authentication, provider)
     .then((res: any) => {
-      const { displayName, email, photoUrl, oauthAccessToken, refreshToken } = res._tokenResponse;
+      const { displayName, email, photoUrl, oauthAccessToken, oauthIdToken, refreshToken } = res._tokenResponse;
 
       // save user information into database
       getDoc(doc(db, "users", email))
@@ -34,6 +34,7 @@ const LoginPage = (props) => {
             displayName: displayName,
             email: email,
             photoUrl: photoUrl,
+            oauthIdToken: oauthIdToken,
             oauthAccessToken: oauthAccessToken,
             refreshToken: refreshToken,
             friends: friends,
