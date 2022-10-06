@@ -10,7 +10,7 @@ import { MdGroups } from 'react-icons/md';
 import { BsChatDots, BsCalendar3 } from 'react-icons/bs';
 import { IoNotificationsOutline, IoSettingsOutline } from 'react-icons/io5';
 import { FiUsers } from 'react-icons/fi';
-import { HiOutlineUserGroup } from 'react-icons/hi';
+import { HiOutlineUserGroup, HiOutlineHome } from 'react-icons/hi';
 
 const Menu = (props) => {
   const { currUser, logout, toggleSideBar } = props;
@@ -32,6 +32,10 @@ const Menu = (props) => {
         <ListItem>
           <ListIcon as={BsCalendar3} />
           <Link>Your Calendar</Link>
+        </ListItem>
+        <ListItem>
+          <ListIcon as={HiOutlineHome} />
+          <Link>Overview</Link>
         </ListItem>
         <ListItem onClick={(e)=>{changeSideBar(e, 'friends')}}>
           <ListIcon as={FiUsers} />
