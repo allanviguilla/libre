@@ -1,6 +1,6 @@
 import { HStack, Stack, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
-import styles from './../Sidebar.module.css';
+import styles from './FriendsList.module.css';
 import { BsChatDots } from 'react-icons/bs';
 import{ RiDeleteBin5Line } from 'react-icons/ri'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
@@ -13,12 +13,16 @@ const FriendEntry = (props) => {
   const [isChat, setIsChat] = useState(false);
   const {friend} = props;
 
+  const handleClick = () => {
+    console.log('I CLIUCKED FRIEND', friend)
+  }
   return (
     <div className={styles.friendDiv}>
       <HStack className={clicked ? styles.friendClicked : styles.friend}>
         <div><input onClick={() => {
           setClicked(!clicked);
           setIsChat(false);
+          handleClick()
           }} type="checkbox" className={styles.checkboxRound}></input></div>
         <div style={{width: '100%'}}>
           <p>{friend.displayName}</p>
