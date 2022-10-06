@@ -22,9 +22,7 @@ const firestore = firebase.firestore();
 
 const Chat = (props) => {
   const {friend, currUser} = props;
-  // console.log('friend ', friend);
-  // console.log('currUser ', currUser);
-
+  console.log('currUser ', currUser);
   return (
     <div id="chat">
       <ChatRoom friend={friend} currUser={currUser}/>
@@ -32,51 +30,39 @@ const Chat = (props) => {
   )
 }
 
-function ChatRoom2() {
-  return(
-    <div>
-      <p>Chatroom 2</p>
-    </div>
-  );
-}
-
 function ChatRoom(props) {
   const {friend, currUser} = props;
   const identifier = [currUser.email, friend.email].sort().join('-');
-
-  // 1. look up chat history for the DM between two friends
-  getDoc(doc(db, "chats", identifier))
-  .then((chatData: any) => {
-    const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
-    const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
-    setDoc(doc(db, "chats", identifier), {
-      // members
-      members,
-      chatHistory,
-    })
-  })
-  .catch(() => {
-    const members = [currUser.email, friend.email ].sort();
-    setDoc(doc(db, "chats", identifier), {
-      // members
-      members,
-    })
-  })
-
-  // grab documents from chat-test-db
-  const messagesRef = firestore.collection('chat-test-db');
-
-  // order messages ref around with
-  const query = messagesRef.orderBy('createdAt').limit(25);
-
+  const [messages, setMessages] = useState([]);
   // collect the data
-  const [messages] = useCollectionData(query, {idField: 'id'});
-
   const [formValue, setFormValue] = useState('');
+
+  useEffect(() => {
+    // 1. look up chat history for the DM between two friends
+    getDoc(doc(db, "chats", identifier))
+    .then((chatData: any) => {
+      // 2. update the current chat
+      const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
+      setMessages(chatHistory);
+      const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
+      setDoc(doc(db, "chats", identifier), {
+        // members
+        members,
+        chatHistory,
+      })
+    })
+    // 3. create a new chat
+    .catch(() => {
+      const members = [currUser.email, friend.email ].sort();
+      setDoc(doc(db, "chats", identifier), {
+        // members
+        members,
+      })
+    })
+  }, [])
 
   const sendMessage = async(e: { preventDefault: () => void; target: { value: any; }[]; }) => {
     e.preventDefault();
-
     // get the chat identifier from the Chat component state
     getDoc(doc(db, "chats", identifier))
     .then((chatData: any) => {
@@ -92,6 +78,7 @@ function ChatRoom(props) {
       };
       const chatHistory = chatData === undefined ? [] : chatData.chatHistory;
       chatHistory.push(messageObject);
+      setMessages(chatHistory);
       const members = chatData === undefined ? [] : [currUser.email, friend.email ].sort();
       // overwrite the existing document with the new chat history object
       setDoc(doc(db, "chats", identifier), {
@@ -125,10 +112,10 @@ function ChatRoom(props) {
 
 function ChatMessage(props) {
   // const { text, uid, id } = props.message;
-  const { text, uid } = props.message;
+  const { text, email } = props.message;
 
 
-  const messageClass = uid ? 'sent':'received';
+  const messageClass = email ? 'sent':'received';
 
   return (
     <div className={`message ${messageClass}`}>
