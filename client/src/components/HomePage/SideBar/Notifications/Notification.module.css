@@ -1,3 +1,18 @@
+/* notifications container  */
+
+.notificationsContainer {
+  overflow-y: auto;
+  height: 750px;
+}
+
+.header {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+/*  */
+
+
+/*  notification card  */
 .notificationCard {
   margin: 10px;
   border: 1px solid white;
@@ -15,3 +30,10 @@
   padding-bottom: 10px;
   font-size: 10px;
 }
+
+.senderDisplayName {
+  display: block;
+  align-items: flex-start;
+}
+
+/*  */

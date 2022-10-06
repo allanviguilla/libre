@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Notification from './Notification';
 import { connect } from 'react-redux';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
+import styles from './Notification.module.css';
+// import { StylesProvider } from '@chakra-ui/react';
 
 const Notifications = (props) => {
   const { currUser } = props
@@ -14,13 +16,12 @@ const Notifications = (props) => {
       const dbRef = collection(db, 'notifications')
       const temp = [];
       const allDocs = await getDocs(dbRef)
-      allDocs.forEach((doc) => {
+      allDocs.forEach(async (doc) => {
         if (doc.data().status === 'awaiting' && currUser.email === doc.data().receiverEmail) {
           temp.push(doc.data())
         }
       })
       setDocs(temp);
-      console.log('temporary doc array : ', docs)
     }
     catch (err) {
       console.log('error : ', err)
@@ -33,13 +34,15 @@ const Notifications = (props) => {
 
 
   const mappedArray = docs.map((doc, i) => {
-    return <Notification key={i} document={doc} currUser={currUser} getAllDocs={getAllDocs}/>
+    return <Notification key={i} document={doc} currUser={currUser} getAllDocs={getAllDocs} />
   })
 
   return (
     <div>
-      <p>Notifications</p>
-      {mappedArray}
+      <p className={styles.header}>Notifications</p>
+      <div className={styles.notificationsContainer}>
+        {mappedArray}
+      </div>
     </div>
   )
 }
