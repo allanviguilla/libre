@@ -61,6 +61,10 @@ function ChatRoom(props) {
     })
   }, [])
 
+  // sendMessage retrieve the data of a specific chat room
+  // then replace it with the new data (new message stored in event)
+  // Input: e (event from sendMessage)
+  // Output: none
   const sendMessage = async(e: { preventDefault: () => void; target: { value: any; }[]; }) => {
     e.preventDefault();
     // get the chat identifier from the Chat component state
