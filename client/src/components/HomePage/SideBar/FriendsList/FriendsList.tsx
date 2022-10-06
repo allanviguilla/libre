@@ -15,14 +15,21 @@ const FriendsList = (props) => {
   const { currUser } = props;
 
   useEffect(() => {
-    const hold = [];
+    let hold = [];
     currUser.friends.map((friend, i) => {
       getDoc(doc(db, "users", friend))
         .then((res) => {
-          const friendRes = res.data();
-          const accessToken = getToken(friendRes.refreshToken);
-          const friend = {...friendRes}
-          friend.oauthAccessToken = accessToken;
+          const friend = res.data();
+          getToken(friend.refreshToken)
+            .then((res) => {
+              friend.oauthAccessToken = res;
+
+            })
+            hold.push(friend);
+            console.log(hold);
+            if (hold.length === currUser.friends.length) {
+              setFriends(hold)
+            }
 
         })
         .catch((err) => console.log(err))
@@ -40,11 +47,11 @@ const FriendsList = (props) => {
         </HStack>
       </div>
       <VStack>
-        {/* {
-          currUser.friends.map((friend) =>
+        {
+          friends.map((friend) =>
             <FriendEntry key={friend.displayName} friend={friend} />
           )
-        } */}
+        }
       </VStack>
     </div>
   )
