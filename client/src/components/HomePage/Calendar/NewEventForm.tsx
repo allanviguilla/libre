@@ -2,28 +2,16 @@ import React from "react";
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Stack,
-  HStack,
-  VStack,
-  Flex,
-  FormErrorMessage,
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
+  ModalBody, ModalCloseButton, FormControl, FormLabel, Input,
+  Button, Stack, HStack, VStack, Flex, FormErrorMessage,
 } from '@chakra-ui/react';
 import {
   doc, setDoc, addDoc, getDoc, collection, writeBatch
 } from "firebase/firestore";
 import { authentication, db } from '../../../../../configs/config';
 import styles from './Calendar.module.css';
+import { postEvent, getToken } from '../../Utilities/http.ts';
 import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
 import { addListener } from "process";
@@ -57,6 +45,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       })
     // save notifications into Firestore
     .then((docRef) => {
+      console.log(docRef);
       for (let i = 0; i < attendeesArray.length; i++) {
         addDoc(collection(db, "notifications"), {
           eventId: docRef.id,
@@ -68,6 +57,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         })
         // save event into each user's Google Calendar via API
         // and email them an update
+        const access_token = getToken(currUser.refresh_token);
 
       }
     })

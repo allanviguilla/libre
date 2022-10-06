@@ -2,6 +2,7 @@ import { DateRange } from "../HomePage/Calendar/Calendar";
 import axios from "axios";
 import { parseEvents } from "./parser";
 import { apiKey } from "../../../../configs/config";
+import { isDataView } from "util/types";
 const calAPI = 'https://www.googleapis.com/calendar/v3/calendars';
 
 export const getEvents = (email:string, dateRange:DateRange, token:string) => {
@@ -21,6 +22,30 @@ export const getEvents = (email:string, dateRange:DateRange, token:string) => {
   return axios.get(eventAPI, config)
     .then((res) => res.data.items)
     .catch((err) => console.log(err))
+}
+
+export const postEvent = (email: string, token: string, eventData: Object,) => {
+  const eventAPI = `${calAPI}/${email}/events`
+
+  // TO-DO: replace config with data for post request
+  // Get refresh token for hepner.thomas2@gmail.com
+  // test this in postman before doing it in axios
+  const config = {
+    params: {
+      orderBy: 'startTime',
+      singleEvents: true,
+      timeMin: dateRange.start,
+      timeMax: dateRange.end,
+    },
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  return axios.post(eventAPI, config)
+    .then((res) => console.log("event added successfully!"))
+    .catch((err) => console.log(error))
+
 }
 
 const tokenAPI = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;
