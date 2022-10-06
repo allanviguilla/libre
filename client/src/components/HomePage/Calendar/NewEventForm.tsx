@@ -46,7 +46,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     const { attendees, startTime, endTime, location, description } = values;
     const attendeesArray = attendees.split(',')
 
-    // save calendar event into database
+    // save calendar event into Firestore
     addDoc(collection(db, "events"), {
         hostEmail: currUser.email,
         attendeesArray,
@@ -55,8 +55,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         location,
         description,
       })
-
-    // save notifications
+    // save notifications into Firestore
     .then((docRef) => {
       for (let i = 0; i < attendeesArray.length; i++) {
         addDoc(collection(db, "notifications"), {
@@ -67,6 +66,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
           type: 'event-invitation',
           status: 'awaiting',
         })
+        // save event into each user's Google Calendar via API
+        // and email them an update
+
       }
     })
     .then(() => {
