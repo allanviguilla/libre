@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
 import styles from './Notification.module.css';
-// import { StylesProvider } from '@chakra-ui/react';
 
 const Notifications = (props) => {
   const { currUser } = props
