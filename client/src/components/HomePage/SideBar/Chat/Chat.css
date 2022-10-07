@@ -9,7 +9,7 @@
   width: auto;
   border: solid 1px #EEE;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   padding: 5px;
 	overflow:scroll;
 	height: 65vh !important;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import './Chat.css';
 
@@ -26,46 +26,11 @@ let chatLength = 0;
 
 function Chat(props) {
   const {friend, currUser} = props;
-  setCurrUserEmail(currUser.email);
-  return (
-    <div id="chat">
-      {/* <h1>JAMES</h1> */}
-      <ChatRoom friend={friend} currUser={currUser} />
-    </div>
-  )
-}
-
-function ChatRoom(props) {
-  const {friend, currUser} = props;
   const identifier = [currUser.email, friend.email].sort().join('-');
   const [messages, setMessages] = useState([]);
   const [formValue, setFormValue] = useState('');
 
-  useEffect(() => {
-    // 1. look up chat history for the DM between two friends
-    getDoc(doc(db, "chats", identifier))
-      .then((chatData: any) => {
-        // 2. update the current chat
-        const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
-        setMessages(chatHistory);
-        // update the chat length
-        chatLength = chatHistory.length;
-        const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
-        setDoc(doc(db, "chats", identifier), {
-          // members
-          members,
-          chatHistory,
-        })
-      })
-      // 3. create a new chat
-      .catch(() => {
-        const members = [currUser.email, friend.email ].sort();
-        setDoc(doc(db, "chats", identifier), {
-          // members
-          members,
-        })
-      })
-  }, [messages]);
+  setCurrUserEmail(currUser.email);
 
   // sendMessage retrieve the data of a specific chat room
   // then replace it with the new data (new message stored in event)
@@ -97,7 +62,54 @@ function ChatRoom(props) {
           chatHistory,
         })
       })
+
   }
+
+  return (
+    <div id="chat">
+      {/* <h1>JAMES</h1> */}
+      <ChatRoom friend={friend} currUser={currUser} message={messages}/>
+      <form onSubmit={sendMessage}>
+          <input value={formValue} onChange={(e) =>
+          setFormValue(e.target.value)}/>
+          <button type="submit">Send</button>
+        </form>
+    </div>
+  )
+}
+
+function ChatRoom(props) {
+  const {friend, currUser} = props;
+  const identifier = [currUser.email, friend.email].sort().join('-');
+  const [messages, setMessages] = useState(props.messages);
+
+  useEffect(() => {
+    // 1. look up chat history for the DM between two friends
+    getDoc(doc(db, "chats", identifier))
+      .then((chatData: any) => {
+        // 2. update the current chat
+        const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
+        setMessages(chatHistory);
+        // update the chat length
+        chatLength = chatHistory.length;
+        const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
+        setDoc(doc(db, "chats", identifier), {
+          // members
+          members,
+          chatHistory,
+        })
+      })
+      // 3. create a new chat
+      .catch(() => {
+        const members = [currUser.email, friend.email ].sort();
+        setDoc(doc(db, "chats", identifier), {
+          // members
+          members,
+        })
+      })
+  }, [messages]);
+
+
 
   return(
     <>
@@ -112,15 +124,11 @@ function ChatRoom(props) {
           }
           )}
         </div>
-        <form onSubmit={sendMessage}>
-          <input value={formValue} onChange={(e) =>
-          setFormValue(e.target.value)}/>
-          <button type="submit">Send</button>
-        </form>
       </div>
     </>
   )
 }
+
 
 function ChatMessage(props) {
   // const { text, uid, id } = props.message;
