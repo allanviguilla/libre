@@ -119,9 +119,9 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       })
 
       // save calendar event into user's Google Calendar
-      .then(() => {
-        return axios.post(url, requestBody, requestConfig);
-      })
+      // .then(() => {
+      //   return axios.post(url, requestBody, requestConfig);
+      // })
 
       .then(() => {
         onClose();
@@ -138,7 +138,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
   const [attendeesFormInput, setAttendeesFromInput] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const [value, setValue] = useState([]);
+  // const [value, setValue] = useState([]);
 
   let attendeesArr = [];
 
