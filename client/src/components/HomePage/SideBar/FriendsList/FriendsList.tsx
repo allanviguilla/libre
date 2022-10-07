@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react'
 import styles from './../Sidebar.module.css'
 import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
@@ -10,6 +10,9 @@ import { db } from '../../../../../../configs/config';
 const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
 
   const { currUser, setChatWith } = props;
 
@@ -27,8 +30,7 @@ const FriendsList = (props) => {
         })
         .catch((err) => console.log(err))
     })
-  }, [currUser])
-  console.log('friends', friends)
+  }, [currUser.friends])
 
   const handleSearch = (e) => {
     let searched = allFriends.filter(({ displayName }) => {
@@ -37,8 +39,6 @@ const FriendsList = (props) => {
 
     setFriends(searched);
   }
-
-  console.log('FRIENDS', friends);
 
   return (
     <div className={styles.friendsList}>
