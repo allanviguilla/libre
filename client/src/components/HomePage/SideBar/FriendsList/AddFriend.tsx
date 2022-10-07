@@ -48,7 +48,7 @@ const AddFriend = (props) => {
         </h2>
         <AccordionPanel pb={4}>
           <form onSubmit={(e) => handleSubmit(e)}>
-            Enter their email: <input id="add-email" type="email" required></input>
+            Enter their email: <input className={styles.inviteInput} id="add-email" type="email" required></input>
             <button className={styles.sendInvite} type="submit">Send Invite</button>
           </form>
         </AccordionPanel>

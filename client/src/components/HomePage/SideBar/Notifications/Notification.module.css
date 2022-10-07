@@ -1,13 +1,14 @@
 /* notifications container  */
 
-.notificationsContainer {
-  overflow-y: auto;
-  height: 750px;
+.notifContainer {
+  /* border: 3px solid yellow; */
+  /* height: 100vh;
+  overflow-y: scroll; */
 }
 
 .header {
+  /* border: 3px solid red; */
   font-size: 20px;
-  margin-bottom: 15px;
 }
 
 /*  */

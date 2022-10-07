@@ -3,6 +3,11 @@
   place-items: center; */
 }
 
+.inviteInput {
+  border-radius: 25px;
+  color: var(--color-dark);
+}
+
 .friendDiv {
   border: solid 1px white;
   padding: 2%;

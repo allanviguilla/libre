@@ -1,17 +1,24 @@
 .sidebar {
+  /* border: 3px solid green; */
   color: white;
   background-color: #252422;
   grid-area: sidebar;
-  text-align: center;
-  padding: 1rem;
-  overflow-y: scroll;
+  overflow: scroll;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  height: 100vh;
+  text-align: center;
+  padding: 1rem;
 }
 
 .sidebar::-webkit-scrollbar {
   display: none;
 }
+
+/* .sidebar::-webkit-scrollbar-thumb {
+  background-color: 'rgba(90, 90, 90, 1)';
+  border-radius: '4px';
+} */
 
 .checkboxRound {
   width: 1.3em;
