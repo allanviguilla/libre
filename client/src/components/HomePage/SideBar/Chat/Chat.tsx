@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { connect } from 'react-redux';
 
 
@@ -20,11 +20,15 @@ import { doc, setDoc, updateDoc, getFirestore, collection, addDoc, deleteDoc, de
 const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
-const Chat = (props) => {
+let currUserEmail = '';
+
+function Chat(props) {
   const {friend, currUser} = props;
+  setCurrUserEmail(currUser.email);
   return (
     <div id="chat">
-      <ChatRoom friend={friend} currUser={currUser}/>
+      {/* <h1>JAMES</h1> */}
+      <ChatRoom friend={friend} currUser={currUser} />
     </div>
   )
 }
@@ -33,11 +37,7 @@ function ChatRoom(props) {
   const {friend, currUser} = props;
   const identifier = [currUser.email, friend.email].sort().join('-');
   const [messages, setMessages] = useState([]);
-  // collect the data
   const [formValue, setFormValue] = useState('');
-
-  let chatRef = firebase.database().ref('chats/' + identifier).limitToLast(10);
-  let chatData = null;
 
   useEffect(() => {
     // 1. look up chat history for the DM between two friends
@@ -102,7 +102,6 @@ function ChatRoom(props) {
           return <ChatMessage
           key={index}
           message={msg}
-          currUserEmail={currUser.email}
           />
           }
           )}
@@ -119,16 +118,25 @@ function ChatRoom(props) {
 
 function ChatMessage(props) {
   // const { text, uid, id } = props.message;
-  const { text, email, currUserEmail } = props.message;
+  const { text, email } = props.message;
 
+  const currUserEmail = getCurrUserEmail();
 
   const messageClass = email === currUserEmail ? 'sent':'received';
 
   return (
-    <div className={`message ${messageClass}`}>
+    <div className={`messages ${messageClass}`}>
       <p>{text}</p>
     </div>
   )
+}
+
+function setCurrUserEmail(data) {
+  currUserEmail = data;
+}
+
+function getCurrUserEmail() {
+  return currUserEmail;
 }
 
 const getTimeStamp = () => {
