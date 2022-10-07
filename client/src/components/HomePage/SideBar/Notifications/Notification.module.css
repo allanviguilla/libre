@@ -16,14 +16,23 @@
 /*  notification card  */
 
 .notificationCard {
+  display: flex;
+  flex-direction: column;
+  /* background-image: linear-gradient(to bottom right, #ccc5b9 , #fffcf2); */
   margin: 10px;
   border: 1px solid white;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
-.notificationText {
+.notificationHeader {
+  display: flex;
   font-size: 15px;
   padding: 20px;
+  gap: 10px;
+}
+
+.notificationHeaderText {
+  justify-content: flex-start;
 }
 
 .notificationButtons {
@@ -35,7 +44,11 @@
 
 .senderDisplayName {
   display: block;
-  align-items: flex-start;
+  text-align: left;
 }
 
+.divider {
+  margin-bottom: 10px;
+  border-top: 0.1px solid #bbb;
+}
 /*  */
