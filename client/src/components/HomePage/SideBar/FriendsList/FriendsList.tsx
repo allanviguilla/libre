@@ -55,7 +55,7 @@ const FriendsList = (props) => {
     <div className={styles.friendsList}>
       <div className={styles.spacer}></div>
       <div className={styles.friendsListNav}>
-        <button className={styles.button}>Add Friend +</button>
+        <AddFriend />
           <span className={styles.search}>
             <input
               className={styles.input}
