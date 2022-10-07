@@ -36,6 +36,13 @@ const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) 
           updateDoc(userRef, { friends: friends })
         })
         .catch(err => console.log(err))
+      const senderRef = doc(db, 'users', senderEmail)
+      getDoc(senderRef)
+        .then((userData: any) => {
+          const friends = userData.data().friends.slice()
+          friends.push(currUser.email)
+          updateDoc(senderRef, { friends: friends })
+        })
     }
 
     if (type === 'event-invitation') {

@@ -68,6 +68,7 @@ const Notifications = (props) => {
     }
   };
 
+  // doc is a single notification
   const mappedArray = docs.map((doc, i) => {
     // console.log(doc, "DOC");
     let currPhoto;
@@ -76,13 +77,13 @@ const Notifications = (props) => {
         currPhoto = userDocs[i].photoUrl;
       }
     }
-    let currEvent;
-    for (let j = 0; j < events.length; j++) {
-      if (doc.eventId === events[i].id) {
-        currEvent = events[i];
-        // console.log('currEvent' currEvent)
-      }
-    }
+    // let currEvent;
+    // for (let j = 0; j < events.length; j++) {
+    //   if (doc.eventId === events[i].id) {
+    //     currEvent = events[i];
+    //     console.log('currEvent' currEvent)
+    //   }
+    // }
 
     return (
       <Notification
@@ -91,7 +92,7 @@ const Notifications = (props) => {
         currUser={currUser}
         getAllDocs={getAllDocs}
         currPhoto={currPhoto}
-        currEvent={currEvent}
+        // currEvent={currEvent}
       />
     );
   });
