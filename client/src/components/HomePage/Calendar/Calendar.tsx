@@ -16,7 +16,6 @@ import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
 import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
-import events from 'events';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../configs/config';
 
@@ -53,6 +52,8 @@ const Calendar = (props) => {
 
   const { currUser, attendees } = props;
 
+  const [calendarDisplayName, setCalendarDisplayName] = useState('');
+
   useEffect(() => {
     if (state.dateRange.start && currUser) {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
@@ -80,18 +81,19 @@ const Calendar = (props) => {
           })
         })
     }
+
+    const nameArr = currUser.displayName.split(' ');
+    setCalendarDisplayName(nameArr[0]);
   }, [state.dateRange])
 
   useEffect(() => {
     let friendEvents = attendees.map(({ events }) => events);
-    console.log('FRIEND EVENTS', friendEvents);
     setInverseBg(currUser.events)
   }, [attendees])
 
-    console.log('CURR USER EVENTS', currUser.events)
   return (
     <div className={styles.calendar} id="calendar">
-      <h2>CALENDAR HERE</h2>
+      <h2 className={styles.displayName}>{calendarDisplayName}'s Calendar</h2>
       <div className={styles.calendarMain}>
         <NewEventForm isOpen={isFormOpen} onClose={onFormClose}/>
         <EventDetails detail={state.clicked} isOpen={isDetailOpen} onClose={onDetailClose}/>

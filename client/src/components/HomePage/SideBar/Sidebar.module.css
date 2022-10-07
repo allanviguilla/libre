@@ -4,6 +4,13 @@
   grid-area: sidebar;
   text-align: center;
   padding: 1rem;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .checkboxRound {
@@ -44,7 +51,6 @@
 
 .friendsItems {
   /* border: 4px solid blue; */
-  overflow-y: scroll;
 }
 
 .input {

@@ -6,15 +6,12 @@ import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
-import { getEvents, getToken } from '../../../Utilities/http';
-import { addAttendee, removeAttendee } from '../../../../redux/actions/attendees'
 
 const FriendsList = (props) => {
+  const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
 
-  const { currUser, attendees, addAttendee, removeAttendee } = props;
-
-  console.log(attendees)
+  const { currUser } = props;
 
   useEffect(() => {
     let hold = [];
@@ -24,12 +21,23 @@ const FriendsList = (props) => {
           const friend = res.data();
           hold.push(friend);
           if (hold.length === currUser.friends.length) {
-            setFriends(hold)
+            setAllFriends(hold);
+            setFriends(hold);
           }
         })
         .catch((err) => console.log(err))
     })
   }, [currUser])
+
+  const handleSearch = (e) => {
+    let searched = allFriends.filter(({ displayName }) => {
+      return displayName.toLowerCase().includes(e.target.value)
+    })
+
+    setFriends(searched);
+  }
+
+  console.log('FRIENDS', friends);
 
   return (
     <div className={styles.friendsList}>
@@ -37,16 +45,24 @@ const FriendsList = (props) => {
       <div className={styles.friendsListNav}>
             <button className={styles.button}>Add Friend +</button>
                 <span className={styles.search}>
-                  <input className={styles.input} type="text" placeholder='Search friends list ...' ></input>&nbsp;
+                  <input
+                    className={styles.input}
+                    onChange={(e) => handleSearch(e)}
+                    type="text"
+                    placeholder='Search friends list ...'
+                  ></input>&nbsp;
                   <BsSearch size={20}/>
                 </span>
               <h2 className={styles.h2}>My Friends</h2>
           </div>
           <VStack className={styles.friendsItems}>
             {
-              friends.map((friend) =>
-                <FriendEntry key={friend.displayName} friend={friend} />
-              )
+              allFriends.length === 0 ? <p>No friends yet.</p> :
+                friends.length ?
+                friends.map((friend) =>
+                  <FriendEntry key={friend.displayName} friend={friend} />
+                )
+                : <p>No friends match your search criteria ... {`:(`}</p>
             }
           </VStack>
     </div>
