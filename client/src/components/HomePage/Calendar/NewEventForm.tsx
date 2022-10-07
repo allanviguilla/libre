@@ -61,8 +61,10 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
     });
 
     // const attendeesArray = attendees.split(',');
-    startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
-    endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
+    // startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
+    // endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
+    startTime = startTime.toString() + ':00'
+    endTime = endTime.toString() + ':00'
 
     // console.log("selected options... ", Object.values(selectedOptions));
     // console.log('attendees array... ', attendeesArray);
