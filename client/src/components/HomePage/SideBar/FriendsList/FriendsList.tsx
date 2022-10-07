@@ -33,21 +33,22 @@ const FriendsList = (props) => {
 
   return (
     <div className={styles.friendsList}>
-      <div className={styles.friendListHeader}>
-        <h2 className={styles.h2}>My Friends</h2>
-        <button className={styles.button}>Add Friend +</button>
-        <HStack>
-          <input className={styles.input} type="text" placeholder='Search friends list ...' ></input>
-          <BsSearch size={20}/>
-        </HStack>
-      </div>
-      <VStack className={styles.friendsItems}>
-        {
-          friends.map((friend) =>
-            <FriendEntry key={friend.displayName} friend={friend} />
-          )
-        }
-      </VStack>
+      <div className={styles.spacer}></div>
+      <div className={styles.friendsListNav}>
+            <button className={styles.button}>Add Friend +</button>
+                <span className={styles.search}>
+                  <input className={styles.input} type="text" placeholder='Search friends list ...' ></input>&nbsp;
+                  <BsSearch size={20}/>
+                </span>
+              <h2 className={styles.h2}>My Friends</h2>
+          </div>
+          <VStack className={styles.friendsItems}>
+            {
+              friends.map((friend) =>
+                <FriendEntry key={friend.displayName} friend={friend} />
+              )
+            }
+          </VStack>
     </div>
   )
 }
