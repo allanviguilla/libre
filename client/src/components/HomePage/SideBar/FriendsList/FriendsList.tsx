@@ -41,24 +41,30 @@ const FriendsList = (props) => {
 
   return (
     <div className={styles.friendsList}>
-      <div className={styles.friendListHeader}>
-        <h2>FriendsList</h2>
-        <button>Add Friend</button>
-        <HStack>
-          <input onChange={(e) => handleSearch(e)} type="text" placeholder='Search friends list ...' ></input>
-          <BsSearch size={20} />
-        </HStack>
-      </div>
-      <VStack>
-        {
-          allFriends.length === 0 ? <p>No friends yet ...</p> :
-            friends.length ?
-            friends.map((friend) =>
-              <FriendEntry key={friend.displayName} friend={friend} />
-            )
-            : <p>No friends match your search criteria ... {`:(`}</p>
-        }
-      </VStack>
+      <div className={styles.spacer}></div>
+      <div className={styles.friendsListNav}>
+            <button className={styles.button}>Add Friend +</button>
+                <span className={styles.search}>
+                  <input
+                    className={styles.input}
+                    onChange={(e) => handleSearch(e)}
+                    type="text"
+                    placeholder='Search friends list ...'
+                  ></input>&nbsp;
+                  <BsSearch size={20}/>
+                </span>
+              <h2 className={styles.h2}>My Friends</h2>
+          </div>
+          <VStack className={styles.friendsItems}>
+            {
+              allFriends.length === 0 ? <p>No friends yet.</p> :
+                friends.length ?
+                friends.map((friend) =>
+                  <FriendEntry key={friend.displayName} friend={friend} />
+                )
+                : <p>No friends match your search criteria ... {`:(`}</p>
+            }
+          </VStack>
     </div>
   )
 }

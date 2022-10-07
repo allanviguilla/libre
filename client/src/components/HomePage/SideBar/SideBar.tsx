@@ -21,7 +21,6 @@ const SideBar = (props) => {
               sideBar === 'account' ?
                 <h2>account</h2> : null
       }
-
     </div>
   )
 }

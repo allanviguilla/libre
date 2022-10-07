@@ -26,38 +26,42 @@ const Menu = (props) => {
 
   return (
     <div className={styles.menu} id="menu">
-      <Profile currUser={currUser} />
-      <br />
-      <List spacing={3} >
-        <ListItem>
-          <ListIcon as={BsCalendar3} />
-          <Link>Your Calendar</Link>
-        </ListItem>
-        <ListItem onClick={(e)=>{changeSideBar(e, 'friends')}}>
-          <ListIcon as={FiUsers} />
-          <Link>Friends</Link>
-        </ListItem>
-        <ListItem onClick={(e)=>{changeSideBar(e, 'groups')}}>
-          <ListIcon as={HiOutlineUserGroup} />
-          <Link>Groups</Link>
-        </ListItem>
-        <ListItem onClick={(e)=>{changeSideBar(e, 'chats')}}>
-          <ListIcon as={BsChatDots} />
-          <Link>Chats</Link>
-        </ListItem>
-        <ListItem onClick={(e)=>{changeSideBar(e, 'notifications')}}>
-          <ListIcon  as={IoNotificationsOutline} />
-          <Link>Notifications</Link>
-        </ListItem>
-        <ListItem onClick={(e)=>{changeSideBar(e, 'account')}}>
-          <ListIcon  as={IoSettingsOutline} />
-          <Link>Account</Link>
-        </ListItem>
-        <ListItem onClick={handleLogout}>
-          <ListIcon as={BiLogOut} />
-          <Link>Logout</Link>
-        </ListItem>
-      </List>
+      <div className={styles.spacer}></div>
+      <div className={styles.profile}>
+        <Profile currUser={currUser} />
+      </div>
+      <div className={styles.listContainer}>
+        <List spacing={3} >
+          <ListItem>
+            <ListIcon as={BsCalendar3} />
+            <Link>Your Calendar</Link>
+          </ListItem>
+          <ListItem onClick={(e)=>{changeSideBar(e, 'friends')}}>
+            <ListIcon as={FiUsers} />
+            <Link>Friends</Link>
+          </ListItem>
+          <ListItem onClick={(e)=>{changeSideBar(e, 'groups')}}>
+            <ListIcon as={HiOutlineUserGroup} />
+            <Link>Groups</Link>
+          </ListItem>
+          <ListItem onClick={(e)=>{changeSideBar(e, 'chats')}}>
+            <ListIcon as={BsChatDots} />
+            <Link>Chats</Link>
+          </ListItem>
+          <ListItem onClick={(e)=>{changeSideBar(e, 'notifications')}}>
+            <ListIcon  as={IoNotificationsOutline} />
+            <Link>Notifications</Link>
+          </ListItem>
+          <ListItem onClick={(e)=>{changeSideBar(e, 'account')}}>
+            <ListIcon  as={IoSettingsOutline} />
+            <Link>Account</Link>
+          </ListItem>
+          <ListItem onClick={handleLogout}>
+            <ListIcon as={BiLogOut} />
+            <Link>Logout</Link>
+          </ListItem>
+        </List>
+      </div>
     </div>
   )
 }
