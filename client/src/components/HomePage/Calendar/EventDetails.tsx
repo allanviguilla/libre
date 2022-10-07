@@ -41,7 +41,10 @@ interface Props {
 
 const EventDetails = ({ detail, isOpen, onClose }) => {
   const { attendees } = detail.extendedProps
+  const{start} = detail
   const [attendeesAvatar, setAttendeesAvatar] = useState({})
+
+  // console.log(detail)
 
   useEffect(() => {
     const getAttendeesAvatar = async () => {
