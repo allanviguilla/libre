@@ -14,8 +14,6 @@ const FriendsList = (props) => {
 
   const { currUser, attendees, addAttendee, removeAttendee } = props;
 
-  console.log(attendees)
-
   useEffect(() => {
     let hold = [];
     currUser.friends.map((friend, i) => {

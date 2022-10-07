@@ -27,8 +27,6 @@ export interface DateRange {
 
 const initialState = {
   dateRange: {start: null, end: null},
-  ownEvents: [],
-  friendEvents: {},
   currEvents: [],
   clicked: {
     title: null,
@@ -58,25 +56,23 @@ const Calendar = (props) => {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
-          let filtered = filterDupEvents(parsed, currUser.events)
+          let combo = parsed.concat(currUser.events)
+          let filtered = filterDupEvents(combo)
           currUser.events = filtered;
 
           if (attendees.length) {
             let friendEvents = attendees.map(({ events }) => events);
             let inverse = setInverseBg(friendEvents);
-            let combined = inverse.concat(currUser.events);
-            let filteredCombined = filterDupEvents(inverse, currUser.events)
+            let filterBg = filterDupEvents(inverse);
+            let combo = filterBg.concat(currUser.events)
 
             setState({
-              ownEvents: parsed,
-              friendEvents: filteredCombined,
-              currEvents:  filteredCombined
+              currEvents: combo
             })
           }
            else {
             setState({
-            ownEvents: parsed,
-            currEvents: parsed
+              currEvents: filtered
             })
           }
 
@@ -95,7 +91,7 @@ const Calendar = (props) => {
   //   })
   // }, [attendees])
 
-  console.log('CURR USER EVENTS', state.currEvents);
+  // console.log('CURR EVENTS', state.currEvents);
 
   return (
     <div className={styles.calendar} id="calendar">

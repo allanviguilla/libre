@@ -30,7 +30,6 @@ export const parseInfo = (info) => {
 }
 
 export const setInverseBg = (eventList) => {
-  console.log('FRIENDS EVENTS', eventList)
   let aggList = [];
   eventList.forEach((events) => {
       let agg = events.map((event) => {
@@ -47,12 +46,10 @@ export const setInverseBg = (eventList) => {
   return aggList;
 }
 
-export const filterDupEvents = (currEvents, newEvents) => {
-  let combined = currEvents.concat(newEvents);
-
+export const filterDupEvents = (events) => {
   const uniqueEvents = [];
 
-  const unique = combined.filter(event => {
+  const unique = events.filter(event => {
     const isDuplicate = uniqueEvents.includes(event.id);
     if (!isDuplicate) {
       uniqueEvents.push(event.id);
