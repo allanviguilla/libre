@@ -28,6 +28,12 @@ export const parseInfo = (info) => {
   return parsed;
 }
 
+export const setInverseBg = (events) => {
+  let agg = events.map((event) => {
+    return {...event, display: 'inverse-background' }
+  })
+  return agg;
+}
 
 export interface ParsedEvent {
   title: string;

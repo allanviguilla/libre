@@ -6,16 +6,19 @@ import { EventApi, DateSelectArg, EventClickArg, EventContentArg, formatDate } f
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import moment from "moment";
+
 import { connect } from 'react-redux';
 
 import { useDisclosure } from '@chakra-ui/react'
-
+import _ from 'underscore';
 import styles from './Calendar.module.css';
 import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
-import { ParsedEvent, parseEvents, parseInfo } from '../../Utilities/parser';
+import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
+import events from 'events';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from '../../../../../configs/config';
 
 export interface DateRange {
   start: string | null,
@@ -24,9 +27,8 @@ export interface DateRange {
 
 const initialState = {
   dateRange: {start: null, end: null},
-  googleEvents: [],
-  bgEvents: [],
-  libreEvents: [],
+  ownEvents: [],
+  friendEvents: {},
   currEvents: [],
   clicked: {
     title: null,
@@ -39,8 +41,7 @@ const initialState = {
       description: null,
     },
     color: null
-  },
-  friend: false
+  }
 }
 
 const Calendar = (props) => {
@@ -50,7 +51,7 @@ const Calendar = (props) => {
   const [state, setState] = useReducer((state, newState) => ({...state, ...newState}),
   initialState);
 
-  const { currUser } = props;
+  const { currUser, attendees } = props;
 
   const [calendarDisplayName, setCalendarDisplayName] = useState('');
 
@@ -59,8 +60,12 @@ const Calendar = (props) => {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
+          currUser.events = _.uniq(currUser.events.concat(parsed));
+
+          setDoc(doc(db, "users", currUser.email), currUser)
+
           setState({
-            googleEvents: parsed,
+            ownEvents: parsed,
             currEvents: parsed
           })
         })
@@ -69,6 +74,11 @@ const Calendar = (props) => {
     const nameArr = currUser.displayName.split(' ');
     setCalendarDisplayName(nameArr[0]);
   }, [state.dateRange])
+
+  useEffect(() => {
+    let friendEvents = attendees.map(({ events }) => events);
+    console.log('FRIEND EVENTS', friendEvents);
+  }, [attendees])
 
   return (
     <div className={styles.calendar} id="calendar">
@@ -110,9 +120,10 @@ const Calendar = (props) => {
 }
 
 function mapStatetoProps(state) {
-  const { currUser } = state;
-  return { currUser };
+  const { currUser, attendees } = state;
+  return { currUser, attendees };
 };
+
 
 const mapDispatchToProps = {};
 
