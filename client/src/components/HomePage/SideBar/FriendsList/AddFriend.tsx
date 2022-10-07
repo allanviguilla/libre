@@ -17,7 +17,6 @@ interface Props {
 const AddFriend:React.FC<Props> = ({ isOpen, onClose }) => {
   return (
     <div>
-      add friend form
       <Drawer isOpen={isOpen} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
@@ -25,14 +24,8 @@ const AddFriend:React.FC<Props> = ({ isOpen, onClose }) => {
           <DrawerHeader>Add Friend</DrawerHeader>
 
           <DrawerBody>
-            <form
-              id='my-form'
-              onSubmit={(e) => {
-                e.preventDefault()
-                console.log('submitted')
-              }}
-            >
-
+            <form id='new-friend-form'>
+              Search by email : <input type="email"></input>
             </form>
           </DrawerBody>
 
