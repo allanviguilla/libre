@@ -3,6 +3,7 @@ import { getEvents } from '../../../Utilities/http';
 import { ParsedEvent, parseEvents, parseInfo } from '../../../Utilities/parser';
 import { Text, Box } from '@chakra-ui/react'
 import EventCard from './EventCard'
+import style from './EventCards.module.css'
 
 export default (props) => {
   const { currUser } = props
@@ -34,7 +35,18 @@ export default (props) => {
           <Text fontSize='xl' my={5}>
             Today's Upcoming Events
           </Text>
-          <Box overflowY="scroll" maxHeight="630px">
+          <Box overflowY="scroll" maxHeight="400px"
+            sx={{
+              '&::-webkit-scrollbar': {
+                width: '8px',
+                borderRadius: '4px',
+                backgroundColor: `rgba(0, 0, 0, 0)`,
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: `rgba(90, 90, 90, 1)`,
+                borderRadius: '4px',
+              },
+            }}>
             {events.map((event, index) => (<EventCard key={index} event={event} />))}
           </Box>
         </Fragment>
