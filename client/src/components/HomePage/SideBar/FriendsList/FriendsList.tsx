@@ -11,11 +11,7 @@ const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
 
-<<<<<<< HEAD
-  const { currUser, attendees, addAttendee, removeAttendee } = props;
-=======
   const { currUser } = props;
->>>>>>> main
 
   useEffect(() => {
     let hold = [];
