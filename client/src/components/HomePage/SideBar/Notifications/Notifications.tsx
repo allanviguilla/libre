@@ -19,7 +19,7 @@ const Notifications = (props) => {
       allDocs.forEach(async (doc) => {
         if (
           doc.data().status === "awaiting" &&
-          currUser.email === doc.data().receiverEmail.email
+          (currUser.email === doc.data().receiverEmail || currUser.email === doc.data().receiverEmail.email)
         ) {
           let docData = doc.data();
           docData["id"] = doc.id;
