@@ -41,7 +41,6 @@ const AddFriend = (props) => {
             <Box flex='1' textAlign='left'>
               Add Friend
             </Box>
-            <AccordionIcon />
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
