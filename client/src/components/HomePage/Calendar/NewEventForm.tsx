@@ -60,6 +60,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     const attendeesArray = Object.values(selectedOptions);
     // const attendeesArray = attendees.split(',');
 
+    console.log('currUser.email... ', currUser.email);
     console.log('attendeesArray at position 0... ', attendeesArray[0].value);
     console.log('attendees array... ', attendeesArray);
     console.log('startTime... ', startTime);
@@ -198,11 +199,10 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                   Attendees *
                 </FormLabel>
                 <FormLabel htmlFor='attendees-avatars'>
-                {/* -- Attendee Avatars {friends.displayName} {friends.photoUrl} -- */}
                 <AvatarGroup size='md' max={2}>
                     {
-                      friends.map((friend) =>
-                        <Avatar name={friend.displayName} src={friend.photoUrl} />
+                      friends.map((friend, index) =>
+                        <Avatar name={friend.displayName} src={friend.photoUrl} key={index}/>
                       )
                     }
                   </AvatarGroup>
@@ -210,9 +210,6 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 <Select
                   isMulti
                   id="attendees"
-                  // {...register('attendees', {
-                  //   required: 'This is required',
-                  // })}
                   onChange={setSelectedOptions}
                   options={attendeesFormInput}
                   placeholder="Invite your friends."
