@@ -56,20 +56,19 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
 
   function onSubmit(values) {
 
-    let { startTime, endTime, location, description } = values;
-    const attendeesArray = Object.values(selectedOptions);
+    let { startTime, endTime, location, description, name } = values;
+    let attendeesArray = Object.values(selectedOptions).map((attendee) => {
+      return attendee.value;
+    });
+    attendeesArray.push(currUser.email);
+    attendeesArray.push('hepner.thomas@gmail.com');
+
     // const attendeesArray = attendees.split(',');
-
-    console.log('currUser.email... ', currUser.email);
-    console.log('attendeesArray at position 0... ', attendeesArray[0].value);
-    console.log('attendees array... ', attendeesArray);
-    console.log('startTime... ', startTime);
-    console.log('endTime... ', endTime);
-    console.log('location... ', location);
-    console.log('description... ', description);
-
     startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
     endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
+
+    console.log("selected options... ", Object.values(selectedOptions));
+    console.log('attendees array... ', attendeesArray);
 
     const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
 
@@ -109,7 +108,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         for (let i = 0; i < attendeesArray.length; i++) {
           addDoc(collection(db, "notifications"), {
             eventId: docRef.id,
-            receiverEmail: attendeesArray[i].value,
+            receiverEmail: attendeesArray[i],
             senderDisplayName: currUser.displayName,
             senderEmail: currUser.email,
             type: 'event-invitation',
@@ -117,12 +116,10 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
           })
         }
       })
-
       // save calendar event into user's Google Calendar
-      // .then(() => {
-      //   return axios.post(url, requestBody, requestConfig);
-      // })
-
+      .then(() => {
+        return axios.post(url, requestBody, requestConfig);
+      })
       .then(() => {
         onClose();
         alert("Your event has been created!");
@@ -157,7 +154,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
               friend.oauthAccessToken = res;
             })
           hold.push(friend);
-          console.log(hold);
+          // console.log(hold);
           if (hold.length === currUser.friends.length) {
             setFriends(hold)
           }
@@ -165,7 +162,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         .catch((err) => console.log(err))
     })
     setAttendeesFromInput(attendeesArr);
-    console.log('attendeesArr....', attendeesArr);
+    // console.log('attendeesArr....', attendeesArr);
   }, [currUser]);
 
   return (

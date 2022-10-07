@@ -89,11 +89,11 @@ const Calendar = (props) => {
 
   useEffect(() => {
     let friendEvents = attendees.map(({ events }) => events);
-    console.log('FRIEND EVENTS', friendEvents);
+    // console.log('FRIEND EVENTS', friendEvents);
     setInverseBg(currUser.events)
   }, [attendees])
 
-    console.log('CURR USER EVENTS', currUser.events)
+    // console.log('CURR USER EVENTS', currUser.events)
   return (
     <div className={styles.calendar} id="calendar">
       <h2 className={styles.displayName}>{calendarDisplayName}'s Calendar</h2>
