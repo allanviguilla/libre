@@ -35,7 +35,7 @@ const FriendsList = (props) => {
         .catch((err) => console.log(err))
     })
 
-    var ref = firebase.database().ref("notification");
+    var ref = firebase.database().ref("users");
     firebase.database().ref().on('value', function(snapshot) {
       const data = snapshot.val();
       console.log('FIREBASE', data);
