@@ -24,29 +24,29 @@ export const getEvents = (email:string, dateRange:DateRange, token:string) => {
     .catch((err) => console.log(err))
 }
 
-export const postEvent = (email: string, token: string, eventData: Object,) => {
-  const eventAPI = `${calAPI}/${email}/events`
+// export const postEvent = () => {
+//   const eventAPI = `${calAPI}/${email}/events`
 
-  // TO-DO: replace config with data for post request
-  // Get refresh token for hepner.thomas2@gmail.com
-  // test this in postman before doing it in axios
-  const config = {
-    params: {
-      orderBy: 'startTime',
-      singleEvents: true,
-      timeMin: dateRange.start,
-      timeMax: dateRange.end,
-    },
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  };
+//   // TO-DO: replace config with data for post request
+//   // Get refresh token for hepner.thomas2@gmail.com
+//   // test this in postman before doing it in axios
+//   const config = {
+//     params: {
+//       orderBy: 'startTime',
+//       singleEvents: true,
+//       timeMin: dateRange.start,
+//       timeMax: dateRange.end,
+//     },
+//     headers: {
+//       'Authorization': `Bearer ${token}`
+//     }
+//   };
 
-  return axios.post(eventAPI, config)
-    .then((res) => console.log("event added successfully!"))
-    .catch((err) => console.log(error))
+//   return axios.post(eventAPI, config)
+//     .then((res) => console.log("event added successfully!"))
+//     .catch((err) => console.log(error))
 
-}
+// }
 
 const { apiKey } = config;
 const tokenAPI = `https://securetoken.googleapis.com/v1/token?key=${apiKey}`;

@@ -1,18 +1,29 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { OAuth2Client } from 'google-auth-library';
 import { useForm } from 'react-hook-form';
 import {
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter,
-  ModalBody, ModalCloseButton, FormControl, FormLabel, Input,
-  Button, Stack, HStack, VStack, Flex, FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Stack,
+  HStack,
+  VStack,
+  Flex,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import {
   doc, setDoc, addDoc, getDoc, collection, writeBatch
 } from "firebase/firestore";
 import { authentication, db } from '../../../../../configs/config';
 import styles from './Calendar.module.css';
-// import { postEvent } from '../../Utilities/http.ts';
 import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
 import { addListener } from "process";
@@ -63,53 +74,43 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       }
     };
 
-
-    // save calendar event into Firestore
-    console.log("1");
+    // save calendar event into database
     addDoc(collection(db, "events"), {
-      hostEmail: currUser.email,
-      attendeesArray,
-      startTime,
-      endTime,
-      location,
-      description,
-    })
+        hostEmail: currUser.email,
+        attendeesArray,
+        startTime,
+        endTime,
+        location,
+        description,
+      })
+      .then((docRef) => {
+        for (let i = 0; i < attendeesArray.length; i++) {
+          addDoc(collection(db, "notifications"), {
+            eventId: docRef.id,
+            receiverEmail: attendeesArray[i],
+            senderDisplayName: currUser.displayName,
+            senderEmail: currUser.email,
+            type: 'event-invitation',
+            status: 'awaiting',
+          })
+        }
+      })
 
-    // save notifications into Firestore
-    .then((docRef) => {
-      console.log("2");
-      console.log(docRef);
-      for (let i = 0; i < attendeesArray.length; i++) {
-        addDoc(collection(db, "notifications"), {
-          eventId: docRef.id,
-          receiverEmail: attendeesArray[i],
-          senderDisplayName: currUser.displayName,
-          senderEmail: currUser.email,
-          type: 'event-invitation',
-          status: 'awaiting',
-        })
-      }
-    })
+      // save calendar event into user's Google Calendar
+      .then(() => {
+        return axios.post(url, requestBody, requestConfig);
+      })
 
-    // save calendar event into user's Google Calendar
-    .then(() => {
-      console.log("3");
-      return axios.post(url, requestBody, requestConfig);
-    })
+      .then(() => {
+        onClose();
+        alert("Your event has been created!");
+      })
+      .catch((error) => {
+        onClose();
+        alert("Your event was not created - please try again!");
+      })
 
-    .then(() => {
-      console.log("4");
-      onClose();
-      alert("Your event has been created!");
-    })
-
-    .catch((error) => {
-      onClose();
-      console.log(error);
-      alert("Your event was not created - please try again!");
-    })
   }
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
