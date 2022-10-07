@@ -42,7 +42,6 @@ export const setInverseBg = (eventList) => {
     aggList = aggList.concat(agg)
   })
 
-  console.log('TRANSFORMED', aggList[0])
   return aggList;
 }
 
