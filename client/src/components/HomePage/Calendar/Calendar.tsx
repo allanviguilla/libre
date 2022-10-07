@@ -15,7 +15,7 @@ import styles from './Calendar.module.css';
 import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
-import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
+import { filterDupEvents, ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../configs/config';
 
@@ -26,8 +26,6 @@ export interface DateRange {
 
 const initialState = {
   dateRange: {start: null, end: null},
-  ownEvents: [],
-  friendEvents: {},
   currEvents: [],
   clicked: {
     title: null,
@@ -50,7 +48,7 @@ const Calendar = (props) => {
   const [state, setState] = useReducer((state, newState) => ({...state, ...newState}),
   initialState);
 
-  const { currUser, attendees } = props;
+  const { currUser, attendees, newEventCount } = props;
 
   const [calendarDisplayName, setCalendarDisplayName] = useState('');
 
@@ -59,37 +57,33 @@ const Calendar = (props) => {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
-          let combined = currUser.events.concat(parsed)
-          const uniqueEvents = [];
+          let combo = parsed.concat(currUser.events)
+          let filtered = filterDupEvents(combo)
+          currUser.events = filtered;
 
-          const unique = combined.filter(event => {
-            const isDuplicate = uniqueEvents.includes(event.id);
-            if (!isDuplicate) {
-              uniqueEvents.push(event.id);
-              return true;
-            }
-            return false;
-          });
+          if (attendees.length) {
+            let friendEvents = attendees.map(({ events }) => events);
+            let inverse = setInverseBg(friendEvents);
+            let filterBg = filterDupEvents(inverse);
+            let combo = filterBg.concat(currUser.events)
 
-          currUser.events = unique;
+            setState({
+              currEvents: combo
+            })
+          }
+           else {
+            setState({
+              currEvents: filtered
+            })
+          }
 
           setDoc(doc(db, "users", currUser.email), currUser)
-
-          setState({
-            ownEvents: parsed,
-            currEvents: parsed
-          })
         })
+        .catch(err => console.log(err));
     }
-
     const nameArr = currUser.displayName.split(' ');
     setCalendarDisplayName(nameArr[0]);
-  }, [state.dateRange])
-
-  useEffect(() => {
-    let friendEvents = attendees.map(({ events }) => events);
-    setInverseBg(currUser.events)
-  }, [attendees])
+  }, [state.dateRange, newEventCount, attendees])
 
   return (
     <div className={styles.calendar} id="calendar">
@@ -104,7 +98,7 @@ const Calendar = (props) => {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
-          initialView='dayGridMonth'
+          initialView='timeGridWeek'
           editable={true}
           selectable={true}
           selectMirror={true}
@@ -131,8 +125,8 @@ const Calendar = (props) => {
 }
 
 function mapStatetoProps(state) {
-  const { currUser, attendees } = state;
-  return { currUser, attendees };
+  const { currUser, attendees, newEventCount} = state;
+  return { currUser, attendees, newEventCount };
 };
 
 
