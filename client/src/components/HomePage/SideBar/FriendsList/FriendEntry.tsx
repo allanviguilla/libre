@@ -12,7 +12,7 @@ const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
 
   const [isChat, setIsChat] = useState(false);
-  const { friend, addAttendee, removeAttendee, toggleSideBar } = props;
+  const { friend, addAttendee, removeAttendee, toggleSideBar, setChatWith } = props;
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -36,7 +36,10 @@ const FriendEntry = (props) => {
               <p>bio here </p>
             </HStack>
             <HStack>
-              <BsChatDots onClick={() => toggleSideBar('chats')}/>
+              <BsChatDots onClick={() => {
+                toggleSideBar('chats')
+                setChatWith(friend)
+                }}/>
               <RiDeleteBin5Line />
             </HStack>
           </Stack>

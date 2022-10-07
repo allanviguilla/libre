@@ -11,7 +11,7 @@ const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
 
-  const { currUser } = props;
+  const { currUser, setChatWith } = props;
 
   useEffect(() => {
     let hold = [];
@@ -55,7 +55,7 @@ const FriendsList = (props) => {
           allFriends.length === 0 ? <p>No friends yet ...</p> :
             friends.length ?
             friends.map((friend) =>
-              <FriendEntry key={friend.displayName} friend={friend} />
+              <FriendEntry key={friend.displayName} friend={friend} setChatWith={setChatWith}/>
             )
             : <p>No friends match your search criteria ... {`:(`}</p>
         }

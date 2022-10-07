@@ -24,6 +24,7 @@ const Chat = (props) => {
   const {friend, currUser} = props;
   return (
     <div id="chat">
+      <p>Chat with {friend.displayName}</p>
       <ChatRoom friend={friend} currUser={currUser}/>
     </div>
   )
