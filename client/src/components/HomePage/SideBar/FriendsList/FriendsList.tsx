@@ -22,12 +22,7 @@ const FriendsList = (props) => {
       getDoc(doc(db, "users", friend))
         .then((res) => {
           const friend = res.data();
-          getToken(friend.refreshToken)
-            .then((res) => {
-              friend.oauthAccessToken = res;
-            })
           hold.push(friend);
-          console.log(hold);
           if (hold.length === currUser.friends.length) {
             setFriends(hold)
           }
@@ -35,15 +30,6 @@ const FriendsList = (props) => {
         .catch((err) => console.log(err))
     })
   }, [currUser])
-
-
-  const handleAddAttendee = () => {
-    addAttendee({email:'qingzhouyan@gmail.com', photoUrl:'xxx.sdax.com'})
-  }
-
-  const handleRemoveAttendee = () => {
-    removeAttendee({email:'qingzhouyan@gmail.com', photoUrl:'xxx.sdax.com'})
-  }
 
   return (
     <div className={styles.friendsList}>
@@ -62,22 +48,15 @@ const FriendsList = (props) => {
           )
         }
       </VStack>
-      <button onClick={handleAddAttendee}>add attendee</button>
-      <button onClick={handleRemoveAttendee}>remove attendee</button>
     </div>
   )
 }
 
-
 function mapStatetoProps(state) {
-  const { currUser, attendees } = state;
-  return { currUser, attendees };
+  const { currUser } = state;
+  return { currUser };
 };
 
-// addAttendee({email:'qingzhou@gmail.com', .....}) email is required
-// when add, shift the new attendee to the first of the list
-// removeAttendee({email:'qingzhou@gmail.com', .....}) email is required
-// remove the attendee from the list
-const mapDispatchToProps = { addAttendee, removeAttendee };
+const mapDispatchToProps = {};
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);

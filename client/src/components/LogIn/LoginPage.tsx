@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { signin } from '../../redux/actions/currUser';
-
 import styles from './LoginPage.module.css';
-
 import Canvas from './Canvas';
 
 const LoginPage = (props) => {
@@ -28,8 +25,10 @@ const LoginPage = (props) => {
       // save user information into database
       getDoc(doc(db, "users", email))
       .then((userData: any) => {
+          console.log('USER DATA', userData.data())
           const friends = userData.data() === undefined ? [] : userData.data().friends;
           const friendGroups = userData.data() === undefined ? [] : userData.data().friendGroups;
+          const events = userData.data() === undefined ? [] : userData.data().events;
           setDoc(doc(db, "users", email), {
             displayName: displayName,
             email: email,
@@ -39,10 +38,11 @@ const LoginPage = (props) => {
             refreshToken: refreshToken,
             friends: friends,
             friendGroups: friendGroups,
+            events: events
           })
 
           // set the redux state with user information
-          signin({ displayName, email, photoUrl, oauthAccessToken, refreshToken, friends });
+          signin({ displayName, email, photoUrl, oauthAccessToken, refreshToken, friends, friendGroups, events});
         })
     })
     .catch(err => {

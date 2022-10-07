@@ -23,12 +23,15 @@
     "axios": "^1.0.0",
     "bootstrap": "^5.2.2",
     "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "esbuild": "^0.15.10",
     "esbuild-darwin-64": "^0.15.10",
     "express": "^4.18.1",
     "firebase": "^9.10.0",
+    "firebase-admin": "^11.1.0",
     "framer-motion": "^7.5.1",
+    "google-auth-library": "^8.5.2",
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "react": "^18.2.0",
@@ -42,7 +45,8 @@
     "react-redux": "^8.0.4",
     "react-timer-hook": "^3.0.5",
     "styled-components": "^5.3.6",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "underscore": "^1.13.6"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.4",
