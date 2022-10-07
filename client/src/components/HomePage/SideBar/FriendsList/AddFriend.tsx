@@ -26,6 +26,7 @@ const AddFriend:React.FC<Props> = ({ isOpen, onClose }) => {
           <DrawerBody>
             <form id='new-friend-form'>
               Search by email : <input type="email"></input>
+
             </form>
           </DrawerBody>
 
