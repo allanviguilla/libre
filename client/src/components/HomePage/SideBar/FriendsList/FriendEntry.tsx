@@ -4,16 +4,15 @@ import styles from './FriendsList.module.css';
 import { BsChatDots } from 'react-icons/bs';
 import{ RiDeleteBin5Line } from 'react-icons/ri'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
-import Chat from "../Chat/Chat";
 import { connect } from "react-redux";
 import { addAttendee, removeAttendee } from "../../../../redux/actions/attendees";
+import { toggleSideBar } from "../../../../redux/actions/sideBar";
 
 const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
-  console.log(clicked);
 
   const [isChat, setIsChat] = useState(false);
-  const { friend, addAttendee, removeAttendee } = props;
+  const { friend, addAttendee, removeAttendee, toggleSideBar, setChatWith } = props;
 
   const handleClick = () => {
     setClicked(!clicked);
@@ -34,13 +33,13 @@ const FriendEntry = (props) => {
           <Stack>
             <HStack>
               <Avatar name={friend.displayName} src={friend.photoUrl} />
-              <p>bio here </p>
+              {/* <p>{friend.email}</p> */}
             </HStack>
             <HStack>
               <BsChatDots onClick={() => {
-                setIsChat(true);
-              }}/>
-              {isChat ? <Chat friend={friend}/> : null}
+                toggleSideBar('chats')
+                setChatWith(friend)
+                }}/>
               <RiDeleteBin5Line />
             </HStack>
           </Stack>
@@ -55,6 +54,6 @@ function mapStatetoProps(state) {
   return { currUser, attendees };
 };
 
-const mapDispatchToProps = { addAttendee, removeAttendee };
+const mapDispatchToProps = { addAttendee, removeAttendee, toggleSideBar };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendEntry);

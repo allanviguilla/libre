@@ -15,8 +15,7 @@ import styles from './Calendar.module.css';
 import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
-import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
-import events from 'events';
+import { filterDupEvents, ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../configs/config';
 
@@ -27,8 +26,6 @@ export interface DateRange {
 
 const initialState = {
   dateRange: {start: null, end: null},
-  ownEvents: [],
-  friendEvents: {},
   currEvents: [],
   clicked: {
     title: null,
@@ -53,31 +50,44 @@ const Calendar = (props) => {
 
   const { currUser, attendees } = props;
 
+  const [calendarDisplayName, setCalendarDisplayName] = useState('');
+
   useEffect(() => {
     if (state.dateRange.start && currUser) {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
-          currUser.events = _.uniq(currUser.events.concat(parsed));
+          let combo = parsed.concat(currUser.events)
+          let filtered = filterDupEvents(combo)
+          currUser.events = filtered;
+
+          if (attendees.length) {
+            let friendEvents = attendees.map(({ events }) => events);
+            let inverse = setInverseBg(friendEvents);
+            let filterBg = filterDupEvents(inverse);
+            let combo = filterBg.concat(currUser.events)
+
+            setState({
+              currEvents: combo
+            })
+          }
+           else {
+            setState({
+              currEvents: filtered
+            })
+          }
 
           setDoc(doc(db, "users", currUser.email), currUser)
-
-          setState({
-            ownEvents: parsed,
-            currEvents: parsed
-          })
         })
+        .catch(err => console.log(err));
     }
-  }, [state.dateRange])
-
-  useEffect(() => {
-    let friendEvents = attendees.map(({ events }) => events);
-    console.log('FRIEND EVENTS', friendEvents);
-  }, [attendees])
+    const nameArr = currUser.displayName.split(' ');
+    setCalendarDisplayName(nameArr[0]);
+  }, [state.dateRange, attendees])
 
   return (
     <div className={styles.calendar} id="calendar">
-      <h2>CALENDAR HERE</h2>
+      <h2 className={styles.displayName}>{calendarDisplayName}'s Calendar</h2>
       <div className={styles.calendarMain}>
         <NewEventForm isOpen={isFormOpen} onClose={onFormClose}/>
         <EventDetails detail={state.clicked} isOpen={isDetailOpen} onClose={onDetailClose}/>
@@ -88,7 +98,7 @@ const Calendar = (props) => {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
-          initialView='dayGridMonth'
+          initialView='timeGridWeek'
           editable={true}
           selectable={true}
           selectMirror={true}
