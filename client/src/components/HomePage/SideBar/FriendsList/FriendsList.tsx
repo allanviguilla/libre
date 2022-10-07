@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs';
-import { HStack, useDisclosure, VStack } from '@chakra-ui/react'
+import { Button, HStack, useDisclosure, VStack } from '@chakra-ui/react'
 import styles from './../Sidebar.module.css'
 import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
@@ -8,6 +8,17 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
 import { getEvents, getToken } from '../../../Utilities/http';
 import { addAttendee, removeAttendee } from '../../../../redux/actions/attendees'
+
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
 import AddFriend from './AddFriend';
 
 const FriendsList = (props) => {
@@ -37,8 +48,9 @@ const FriendsList = (props) => {
     <div className={styles.friendsList}>
       <div className={styles.friendListHeader}>
         <h2>FriendsList</h2>
+        <AddFriend />
         <button onClick={onOpen} ref={btnRef} >Add Friend</button>
-        <AddFriend isOpen={isOpen} onClose={onClose}/>
+
         <HStack>
           <input type="text" placeholder='Search friends list ...' ></input>
           <BsSearch size={20} />

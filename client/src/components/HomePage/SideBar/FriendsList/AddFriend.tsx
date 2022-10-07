@@ -1,42 +1,45 @@
-import React from "react";
+import React, { useState } from 'react';
+import { Input } from '@chakra-ui/react'
+
 import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-} from '@chakra-ui/react'
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
+} from '@chakra-ui/react';
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const AddFriend = () => {
+  const [newUser, setNewUser] = useState(false);
 
-const AddFriend:React.FC<Props> = ({ isOpen, onClose }) => {
+  const handleSubmit = () => {
+
+  }
+
   return (
     <div>
-      <Drawer isOpen={isOpen} onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Add Friend</DrawerHeader>
-
-          <DrawerBody>
-            <form id='new-friend-form'>
-              Search by email : <input type="email"></input>
-
-            </form>
-          </DrawerBody>
-
-          <DrawerFooter>
-
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <Accordion allowMultiple>
+        <AccordionItem>
+         <h2>
+          <AccordionButton>
+            <Box flex='1' textAlign='left'>
+              Add Friend
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+          <form>
+            Enter their email: <input id="" type="email" required></input>
+            <button type="submit">Add</button>
+          </form>
+        </AccordionPanel>
+       </AccordionItem>
+      </Accordion>
     </div>
+
   )
 }
 
-export default AddFriend
+export default AddFriend;
