@@ -17,7 +17,10 @@ const Notifications = (props) => {
       const allDocs = await getDocs(dbRef)
       allDocs.forEach(async (doc) => {
         if (doc.data().status === 'awaiting' && currUser.email === doc.data().receiverEmail) {
-          temp.push(doc.data())
+          let docData = doc.data();
+          docData['id'] = doc.id;
+          console.log(docData);
+          temp.push(docData);
         }
       })
       setDocs(temp);
