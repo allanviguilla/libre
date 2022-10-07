@@ -1,17 +1,58 @@
-.notificationCard {
-  margin: 10px;
-  border: 1px solid white;
-  border-radius: 10px;
+/* notifications container  */
+
+.notificationsContainer {
+  overflow-y: auto;
+  height: 750px;
 }
 
-.notificationText {
+.header {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+/*  */
+
+/*  notification card  */
+
+.notificationCard {
+  display: flex;
+  flex-direction: column;
+  /* background-image: linear-gradient(to bottom right, #ccc5b9 , #fffcf2); */
+  margin: 10px;
+  border: 1px solid white;
+  border-radius: 20px;
+}
+
+.notificationHeader {
+  display: flex;
   font-size: 15px;
   padding: 20px;
+  gap: 10px;
+}
+
+.header {
+  font-size: 30px;
+}
+
+.notificationHeaderText {
+  justify-content: flex-start;
 }
 
 .notificationButtons {
+  margin-top: 10px;
   display: flex;
   justify-content: space-evenly;
   padding-bottom: 10px;
   font-size: 10px;
 }
+
+.senderDisplayName {
+  display: block;
+  text-align: left;
+}
+
+.divider {
+  margin-bottom: 10px;
+  border-top: 0.1px solid #bbb;
+}
+/*  */

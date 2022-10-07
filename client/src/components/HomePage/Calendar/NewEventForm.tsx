@@ -104,6 +104,7 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
         for (let i = 0; i < attendeesArray.length; i++) {
           addDoc(collection(db, "notifications"), {
             eventId: docRef.id,
+            eventName: name,
             receiverEmail: attendeesArray[i],
             senderDisplayName: currUser.displayName,
             senderEmail: currUser.email,

@@ -1,19 +1,20 @@
-import { collection, getDoc, setDoc, updateDoc, doc } from 'firebase/firestore';
+import { getDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Notification.module.css';
-import { BsCheckCircleFill, BsXLg } from 'react-icons/bs'
-import { IconButton } from '@chakra-ui/react'
+import { BsXLg } from 'react-icons/bs'
+import { GiCheckMark } from 'react-icons/gi'
+import { Avatar, IconButton } from '@chakra-ui/react'
+import axios from 'axios';
 
-const Notification = ({ document, currUser, getAllDocs }) => {
-  // console.log('document : ', document);
-  const { email } = currUser
-  const { senderDisplayName, type, eventId } = document
+const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) => {
+  const { email, oauthAccessToken } = currUser
+  const { senderDisplayName, senderEmail, type, eventName, id } = document
 
-  // update calendar API to either accepted or declined
+  console.log(currEvent)
 
   const acceptRequest = () => {
-    const docRef = doc(db, 'notifications', eventId)
+    const docRef = doc(db, 'notifications', id)
     const data = {
       status: 'accepted'
     }
@@ -35,11 +36,45 @@ const Notification = ({ document, currUser, getAllDocs }) => {
           updateDoc(userRef, { friends: friends })
         })
         .catch(err => console.log(err))
+      const senderRef = doc(db, 'users', senderEmail)
+      getDoc(senderRef)
+        .then((userData: any) => {
+          const friends = userData.data().friends.slice()
+          friends.push(currUser.email)
+          updateDoc(senderRef, { friends: friends })
+        })
+    }
+
+    if (type === 'event-invitation') {
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
+      // get variables from database
+      const requestBody = {
+        "end": {
+          "dateTime": endTime,
+          "timeZone": "America/Los_Angeles"
+        },
+        "start": {
+          "dateTime": startTime,
+          "timeZone": "America/Los_Angeles"
+        },
+        "attendees": attendeesArray,
+        "description": description,
+        "location": location,
+        // "status": "awaiting",
+        "summary": name,
+        // "iCalUID": "64kebt4dy284mtdekuqn"
+      };
+      const requestConfig = {
+        headers: {
+          'Authorization': `Bearer ${currUser.oauthAccessToken}`
+        }
+      }
+      return axios.put(url, requestBody, requestConfig)
     }
   }
 
   const declineRequest = async () => {
-    const docRef = doc(db, 'notifications', eventId)
+    const docRef = doc(db, 'notifications', id)
     const data = {
       status: 'declined'
     }
@@ -55,26 +90,39 @@ const Notification = ({ document, currUser, getAllDocs }) => {
 
   return (
     <div className={styles.notificationCard}>
-      <div className={styles.notificationText}>
+      <div className={styles.notificationHeader}>
+        <Avatar name={senderDisplayName} src={currPhoto} size="md"/>
         {type === 'event-invitation' ?
-          `${senderDisplayName} has sent an invitation to event name` : `${senderDisplayName} has sent you a friend request!`}
+          <p className={styles.notificationHeaderText}>
+            <span className={styles.senderDisplayName}><b>{senderDisplayName}</b></span>
+            sent an invitation to
+            <b> {eventName}</b>
+          </p>
+          :
+          <p>
+            <span className={styles.senderDisplayName}>
+              <b>{senderDisplayName}</b>
+            </span><span className={styles.textStyles}>sent you a <b>friend request</b>!</span>
+          </p>
+        }
       </div>
+      <hr className={styles.divider} />
       <div className={styles.notificationButtons}>
         <IconButton
           variant='outline'
           colorScheme='orange'
           aria-label='Accept Button'
-          fontSize='20px'
-          size='lg'
-          icon={<BsCheckCircleFill />}
+          fontSize='18px'
+          size='sm'
+          icon={<GiCheckMark />}
           onClick={acceptRequest}
         />
         <IconButton
           variant='outline'
           colorScheme='orange'
           aria-label='Decline Button'
-          fontSize='20px'
-          size='lg'
+          fontSize='18px'
+          size='sm'
           icon={<BsXLg />}
           onClick={declineRequest}
         />

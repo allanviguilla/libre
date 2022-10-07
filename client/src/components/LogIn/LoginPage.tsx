@@ -8,6 +8,8 @@ import { signin } from '../../redux/actions/currUser';
 import styles from './LoginPage.module.css';
 import Canvas from './Canvas';
 
+import productImg from '../../../public/product-image.png';
+
 const LoginPage = (props) => {
   const { currUser, signin } = props;
 
@@ -63,7 +65,9 @@ const LoginPage = (props) => {
           <GoogleButton className={styles.button} onClick={signInWithGoogle}/>
         </div>
         <div className={styles.product}>
-          <div className={styles.card}></div>
+          <div className={styles.card}>
+            <img src={productImg} />
+          </div>
         </div>
       </div>
     </>
