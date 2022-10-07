@@ -69,6 +69,7 @@ function Chat(props) {
   return (
     <div id="chat">
       {/* <h1>JAMES</h1> */}
+      <p>Chat with {friend.displayName}</p>
       <ChatRoom friend={friend} currUser={currUser} message={messages}/>
       <form onSubmit={sendMessage} className='send-bar'>
           <input value={formValue} onChange={(e) =>
