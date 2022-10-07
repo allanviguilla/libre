@@ -38,6 +38,6 @@
   background-color: var(--color-orange);
 }
 
-.friendListHeader {
-
+input, textarea {
+  color: black;
 }
