@@ -34,7 +34,10 @@ export const setInverseBg = (eventList) => {
   let aggList = [];
   eventList.forEach((events) => {
       let agg = events.map((event) => {
-      return {...event, display: 'inverse-background' }
+      let clone = {...event, display: 'background' }
+      clone.color = "black";
+      delete clone.title;
+      return clone
     })
 
     aggList = aggList.concat(agg)

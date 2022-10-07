@@ -64,12 +64,13 @@ const Calendar = (props) => {
           if (attendees.length) {
             let friendEvents = attendees.map(({ events }) => events);
             let inverse = setInverseBg(friendEvents);
-            let combined = currUser.events.concat(inverse);
-            console.log('COMBINED', combined);
+            let combined = inverse.concat(currUser.events);
+            let filteredCombined = filterDupEvents(inverse, currUser.events)
+
             setState({
               ownEvents: parsed,
-              friendEvents: combined,
-              currEvents: combined
+              friendEvents: filteredCombined,
+              currEvents:  filteredCombined
             })
           }
            else {
@@ -109,7 +110,7 @@ const Calendar = (props) => {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }}
-          initialView='dayGridMonth'
+          initialView='timeGridWeek'
           editable={true}
           selectable={true}
           selectMirror={true}
