@@ -4,9 +4,11 @@ import { Button, HStack, useDisclosure, VStack } from '@chakra-ui/react'
 import styles from './../Sidebar.module.css'
 import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
 import AddFriend from './AddFriend';
+import { getDatabase, ref, onValue} from "firebase/database";
+import { signin } from '../../../../redux/actions/currUser';
 
 const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
@@ -15,7 +17,7 @@ const FriendsList = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
 
-  const { currUser, attendees, addAttendee, removeAttendee, setChatWith} = props;
+  const { signin, currUser, attendees, addAttendee, removeAttendee, setChatWith} = props;
 
   useEffect(() => {
     let hold = [];
@@ -31,6 +33,18 @@ const FriendsList = (props) => {
         })
         .catch((err) => console.log(err))
     })
+
+    const db2 = getDatabase();
+    const notifCount = ref(db2, 'notifications/');
+    onValue(notifCount, (snapshot) => {
+      const data = snapshot.val();
+      console.log('FIREBASE', data);
+      getDoc(doc(db, "users", currUser.email))
+          .then((userData) => {
+            signin({...userData.data()});
+          })
+    });
+
   }, [currUser.friends])
 
   const handleSearch = (e) => {
@@ -76,6 +90,6 @@ function mapStatetoProps(state) {
   return { currUser };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { signin };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);
