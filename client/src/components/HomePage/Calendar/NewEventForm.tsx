@@ -56,11 +56,11 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
 
   function onSubmit(values) {
 
-    const { startTime, endTime, location, description } = values;
+    let { startTime, endTime, location, description } = values;
     const attendeesArray = Object.values(selectedOptions);
     // const attendeesArray = attendees.split(',');
 
-    // console.log('attendeesArray at position 0... ', attendeesArray[0].value)
+    console.log('attendeesArray at position 0... ', attendeesArray[0].value);
     console.log('attendees array... ', attendeesArray);
     console.log('startTime... ', startTime);
     console.log('endTime... ', endTime);
@@ -71,6 +71,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
 
     const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
+
     const requestBody = {
       "end": {
         "dateTime": endTime,
@@ -87,6 +88,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       "summary": name,
       // "iCalUID": "64kebt4dy284mtdekuqn"
     };
+
     const requestConfig = {
       headers: {
         'Authorization': `Bearer ${currUser.oauthAccessToken}`
@@ -196,8 +198,8 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                   Attendees *
                 </FormLabel>
                 <FormLabel htmlFor='attendees-avatars'>
-                -- Attendee Avatars --
-                <AvatarGroup size='md' max={5}>
+                {/* -- Attendee Avatars {friends.displayName} {friends.photoUrl} -- */}
+                <AvatarGroup size='md' max={2}>
                     {
                       friends.map((friend) =>
                         <Avatar name={friend.displayName} src={friend.photoUrl} />
