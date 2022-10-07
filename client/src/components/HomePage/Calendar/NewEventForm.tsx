@@ -57,9 +57,8 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
   function onSubmit(values) {
     let { startTime, endTime, location, description, name } = values;
     let attendeesArray = Object.values(selectedOptions).map((attendee) => {
-      return attendee.value;
+      return {"email": attendee.value};
     });
-    attendeesArray.push(currUser.email);
 
     // const attendeesArray = attendees.split(',');
     startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
@@ -84,7 +83,6 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
       "location": location,
       // "status": "awaiting",
       "summary": name,
-      // "iCalUID": "64kebt4dy284mtdekuqn"
     };
 
     const requestConfig = {
