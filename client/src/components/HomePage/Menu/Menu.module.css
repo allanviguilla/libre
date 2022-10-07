@@ -1,10 +1,21 @@
 .menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   color: white;
   background-color: #252422;
   grid-area: menu;
-  height: 100vh;
+  display: grid;
+  grid-template-rows: 0.3fr 0.5fr 1fr;
+}
+
+.listContainer {
+  /* border: 3px solid red; */
+  display: flex;
+  justify-content: center;
+}
+
+.profile {
+  /* border: 3px solid green; */
+}
+
+.spacer {
+  /* border: 3px solid yellow; */
 }
