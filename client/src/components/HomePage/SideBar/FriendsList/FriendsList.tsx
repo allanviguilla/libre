@@ -6,12 +6,13 @@ import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
+import AddFriend from './AddFriend';
 
 const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
 
-  const { currUser, setChatWith } = props;
+  const { currUser, attendees, addAttendee, removeAttendee, setChatWith} = props;
 
   useEffect(() => {
     let hold = [];
