@@ -35,7 +35,6 @@ const FriendsList = (props) => {
     })
 
     setFriends(searched);
-
   }
 
   console.log('FRIENDS', friends);
@@ -52,11 +51,12 @@ const FriendsList = (props) => {
       </div>
       <VStack>
         {
-          friends.length ?
-          friends.map((friend) =>
-            <FriendEntry key={friend.displayName} friend={friend} />
-          )
-          : <p>No friends ... {`:(`}</p>
+          allFriends.length === 0 ? <p>No friends yet ...</p> :
+            friends.length ?
+            friends.map((friend) =>
+              <FriendEntry key={friend.displayName} friend={friend} />
+            )
+            : <p>No friends match your search criteria ... {`:(`}</p>
         }
       </VStack>
     </div>
