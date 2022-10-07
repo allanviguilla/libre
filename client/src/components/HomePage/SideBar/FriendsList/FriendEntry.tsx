@@ -5,25 +5,26 @@ import { BsChatDots } from 'react-icons/bs';
 import{ RiDeleteBin5Line } from 'react-icons/ri'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 import Chat from "../Chat/Chat";
+import { connect } from "react-redux";
+import { addAttendee, removeAttendee } from "../../../../redux/actions/attendees";
 
 const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
-  // console.log(clicked);
+  console.log(clicked);
 
   const [isChat, setIsChat] = useState(false);
-  const {friend} = props;
+  const { friend, addAttendee, removeAttendee } = props;
 
   const handleClick = () => {
-    console.log('I CLIUCKED FRIEND', friend)
+    setClicked(!clicked);
+    setIsChat(false);
+    clicked ? removeAttendee(friend) :addAttendee(friend);
   }
+
   return (
     <div className={styles.friendDiv}>
       <HStack className={clicked ? styles.friendClicked : styles.friend}>
-        <div><input onClick={() => {
-          setClicked(!clicked);
-          setIsChat(false);
-          handleClick()
-          }} type="checkbox" className={styles.checkboxRound}></input></div>
+        <div><input onClick={() => handleClick()} type="checkbox" className={styles.checkboxRound}></input></div>
         <div style={{width: '100%'}}>
           <p>{friend.displayName}</p>
         </div>
@@ -49,4 +50,11 @@ const FriendEntry = (props) => {
   )
 }
 
-export default FriendEntry;
+function mapStatetoProps(state) {
+  const { currUser, attendees } = state;
+  return { currUser, attendees };
+};
+
+const mapDispatchToProps = { addAttendee, removeAttendee };
+
+export default connect(mapStatetoProps, mapDispatchToProps)(FriendEntry);
