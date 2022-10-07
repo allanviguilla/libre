@@ -61,7 +61,6 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       return attendee.value;
     });
     attendeesArray.push(currUser.email);
-    attendeesArray.push('hepner.thomas@gmail.com');
 
     // const attendeesArray = attendees.split(',');
     startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
