@@ -9,7 +9,7 @@ import { db } from '../../../../../../configs/config';
 import AddFriend from './AddFriend';
 import { getDatabase, ref, onValue} from "firebase/database";
 import { signin } from '../../../../redux/actions/currUser';
-var firebase = require('firebase/app');
+// var firebase = require('firebase/app');
 
 const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
@@ -35,15 +35,15 @@ const FriendsList = (props) => {
         .catch((err) => console.log(err))
     })
 
-    var ref = firebase.database().ref("users");
-    firebase.database().ref().on('value', function(snapshot) {
-      const data = snapshot.val();
-      console.log('FIREBASE', data);
-      getDoc(doc(db, "users", currUser.email))
-        .then((userData) => {
-          signin({...userData.data()});
-        })
-    });
+    // var ref = firebase.database().ref("users");
+    // firebase.database().ref().on('value', function(snapshot) {
+    //   const data = snapshot.val();
+    //   console.log('FIREBASE', data);
+    //   getDoc(doc(db, "users", currUser.email))
+    //     .then((userData) => {
+    //       signin({...userData.data()});
+    //     })
+    // });
 
   }, [currUser.friends])
 
