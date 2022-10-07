@@ -39,6 +39,7 @@
 }
 
 .notificationButtons {
+  margin-top: 10px;
   display: flex;
   justify-content: space-evenly;
   padding-bottom: 10px;
@@ -49,8 +50,6 @@
   display: block;
   text-align: left;
 }
-
-
 
 .divider {
   margin-bottom: 10px;
