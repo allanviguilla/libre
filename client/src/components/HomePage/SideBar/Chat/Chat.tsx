@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { connect } from 'react-redux';
-// import './Chat.css';
+import './Chat.css';
 
 
 import firebase from 'firebase/compat/app';
@@ -22,6 +22,7 @@ const firebaseApp = firebase.initializeApp(config);
 const firestore = firebase.firestore();
 
 let currUserEmail = '';
+let chatLength = 0;
 
 function Chat(props) {
   const {friend, currUser} = props;
@@ -47,6 +48,8 @@ function ChatRoom(props) {
         // 2. update the current chat
         const chatHistory = chatData.data() === undefined ? [] : chatData.data().chatHistory;
         setMessages(chatHistory);
+        // update the chat length
+        chatLength = chatHistory.length;
         const members = chatData.data() === undefined ? [] : [currUser.email, friend.email ].sort();
         setDoc(doc(db, "chats", identifier), {
           // members
@@ -86,6 +89,7 @@ function ChatRoom(props) {
         const chatHistory = chatData === undefined ? [] : chatData.chatHistory;
         chatHistory.push(messageObject);
         setMessages(chatHistory);
+        chatLength = chatHistory.length;
         const members = chatData === undefined ? [] : [currUser.email, friend.email ].sort();
         // overwrite the existing document with the new chat history object
         setDoc(doc(db, "chats", identifier), {
@@ -97,12 +101,13 @@ function ChatRoom(props) {
 
   return(
     <>
-      <div>
-        <div>
+      <div className="chat">
+        <div className='messages'>
           {messages && messages.map((msg, index) => {
           return <ChatMessage
           key={index}
           message={msg}
+          index={index}
           />
           }
           )}
@@ -120,14 +125,17 @@ function ChatRoom(props) {
 function ChatMessage(props) {
   // const { text, uid, id } = props.message;
   const { text, email } = props.message;
+  const { index } = props;
 
   const currUserEmail = getCurrUserEmail();
 
   const messageClass = email === currUserEmail ? 'sent':'received';
+  const isLast = (email === currUserEmail && index === (chatLength-1)) ? 'last' : '';
+
 
   return (
     <div className={`messages ${messageClass}`}>
-      <p>{text}</p>
+      <p className={`message ${isLast}`}>{text}</p>
     </div>
   )
 }
