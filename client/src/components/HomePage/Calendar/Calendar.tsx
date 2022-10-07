@@ -15,7 +15,7 @@ import styles from './Calendar.module.css';
 import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
-import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
+import { filterDupEvents, ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
 import events from 'events';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../configs/config';
@@ -58,37 +58,44 @@ const Calendar = (props) => {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
-          let combined = currUser.events.concat(parsed)
-          const uniqueEvents = [];
+          let filtered = filterDupEvents(parsed, currUser.events)
+          currUser.events = filtered;
 
-          const unique = combined.filter(event => {
-            const isDuplicate = uniqueEvents.includes(event.id);
-            if (!isDuplicate) {
-              uniqueEvents.push(event.id);
-              return true;
-            }
-            return false;
-          });
-
-          currUser.events = unique;
-
-          setDoc(doc(db, "users", currUser.email), currUser)
-
-          setState({
+          if (attendees.length) {
+            let friendEvents = attendees.map(({ events }) => events);
+            let inverse = setInverseBg(friendEvents);
+            let combined = currUser.events.concat(inverse);
+            console.log('COMBINED', combined);
+            setState({
+              ownEvents: parsed,
+              friendEvents: combined,
+              currEvents: combined
+            })
+          }
+           else {
+            setState({
             ownEvents: parsed,
             currEvents: parsed
-          })
+            })
+          }
+
+          setDoc(doc(db, "users", currUser.email), currUser)
         })
+        .catch(err => console.log(err));
     }
-  }, [state.dateRange])
+  }, [state.dateRange, attendees])
 
-  useEffect(() => {
-    let friendEvents = attendees.map(({ events }) => events);
-    console.log('FRIEND EVENTS', friendEvents);
-    setInverseBg(currUser.events)
-  }, [attendees])
+  // useEffect(() => {
+  //   let friendEvents = attendees.map(({ events }) => events);
+  //   let inverse = setInverseBg(friendEvents);
+  //   let combined = currUser.events.concat(friendEvents);
+  //   setState({
+  //     currEvents: inverse
+  //   })
+  // }, [attendees])
 
-    console.log('CURR USER EVENTS', currUser.events)
+  console.log('CURR USER EVENTS', state.currEvents);
+
   return (
     <div className={styles.calendar} id="calendar">
       <h2>CALENDAR HERE</h2>
