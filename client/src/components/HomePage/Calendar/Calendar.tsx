@@ -58,7 +58,19 @@ const Calendar = (props) => {
       getEvents(currUser.email, state.dateRange, currUser.oauthAccessToken)
         .then((res) => {
           let parsed = parseEvents(res);
-          currUser.events = _.uniq(currUser.events.concat(parsed));
+          let combined = currUser.events.concat(parsed)
+          const uniqueEvents = [];
+
+          const unique = combined.filter(event => {
+            const isDuplicate = uniqueEvents.includes(event.id);
+            if (!isDuplicate) {
+              uniqueEvents.push(event.id);
+              return true;
+            }
+            return false;
+          });
+
+          currUser.events = unique;
 
           setDoc(doc(db, "users", currUser.email), currUser)
 
@@ -73,8 +85,10 @@ const Calendar = (props) => {
   useEffect(() => {
     let friendEvents = attendees.map(({ events }) => events);
     console.log('FRIEND EVENTS', friendEvents);
+    setInverseBg(currUser.events)
   }, [attendees])
 
+    console.log('CURR USER EVENTS', currUser.events)
   return (
     <div className={styles.calendar} id="calendar">
       <h2>CALENDAR HERE</h2>

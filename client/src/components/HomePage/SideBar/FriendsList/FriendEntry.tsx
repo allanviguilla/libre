@@ -10,7 +10,6 @@ import { addAttendee, removeAttendee } from "../../../../redux/actions/attendees
 
 const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
-  console.log(clicked);
 
   const [isChat, setIsChat] = useState(false);
   const { friend, addAttendee, removeAttendee } = props;

@@ -1,8 +1,9 @@
 export const parseEvents = (events) => {
+  console.log('...........EVENT..........', events)
   let aggParsed = [];
   events.forEach((event) => {
-    // console.log('...........EVENT..........',event)
     let parsed = {color: 'orange'} as ParsedEvent;
+    parsed.id = event.id;
     parsed.title = event.summary;
     parsed.start = event.start.date ? event.start.date : event.start.dateTime;
     parsed.end = event.end.date ? event.end.date : event.end.dateTime;
@@ -36,6 +37,7 @@ export const setInverseBg = (events) => {
 }
 
 export interface ParsedEvent {
+  id: string;
   title: string;
   start: string;
   end: string;
