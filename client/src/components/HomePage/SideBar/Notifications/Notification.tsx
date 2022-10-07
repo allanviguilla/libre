@@ -10,6 +10,43 @@ const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
   const { email } = currUser
   const { senderDisplayName, senderEmail, type, eventId } = document
 
+  // update calendar API to either accepted or declined
+
+
+  // const getPhotoUrl = async () => {
+  //   try {
+  //     const dbRef = collection(db, 'users')
+  //     const users = await getDocs(dbRef)
+  //     const temp = {};
+  //     users.forEach((user) => {
+  //       if (senderEmail === user.data().email) {
+  //         setUserData({
+  //           user: user.data().email,
+  //           url: user.data().photoUrl
+  //         })
+  //       }
+  //       console.log('temp object : ', userData)
+  //     })
+
+  //   }
+  //   catch (err) {
+  //     console.log('could not access users collection: ', err)
+  //   }
+  // }
+
+  const getPhotoUrl = async () => {
+    const userRef = doc(db, 'users', senderEmail)
+    await getDoc(userRef)
+      .then((userData) => {
+        // return <img src={userData.data().photoUrl} />
+        console.log('userdata  : ', userData.data())
+        userData.data() ?
+        setPhotoUrl(userData.data().photoUrl) : null
+      })
+      .catch(err => console.log(err))
+  }
+
+  // getPhotoUrl()
 
   const acceptRequest = () => {
     const docRef = doc(db, 'notifications', eventId)

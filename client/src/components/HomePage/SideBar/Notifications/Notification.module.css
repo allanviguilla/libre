@@ -6,13 +6,15 @@
 }
 
 .header {
+  border-bottom: 3px solid white;
   font-size: 20px;
   margin-bottom: 15px;
 }
+
 /*  */
 
-
 /*  notification card  */
+
 .notificationCard {
   margin: 10px;
   border: 1px solid white;
