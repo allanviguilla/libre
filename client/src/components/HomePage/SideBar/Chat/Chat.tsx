@@ -36,7 +36,7 @@ function Chat(props) {
   // then replace it with the new data (new message stored in event)
   // Input: e (event from sendMessage)
   // Output: none
-  const sendMessage = async(e: { preventDefault: () => void; target: { value: any; }[]; }) => {
+  const sendMessage = (e: { preventDefault: () => void; target: { value: any; }[]; }) => {
     e.preventDefault();
     // if (!e.target[0].value) return;
     // get the chat identifier from the Chat component state
@@ -63,6 +63,7 @@ function Chat(props) {
           chatHistory,
         })
         setFormValue('');
+        console.log('Uploading text messages done');
       })
   }
 
