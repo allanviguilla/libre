@@ -1,3 +1,13 @@
+.accordion {
+  /* display: grid;
+  place-items: center; */
+}
+
+.inviteInput {
+  border-radius: 25px;
+  color: var(--color-dark);
+}
+
 .friendDiv {
   border: solid 1px white;
   padding: 2%;
@@ -47,6 +57,25 @@
 .input {
   color: var(--color-dark-gray);
   border-radius: 25px;
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   margin: 1rem 0;
+}
+
+.button {
+  font-weight: 700;
+  border-radius: 25px;
+  padding: 5px 10px;
+  background-color: var(--color-orange);
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.sendInvite {
+  font-weight: 700;
+  border-radius: 25px;
+  padding: 5px 10px;
+  margin: 10px 0;
+  background-color: var(--color-dark-gray);
+  text-transform: uppercase;
+  width: 80%;
 }

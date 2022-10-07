@@ -98,10 +98,15 @@ const Notifications = (props) => {
   });
 
   return (
-    <div>
-      <p className={styles.header}>Notifications</p>
-      <div className={styles.notificationsContainer}>{mappedArray}</div>
-    </div>
+    <>
+      <div className={styles.header}>
+        <h3>Notifications</h3>
+      </div>
+      <div className={styles.notifContainer}>
+        {/* <p className={styles.header}>Notifications</p> */}
+        <div className={styles.notificationsContainer}>{mappedArray}</div>
+      </div>
+    </>
   );
 };
 
