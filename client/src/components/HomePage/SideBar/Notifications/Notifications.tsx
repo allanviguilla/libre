@@ -32,26 +32,26 @@ const Notifications = (props) => {
     }
   };
 
-  const getAllEvents = async () => {
-    try {
-      const dbRef = collection(db, "events");
-      const temp = [];
-      const allEvents = await getDocs(dbRef);
-      allEvents.forEach((event) => {
-        if (event.data().attendeesArray.includes(currUser.email)) {
-          let eventData = event.data();
-          eventData["id"] = event.id;
-          temp.push(eventData);
-        }
-        setEvents(temp);
-      });
-    } catch (err) {
-      console.log("error fetching events: ", err);
-    }
-  };
+  // const getAllEvents = async () => {
+  //   try {
+  //     const dbRef = collection(db, "events");
+  //     const temp = [];
+  //     const allEvents = await getDocs(dbRef);
+  //     allEvents.forEach((event) => {
+  //       if (event.data().attendeesArray.includes(currUser.email)) {
+  //         let eventData = event.data();
+  //         eventData["id"] = event.id;
+  //         temp.push(eventData);
+  //       }
+  //       setEvents(temp);
+  //     });
+  //   } catch (err) {
+  //     console.log("error fetching events: ", err);
+  //   }
+  // };
 
   useEffect(() => {
-    getAllDocs(), getAllUsers(), getAllEvents();
+    getAllDocs(), getAllUsers();
   }, []);
 
   const getAllUsers = async () => {
