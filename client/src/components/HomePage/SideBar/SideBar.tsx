@@ -1,5 +1,6 @@
 import React from 'react'
 import Notifications from './Notifications/Notifications'
+import Chat from '../SideBar/Chat/Chat'
 
 import { connect } from 'react-redux';
 import FriendsList from './FriendsList/FriendsList';
@@ -18,7 +19,7 @@ const SideBar = (props) => {
           sideBar === 'groups' ?
             <h2>groups</h2> :
             sideBar === 'chats' ?
-              <h2>chats</h2> :
+              <Chat /> :
               sideBar === 'notifications' ?
                 <Notifications /> :
                 sideBar === 'account' ?
