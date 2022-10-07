@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import Clock from './Clock'
 import EventCards from './EventCards'
 
-
+import styles from '../Sidebar.module.css';
 
 const Overview = (props) => {
   const { currUser, currUser: { displayName, email } } = props;
 
   return (
-    <div>
+    <div className={styles.homeOverview}>
       <Text fontSize='4xl'>
         Enjoy Your Libre!
       </Text>

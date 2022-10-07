@@ -94,3 +94,15 @@
 .checkboxRound:checked {
   background-color: var(--color-orange);
 }
+
+.homeOverview {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  border: 3px solid red;
+  height: 100%;
+}
+
+.clock {
+  border: 3px solid red;
+}
