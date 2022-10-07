@@ -22,8 +22,8 @@ export const parseInfo = (info) => {
   let parsed = {color: 'orange'} as ParsedEvent;
   // console.log(info)
   parsed.title = info._def.title;
-  parsed.start = new Date(info._instance.range.start).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
-  parsed.end = new Date(info._instance.range.end).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
+  parsed.start = new Date(info.start).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
+  parsed.end = new Date(info.end).toLocaleString('en-US', {timeZone: "America/Los_Angeles"});
   parsed.extendedProps = info._def.extendedProps;
 
   return parsed;
@@ -42,7 +42,6 @@ export const setInverseBg = (eventList) => {
     aggList = aggList.concat(agg)
   })
 
-  console.log('TRANSFORMED', aggList[0])
   return aggList;
 }
 

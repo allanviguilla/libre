@@ -1,6 +1,6 @@
 import { CHANGESIDEBAR } from "../constant";
 
-const initState = 'defaultSideBar'
+const initState = 'overview'
 export default function sideBarReducer(prevState=initState, action){
   const {type, data} = action;
   switch(type){
