@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { getEvents } from '../../../Utilities/http';
 import { ParsedEvent, parseEvents, parseInfo } from '../../../Utilities/parser';
 import { Text } from '@chakra-ui/react'
@@ -26,10 +26,14 @@ export default (props) => {
 
   return (
     <div>
-      <Text fontSize='xl' my={5}>
-        Upcoming Events Today
-      </Text>
-      {events.map((event,index) => (<EventCard key={index} event={event}/>))}
+      {events.length ?
+        <Fragment>
+          <Text fontSize='xl' my={5}>
+            Today's Upcoming Events
+          </Text>
+          {events.map((event, index) => (<EventCard key={index} event={event} />))}
+        </Fragment>
+        : null}
     </div>
   )
 }
