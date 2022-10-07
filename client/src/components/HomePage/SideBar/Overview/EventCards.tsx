@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { getEvents } from '../../../Utilities/http';
 import { ParsedEvent, parseEvents, parseInfo } from '../../../Utilities/parser';
-import { Text } from '@chakra-ui/react'
+import { Text, Box } from '@chakra-ui/react'
 import EventCard from './EventCard'
 
 export default (props) => {
@@ -14,7 +14,10 @@ export default (props) => {
     // get the next week event today. getFullYear(), today. getMonth(),  today. getDate()+7
     const dateRange = ({
       start: new Date().toISOString(),
+      // get today's event
       end: new Date(today.setHours(23, 59, 59, 999)).toISOString()
+      // get next week's event
+      // end: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10).toISOString()
     })
 
     getEvents(currUser.email, dateRange, currUser.oauthAccessToken)
@@ -31,7 +34,9 @@ export default (props) => {
           <Text fontSize='xl' my={5}>
             Today's Upcoming Events
           </Text>
-          {events.map((event, index) => (<EventCard key={index} event={event} />))}
+          <Box overflowY="scroll" maxHeight="630px">
+            {events.map((event, index) => (<EventCard key={index} event={event} />))}
+          </Box>
         </Fragment>
         : null}
     </div>

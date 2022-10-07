@@ -8,7 +8,7 @@ export default (props) => {
   end = (new Date(end)).toLocaleString('en-US', {timeZone: 'America/Los_Angeles',})
 
   return (
-    <Box mb={3} p={5} shadow='md' borderWidth='1px'  borderRadius='md' maxW='sm' textAlign="start">
+    <Box m={3} p={5} shadow='md' borderWidth='1px'  borderRadius='md' maxW='sm' textAlign="start">
       <Heading fontSize='xl'>{title}</Heading>
       <p><span style={{ fontWeight: "700" }}>Start: </span>{start}</p>
       <p><span style={{ fontWeight: "700" }}>End: </span>{end}</p>

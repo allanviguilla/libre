@@ -12,7 +12,11 @@ export default (props) => {
 
   return (
       <Center fontSize="4xl">
-        <span>{hours}</span><span>:</span><span>{minutes}</span> <span>{ampm.toUpperCase()}</span>
+        <span>{prependZero(hours)}</span><span>:</span><span>{prependZero(minutes)}</span> <span>{ampm.toUpperCase()}</span>
       </Center>
   )
 }
+
+function prependZero(number) {
+  return number < 10 ? "0" + number : number
+  }
