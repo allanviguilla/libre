@@ -54,53 +54,58 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
 
   function onSubmit(values) {
 
-    const { attendees, startTime, endTime, location, description } = values;
-    // const attendeesArray = attendees.split(',')
+    const { startTime, endTime, location, description } = values;
+    const attendeesArray = Object.values(selectedOptions);
+    // const attendeesArray = attendees.split(',');
 
-    console.log('attendees on submit... ', attendees);
-    console.log('startTime... ', startTime);
-    console.log('endTime... ', endTime);
-    console.log('location... ', location);
-    console.log('description... ', description);
+    // console.log('attendees on submit... ', attendeesArray);
+    // console.log('attendeesArray at position 0... ', attendeesArray[0].value)
+    // console.log('attendees array... ', attendeesArray);
+    // console.log('startTime... ', startTime);
+    // console.log('endTime... ', endTime);
+    // console.log('location... ', location);
+    // console.log('description... ', description);
 
     // save calendar event into database
-    // addDoc(collection(db, "events"), {
-    //     hostEmail: currUser.email,
-    //     attendeesArray,
-    //     startTime,
-    //     endTime,
-    //     location,
-    //     description,
-    //   })
-    //   .then((docRef) => {
-    //     for (let i = 0; i < attendeesArray.length; i++) {
-    //       addDoc(collection(db, "notifications"), {
-    //         eventId: docRef.id,
-    //         receiverEmail: attendeesArray[i],
-    //         senderDisplayName: currUser.displayName,
-    //         senderEmail: currUser.email,
-    //         type: 'event-invitation',
-    //         status: 'awaiting',
-    //       })
-    //     }
-    //   })
-    //   .then(() => {
-    //     onClose();
-    //     alert("Your event has been created!");
-    //   })
-    //   .catch((error) => {
-    //     onClose();
-    //     alert("Your event was not created - please try again!");
-    //   })
+    addDoc(collection(db, "events"), {
+        hostEmail: currUser.email,
+        attendeesArray,
+        startTime,
+        endTime,
+        location,
+        description,
+      })
+      .then((docRef) => {
+        for (let i = 0; i < attendeesArray.length; i++) {
+          addDoc(collection(db, "notifications"), {
+            eventId: docRef.id,
+            receiverEmail: attendeesArray[i].value,
+            senderDisplayName: currUser.displayName,
+            senderEmail: currUser.email,
+            type: 'event-invitation',
+            status: 'awaiting',
+          })
+        }
+      })
+      .then(() => {
+        onClose();
+        alert("Your event has been created!");
+      })
+      .catch((error) => {
+        onClose();
+        alert("Your event was not created - please try again!");
+      })
 
   }
 
   const [friends, setFriends] = useState([]);
   const [attendeesFormInput, setAttendeesFromInput] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [value, setValue] = useState([]);
 
   let attendeesArr = [];
+
   // let sample = ["nicolastiennguyen@gmail.com", "qingzhouyan@gmail.com", "hepner.thomas2@gmail.com", "james.emerson.vo.2503@gmail.com", "kathryn.kuroko@gmail.com"];
 
   useEffect(() => {
@@ -124,7 +129,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
         .catch((err) => console.log(err))
     })
     setAttendeesFromInput(attendeesArr);
-    console.log('attendeesArr', attendeesArr);
+    console.log('attendeesArr....', attendeesArr);
   }, [currUser]);
 
   return (
@@ -161,18 +166,19 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
                 <AvatarGroup size='md' max={5}>
                     {
                       friends.map((friend) =>
-                        <Avatar name={friend.name} src={friend.photoUrl} />
+                        <Avatar name={friend.displayName} src={friend.photoUrl} />
                       )
                     }
                   </AvatarGroup>
                 </FormLabel>
                 <Select
                   isMulti
-                  options={attendeesFormInput}
                   id="attendees"
-                  {...register('attendees', {
-                    required: 'This is required',
-                  })}
+                  // {...register('attendees', {
+                  //   required: 'This is required',
+                  // })}
+                  onChange={setSelectedOptions}
+                  options={attendeesFormInput}
                   placeholder="Invite your friends."
                   closeMenuOnSelect={false}
                   hasStickyGroupHeaders
