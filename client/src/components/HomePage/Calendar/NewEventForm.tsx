@@ -38,6 +38,8 @@ import { computeSegDraggable } from "@fullcalendar/react";
 import { resolve } from "path";
 import { addListener } from "process";
 import { getEvents, getToken } from '../../Utilities/http';
+import axios from "axios";
+import { format, parseISO } from 'date-fns';
 
 interface Props {
   isOpen: boolean;
@@ -58,13 +60,38 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     const attendeesArray = Object.values(selectedOptions);
     // const attendeesArray = attendees.split(',');
 
-s
     // console.log('attendeesArray at position 0... ', attendeesArray[0].value)
-    // console.log('attendees array... ', attendeesArray);
-    // console.log('startTime... ', startTime);
-    // console.log('endTime... ', endTime);
-    // console.log('location... ', location);
-    // console.log('description... ', description);
+    console.log('attendees array... ', attendeesArray);
+    console.log('startTime... ', startTime);
+    console.log('endTime... ', endTime);
+    console.log('location... ', location);
+    console.log('description... ', description);
+
+    startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
+    endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
+    const requestBody = {
+      "end": {
+        "dateTime": endTime,
+        "timeZone": "America/Los_Angeles"
+      },
+      "start": {
+        "dateTime": startTime,
+        "timeZone": "America/Los_Angeles"
+      },
+      "attendees": attendeesArray,
+      "description": description,
+      "location": location,
+      // "status": "awaiting",
+      "summary": name,
+      // "iCalUID": "64kebt4dy284mtdekuqn"
+    };
+    const requestConfig = {
+      headers: {
+        'Authorization': `Bearer ${currUser.oauthAccessToken}`
+      }
+    };
 
     // save calendar event into database
     addDoc(collection(db, "events"), {
@@ -87,6 +114,12 @@ s
           })
         }
       })
+
+      // save calendar event into user's Google Calendar
+      .then(() => {
+        return axios.post(url, requestBody, requestConfig);
+      })
+
       .then(() => {
         onClose();
         alert("Your event has been created!");
@@ -163,6 +196,7 @@ s
                   Attendees *
                 </FormLabel>
                 <FormLabel htmlFor='attendees-avatars'>
+                -- Attendee Avatars --
                 <AvatarGroup size='md' max={5}>
                     {
                       friends.map((friend) =>
