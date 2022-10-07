@@ -32,7 +32,6 @@ const Notifications = (props) => {
     getAllUsers()
   }, [])
 
-
   const getAllUsers = async () => {
     try {
       const dbRef = collection(db, 'users')
