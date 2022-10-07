@@ -38,7 +38,7 @@ function Chat(props) {
   // Output: none
   const sendMessage = async(e: { preventDefault: () => void; target: { value: any; }[]; }) => {
     e.preventDefault();
-    if (!e.target[0].value) return;
+    // if (!e.target[0].value) return;
     // get the chat identifier from the Chat component state
     getDoc(doc(db, "chats", identifier))
       .then((chatData: any) => {
@@ -62,8 +62,8 @@ function Chat(props) {
           members,
           chatHistory,
         })
+        setFormValue('');
       })
-
   }
 
   return (
@@ -75,7 +75,7 @@ function Chat(props) {
           setFormValue(e.target.value)}
           className="chat-bar__input"/>
           <button type="submit"> Send</button>
-        </form>
+      </form>
     </div>
   )
 }
