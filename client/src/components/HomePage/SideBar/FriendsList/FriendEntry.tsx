@@ -1,4 +1,4 @@
-import { HStack, Stack, VStack } from "@chakra-ui/react";
+import { HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import styles from './FriendsList.module.css';
 import { BsChatDots } from 'react-icons/bs';
@@ -8,16 +8,28 @@ import { connect } from "react-redux";
 import { addAttendee, removeAttendee } from "../../../../redux/actions/attendees";
 import { toggleSideBar } from "../../../../redux/actions/sideBar";
 
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from '@chakra-ui/react'
+
 const FriendEntry = (props) => {
   const [clicked, setClicked] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [isChat, setIsChat] = useState(false);
-  const { friend, addAttendee, removeAttendee, toggleSideBar, setChatWith } = props;
+  const { friend, currUser, addAttendee, removeAttendee, toggleSideBar, setChatWith } = props;
 
   const handleClick = () => {
     setClicked(!clicked);
-    setIsChat(false);
     clicked ? removeAttendee(friend) :addAttendee(friend);
+  }
+
+  const handleDelete = () => {
+
   }
 
   return (
@@ -40,7 +52,9 @@ const FriendEntry = (props) => {
                 toggleSideBar('chats')
                 setChatWith(friend)
                 }}/>
-              <RiDeleteBin5Line />
+                <RiDeleteBin5Line />
+
+
             </HStack>
           </Stack>
         : null}
