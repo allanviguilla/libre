@@ -28,7 +28,7 @@ const Menu = (props) => {
     <div className={styles.menu} id="menu">
       <Profile currUser={currUser} />
       <br />
-      <List spacing={3}>
+      <List spacing={3} >
         <ListItem>
           <ListIcon as={BsCalendar3} />
           <Link>Your Calendar</Link>
