@@ -58,7 +58,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     const attendeesArray = Object.values(selectedOptions);
     // const attendeesArray = attendees.split(',');
 
-    // console.log('attendees on submit... ', attendeesArray);
+s
     // console.log('attendeesArray at position 0... ', attendeesArray[0].value)
     // console.log('attendees array... ', attendeesArray);
     // console.log('startTime... ', startTime);
