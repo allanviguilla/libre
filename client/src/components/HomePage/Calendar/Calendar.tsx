@@ -16,7 +16,6 @@ import NewEventForm from './NewEventForm';
 import EventDetails from './EventDetails';
 import { getEvents } from '../../Utilities/http';
 import { ParsedEvent, parseEvents, parseInfo, setInverseBg } from '../../Utilities/parser';
-import events from 'events';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../configs/config';
 
@@ -89,11 +88,9 @@ const Calendar = (props) => {
 
   useEffect(() => {
     let friendEvents = attendees.map(({ events }) => events);
-    // console.log('FRIEND EVENTS', friendEvents);
     setInverseBg(currUser.events)
   }, [attendees])
 
-    // console.log('CURR USER EVENTS', currUser.events)
   return (
     <div className={styles.calendar} id="calendar">
       <h2 className={styles.displayName}>{calendarDisplayName}'s Calendar</h2>
