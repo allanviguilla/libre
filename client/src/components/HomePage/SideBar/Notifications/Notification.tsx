@@ -7,9 +7,11 @@ import { GiCheckMark } from 'react-icons/gi'
 import { Avatar, IconButton } from '@chakra-ui/react'
 import axios from 'axios';
 
-const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
+const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) => {
   const { email, oauthAccessToken } = currUser
-  const { senderDisplayName, senderEmail, type, eventId, id } = document
+  const { senderDisplayName, senderEmail, type, eventName, id } = document
+
+  console.log(currEvent)
 
   const acceptRequest = () => {
     const docRef = doc(db, 'notifications', id)
@@ -38,20 +40,34 @@ const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
 
     if (type === 'event-invitation') {
       const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
+      // get variables from database
       const requestBody = {
-
-      }
+        "end": {
+          "dateTime": endTime,
+          "timeZone": "America/Los_Angeles"
+        },
+        "start": {
+          "dateTime": startTime,
+          "timeZone": "America/Los_Angeles"
+        },
+        "attendees": attendeesArray,
+        "description": description,
+        "location": location,
+        // "status": "awaiting",
+        "summary": name,
+        // "iCalUID": "64kebt4dy284mtdekuqn"
+      };
       const requestConfig = {
         headers: {
           'Authorization': `Bearer ${currUser.oauthAccessToken}`
         }
       }
-      return axios.post(url, requestBody, requestConfig)
+      return axios.put(url, requestBody, requestConfig)
     }
   }
 
   const declineRequest = async () => {
-    const docRef = doc(db, 'notifications', eventId)
+    const docRef = doc(db, 'notifications', id)
     const data = {
       status: 'declined'
     }
@@ -73,7 +89,7 @@ const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
           <p className={styles.notificationHeaderText}>
             <span className={styles.senderDisplayName}><b>{senderDisplayName}</b></span>
             sent an invitation to
-            <b> event name!</b>
+            <b> {eventName}</b>
           </p>
           :
           <p>
