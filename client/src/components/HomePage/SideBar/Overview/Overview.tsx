@@ -7,7 +7,7 @@ import EventCards from './EventCards'
 import styles from '../Sidebar.module.css';
 
 const Overview = (props) => {
-  const { currUser, currUser: { displayName, email } } = props;
+  const { newEventCount, currUser, } = props;
 
   return (
     <div className={styles.homeOverview}>
@@ -15,9 +15,9 @@ const Overview = (props) => {
         Enjoy Your Libre!
       </Text>
       <Clock />
-      <EventCards currUser={currUser}/>
+      <EventCards currUser={currUser} newEventCount={newEventCount} />
     </div>
   )
 }
 
-export default connect((state) => ({ currUser: state.currUser }), {})(Overview)
+export default connect((state) => ({ currUser: state.currUser, newEventCount: state.newEventCount }), {})(Overview)
