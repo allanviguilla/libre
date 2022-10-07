@@ -6,7 +6,6 @@
 }
 
 .header {
-  border-bottom: 3px solid white;
   font-size: 20px;
   margin-bottom: 15px;
 }
@@ -31,6 +30,10 @@
   gap: 10px;
 }
 
+.header {
+  font-size: 30px;
+}
+
 .notificationHeaderText {
   justify-content: flex-start;
 }
@@ -46,6 +49,8 @@
   display: block;
   text-align: left;
 }
+
+
 
 .divider {
   margin-bottom: 10px;

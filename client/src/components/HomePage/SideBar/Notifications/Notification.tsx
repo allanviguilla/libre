@@ -65,7 +65,7 @@ const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
           <p>
             <span className={styles.senderDisplayName}>
               <b>{senderDisplayName}</b>
-            </span>sent you a <b>friend request!</b>
+            </span><span className={styles.textStyles}>sent you a <b>friend request</b>!</span>
           </p>
         }
       </div>
