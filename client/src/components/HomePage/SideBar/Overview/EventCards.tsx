@@ -35,7 +35,7 @@ export default (props) => {
           <Text fontSize='xl' my={5}>
             Today's Upcoming Events
           </Text>
-          <Box overflowY="scroll" maxHeight="400px"
+          <Box overflowY="scroll" maxHeight="380px"
             sx={{
               '&::-webkit-scrollbar': {
                 width: '8px',
