@@ -30,6 +30,7 @@ const FriendsList = (props) => {
         .catch((err) => console.log(err))
     })
   }, [currUser])
+  console.log('friends', friends)
 
   return (
     <div className={styles.friendsList}>
@@ -60,3 +61,5 @@ function mapStatetoProps(state) {
 const mapDispatchToProps = {};
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);
+
+
