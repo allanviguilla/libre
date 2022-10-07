@@ -1,49 +1,14 @@
-import { collection, getDoc, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { getDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
 import React, { useState, useEffect } from 'react';
 import styles from './Notification.module.css';
-import { BsCheckCircleFill, BsXLg } from 'react-icons/bs'
+import { BsXLg } from 'react-icons/bs'
 import { GiCheckMark } from 'react-icons/gi'
-import { IconButton } from '@chakra-ui/react'
+import { Avatar, IconButton } from '@chakra-ui/react'
 
-const Notification = ({ document, currUser, getAllDocs }) => {
-  // console.log('document : ', document);
-  // const [userData, setUserData] = useState({})
-  const [photoUrl, setPhotoUrl] = useState('')
+const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
   const { email } = currUser
   const { senderDisplayName, senderEmail, type, eventId } = document
-
-  // update calendar API to either accepted or declined
-
-  // useEffect(() => {
-  //   const getPhotoUrl = async () => {
-  //     try {
-
-  //       const userRef = doc(db, 'users', senderEmail)
-  //       console.log('sender Email : ', senderEmail)
-  //       console.log('user Ref : ', userRef);
-  //     }
-  //     catch (err) {
-  //       console.log('error at getPhotoUrl: ', err)
-  //     }
-  //   }
-  //   getPhotoUrl()
-  // }, [])
-
-
-  const getPhotoUrl = async () => {
-    const userRef = doc(db, 'users', senderEmail)
-    await getDoc(userRef)
-      .then((userData) => {
-        // return <img src={userData.data().photoUrl} />
-        // console.log('userdata  : ', userData.data())
-        userData.data() ?
-        setPhotoUrl(userData.data().photoUrl) : null
-      })
-      .catch(err => console.log(err))
-  }
-
-  getPhotoUrl()
 
   const acceptRequest = () => {
     const docRef = doc(db, 'notifications', eventId)
@@ -88,27 +53,29 @@ const Notification = ({ document, currUser, getAllDocs }) => {
 
   return (
     <div className={styles.notificationCard}>
-      <div className={styles.notificationText}>
+      <div className={styles.notificationHeader}>
+        <Avatar name={senderDisplayName} src={currPhoto} size="md"/>
         {type === 'event-invitation' ?
-          <p>
+          <p className={styles.notificationHeaderText}>
             <span className={styles.senderDisplayName}><b>{senderDisplayName}</b></span>
-            has sent an invitation to
-            <b> event name</b>
+            sent an invitation to
+            <b> event name!</b>
           </p>
           :
           <p>
             <span className={styles.senderDisplayName}>
               <b>{senderDisplayName}</b>
-            </span>has sent you a <b>friend request!</b>
+            </span>sent you a <b>friend request!</b>
           </p>
         }
       </div>
+      <hr className={styles.divider} />
       <div className={styles.notificationButtons}>
         <IconButton
           variant='outline'
           colorScheme='orange'
           aria-label='Accept Button'
-          fontSize='20px'
+          fontSize='18px'
           size='sm'
           icon={<GiCheckMark />}
           onClick={acceptRequest}
@@ -117,7 +84,7 @@ const Notification = ({ document, currUser, getAllDocs }) => {
           variant='outline'
           colorScheme='orange'
           aria-label='Decline Button'
-          fontSize='20px'
+          fontSize='18px'
           size='sm'
           icon={<BsXLg />}
           onClick={declineRequest}

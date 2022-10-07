@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
 import styles from './Notification.module.css';
-// import { StylesProvider } from '@chakra-ui/react';
 
 const Notifications = (props) => {
   const { currUser } = props
-  // console.log('currUser : :', currUser)
   const [docs, setDocs] = useState([]);
+  const [userDocs, setUserDocs] = useState([]);
 
   const getAllDocs = async () => {
     try {
@@ -30,11 +29,34 @@ const Notifications = (props) => {
 
   useEffect(() => {
     getAllDocs()
+    getAllUsers()
   }, [])
 
 
+  const getAllUsers = async () => {
+    try {
+      const dbRef = collection(db, 'users')
+      const temp = [];
+      const allDocs = await getDocs(dbRef)
+      allDocs.forEach(async (doc) => {
+          temp.push(doc.data())
+      })
+      setUserDocs(temp);
+    }
+    catch (err) {
+      console.log('error : ', err)
+    }
+  }
+
   const mappedArray = docs.map((doc, i) => {
-    return <Notification key={i} document={doc} currUser={currUser} getAllDocs={getAllDocs} />
+    let currPhoto;
+    for (let i = 0; i < userDocs.length; i++) {
+      if (doc.senderEmail === userDocs[i].email) {
+        currPhoto = userDocs[i].photoUrl
+      }
+    }
+
+    return <Notification key={i} document={doc} currUser={currUser} getAllDocs={getAllDocs} currPhoto={currPhoto}/>
   })
 
   return (
@@ -53,5 +75,3 @@ function mapStatetoProps(state) {
 };
 
 export default connect(mapStatetoProps, {})(Notifications);
-
-// export default Notifications;
