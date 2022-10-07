@@ -33,7 +33,7 @@ const Menu = (props) => {
           <ListIcon as={BsCalendar3} />
           <Link>Your Calendar</Link>
         </ListItem>
-        <ListItem>
+        <ListItem onClick={(e)=>{changeSideBar(e, 'overview')}}>
           <ListIcon as={HiOutlineHome} />
           <Link>Overview</Link>
         </ListItem>

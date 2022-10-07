@@ -3,6 +3,7 @@ import Notifications from './Notifications/Notifications'
 
 import { connect } from 'react-redux';
 import FriendsList from './FriendsList/FriendsList';
+import Overview from './Overview/Overview';
 import styles from './Sidebar.module.css'
 
 const SideBar = (props) => {
@@ -10,16 +11,18 @@ const SideBar = (props) => {
 
   return (
     <div className={styles.sidebar} id="side-bar">
-      {sideBar === 'friends' ?
-        <FriendsList /> :
-        sideBar === 'groups' ?
-          <h2>groups</h2> :
-          sideBar === 'chats' ?
-            <h2>chats</h2> :
-            sideBar === 'notifications' ?
-              <Notifications />:
-              sideBar === 'account' ?
-                <h2>account</h2> : null
+      {sideBar === 'overview' ?
+        <Overview /> :
+        sideBar === 'friends' ?
+          <FriendsList /> :
+          sideBar === 'groups' ?
+            <h2>groups</h2> :
+            sideBar === 'chats' ?
+              <h2>chats</h2> :
+              sideBar === 'notifications' ?
+                <Notifications /> :
+                sideBar === 'account' ?
+                  <h2>account</h2> : null
       }
 
     </div>
