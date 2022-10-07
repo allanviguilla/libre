@@ -12,12 +12,7 @@ const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
   const [friends, setFriends] = useState([]);
 
-<<<<<<< HEAD
-  const { currUser } = props;
-=======
-  const { currUser, attendees, addAttendee, removeAttendee } = props;
-
->>>>>>> f76c05965158461c4996df5744e4cc7cdcdb8e61
+  const { currUser, attendees, addAttendee, removeAttendee, setChatWith} = props;
 
   useEffect(() => {
     let hold = [];
@@ -34,6 +29,7 @@ const FriendsList = (props) => {
         .catch((err) => console.log(err))
     })
   }, [currUser])
+  console.log('friends', friends)
 
   const handleSearch = (e) => {
     let searched = allFriends.filter(({ displayName }) => {
@@ -66,7 +62,7 @@ const FriendsList = (props) => {
               allFriends.length === 0 ? <p>No friends yet.</p> :
                 friends.length ?
                 friends.map((friend) =>
-                  <FriendEntry key={friend.displayName} friend={friend} />
+                  <FriendEntry key={friend.displayName} friend={friend} setChatWith={setChatWith}/>
                 )
                 : <p>No friends match your search criteria ... {`:(`}</p>
             }
@@ -83,3 +79,5 @@ function mapStatetoProps(state) {
 const mapDispatchToProps = {};
 
 export default connect(mapStatetoProps, mapDispatchToProps)(FriendsList);
+
+
