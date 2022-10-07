@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import GoogleButton from 'react-google-button';
 import { authentication, db } from '../../../../configs/config';
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { signin } from '../../redux/actions/currUser';
-
 import styles from './LoginPage.module.css';
-
 import Canvas from './Canvas';
 
 const LoginPage = (props) => {
