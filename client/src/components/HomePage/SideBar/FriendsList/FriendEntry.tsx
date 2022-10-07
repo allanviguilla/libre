@@ -33,7 +33,7 @@ const FriendEntry = (props) => {
           <Stack>
             <HStack>
               <Avatar name={friend.displayName} src={friend.photoUrl} />
-              <p>bio here </p>
+              <p></p>
             </HStack>
             <HStack>
               <BsChatDots onClick={() => {
