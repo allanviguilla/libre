@@ -50,7 +50,7 @@ const Calendar = (props) => {
   const [state, setState] = useReducer((state, newState) => ({...state, ...newState}),
   initialState);
 
-  const { currUser, attendees } = props;
+  const { currUser, attendees, newEventCount } = props;
 
   const [calendarDisplayName, setCalendarDisplayName] = useState('');
 
@@ -84,7 +84,7 @@ const Calendar = (props) => {
 
     const nameArr = currUser.displayName.split(' ');
     setCalendarDisplayName(nameArr[0]);
-  }, [state.dateRange])
+  }, [state.dateRange, newEventCount])
 
   useEffect(() => {
     let friendEvents = attendees.map(({ events }) => events);
@@ -131,8 +131,8 @@ const Calendar = (props) => {
 }
 
 function mapStatetoProps(state) {
-  const { currUser, attendees } = state;
-  return { currUser, attendees };
+  const { currUser, attendees, newEventCount} = state;
+  return { currUser, attendees, newEventCount };
 };
 
 

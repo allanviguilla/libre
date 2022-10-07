@@ -6,7 +6,7 @@ import EventCard from './EventCard'
 import style from './EventCards.module.css'
 
 export default (props) => {
-  const { currUser } = props
+  const { currUser, newEventCount } = props
   const [events, setEvents] = useState([])
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default (props) => {
         let parsed = parseEvents(res);
         setEvents(parsed)
       })
-  }, [])
+  }, [newEventCount])
 
   return (
     <div>

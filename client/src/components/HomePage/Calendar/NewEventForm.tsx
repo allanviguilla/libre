@@ -40,14 +40,14 @@ import { addListener } from "process";
 import { getEvents, getToken } from '../../Utilities/http';
 import axios from "axios";
 import { format, parseISO } from 'date-fns';
+import {createEvent} from '../../../redux/actions/newEvent'
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const NewEventForm = ({isOpen, onClose, currUser}) => {
-
+const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
   const {
     handleSubmit,
     register,
@@ -55,7 +55,6 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
   } = useForm()
 
   function onSubmit(values) {
-
     let { startTime, endTime, location, description, name } = values;
     let attendeesArray = Object.values(selectedOptions).map((attendee) => {
       return attendee.value;
@@ -66,8 +65,8 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
     startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
     endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
 
-    console.log("selected options... ", Object.values(selectedOptions));
-    console.log('attendees array... ', attendeesArray);
+    // console.log("selected options... ", Object.values(selectedOptions));
+    // console.log('attendees array... ', attendeesArray);
 
     const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
 
@@ -122,6 +121,7 @@ const NewEventForm = ({isOpen, onClose, currUser}) => {
       .then(() => {
         onClose();
         alert("Your event has been created!");
+        createEvent()
       })
       .catch((error) => {
         onClose();
@@ -310,4 +310,4 @@ function mapStatetoProps(state) {
 };
 
 // export default LoginPage;
-export default connect(mapStatetoProps, {})(NewEventForm);
+export default connect(mapStatetoProps, {createEvent})(NewEventForm);
