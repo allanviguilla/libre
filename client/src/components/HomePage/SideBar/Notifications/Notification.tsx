@@ -7,22 +7,9 @@ import { GiCheckMark } from 'react-icons/gi'
 import { Avatar, AvatarBadge, AvatarGroup, IconButton } from '@chakra-ui/react'
 
 const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
-  const [photoUrl, setPhotoUrl] = useState('')
   const { email } = currUser
   const { senderDisplayName, senderEmail, type, eventId } = document
 
-  // const getPhotoUrl = async () => {
-  //   const userRef = doc(db, 'users', senderEmail)
-  //   await getDoc(userRef)
-  //     .then((userData) => {
-  //       // console.log(userData.data())
-  //     })
-  //     .catch(err => console.log(err))
-  // }
-
-  // getPhotoUrl()
-
-  // console.log(currPhoto, 'current photo')
 
   const acceptRequest = () => {
     const docRef = doc(db, 'notifications', eventId)
@@ -67,9 +54,8 @@ const Notification = ({ document, currUser, getAllDocs, currPhoto }) => {
 
   return (
     <div className={styles.notificationCard}>
-      {console.log(photoUrl)}
       <div className={styles.notificationText}>
-        <Avatar src={photoUrl} name={senderDisplayName} />
+        <Avatar name={senderDisplayName} src={currPhoto} size="sm"/>
         {type === 'event-invitation' ?
           <p>
             <span className={styles.senderDisplayName}><b>{senderDisplayName}</b></span>
