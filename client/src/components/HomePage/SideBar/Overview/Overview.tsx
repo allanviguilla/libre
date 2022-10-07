@@ -11,6 +11,7 @@ const Overview = (props) => {
 
   return (
     <div className={styles.homeOverview}>
+      <div className={styles.spacer}></div>
       <Text fontSize='4xl'>
         Enjoy Your Libre!
       </Text>
