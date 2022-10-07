@@ -1,5 +1,5 @@
 export const parseEvents = (events) => {
-  console.log('...........EVENT..........', events)
+  // console.log('...........EVENT..........', events)
   let aggParsed = [];
   events.forEach((event) => {
     let parsed = {color: 'orange'} as ParsedEvent;
@@ -29,11 +29,36 @@ export const parseInfo = (info) => {
   return parsed;
 }
 
-export const setInverseBg = (events) => {
-  let agg = events.map((event) => {
-    return {...event, display: 'inverse-background' }
+export const setInverseBg = (eventList) => {
+  let aggList = [];
+  eventList.forEach((events) => {
+      let agg = events.map((event) => {
+      let clone = {...event, display: 'background' }
+      clone.color = "black";
+      delete clone.title;
+      return clone
+    })
+
+    aggList = aggList.concat(agg)
   })
-  return agg;
+
+  console.log('TRANSFORMED', aggList[0])
+  return aggList;
+}
+
+export const filterDupEvents = (events) => {
+  const uniqueEvents = [];
+
+  const unique = events.filter(event => {
+    const isDuplicate = uniqueEvents.includes(event.id);
+    if (!isDuplicate) {
+      uniqueEvents.push(event.id);
+      return true;
+    }
+    return false;
+  });
+
+  return unique;
 }
 
 export interface ParsedEvent {
