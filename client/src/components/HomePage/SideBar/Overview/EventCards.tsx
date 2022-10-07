@@ -6,16 +6,15 @@ import EventCard from './EventCard'
 
 export default (props) => {
   const { currUser } = props
-
   const [events, setEvents] = useState([])
-  console.log(events)
 
   useEffect(() => {
     const today = new Date()
-    //today.setHours(23, 59, 59, 999)
+    //
+    // get the next week event today. getFullYear(), today. getMonth(),  today. getDate()+7
     const dateRange = ({
       start: new Date().toISOString(),
-      end: new Date(today. getFullYear(), today. getMonth(),  today. getDate()+7).toISOString()
+      end: new Date(today.setHours(23, 59, 59, 999)).toISOString()
     })
 
     getEvents(currUser.email, dateRange, currUser.oauthAccessToken)
@@ -28,7 +27,7 @@ export default (props) => {
   return (
     <div>
       <Text fontSize='xl' my={5}>
-        Upcoming Events
+        Upcoming Events Today
       </Text>
       {events.map((event,index) => (<EventCard key={index} event={event}/>))}
     </div>

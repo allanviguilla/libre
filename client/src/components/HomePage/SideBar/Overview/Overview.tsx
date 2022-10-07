@@ -12,7 +12,7 @@ const Overview = (props) => {
   return (
     <div>
       <Text fontSize='4xl'>
-        Welcome Back!
+        Enjoy Your Libre!
       </Text>
       <Clock />
       <EventCards currUser={currUser}/>
