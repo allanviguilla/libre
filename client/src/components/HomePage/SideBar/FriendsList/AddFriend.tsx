@@ -9,14 +9,27 @@ import {
   AccordionIcon,
   Box,
 } from '@chakra-ui/react';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../../../../../configs/config';
+import { connect } from 'react-redux';
 
-const AddFriend = () => {
+
+const AddFriend = (props) => {
   const [newUser, setNewUser] = useState(false);
 
-  const handleSubmit = () => {
+  const { currUser } = props;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const input:any = document.getElementById('add-email');
     console.log('INPUT', input.value)
-
+    addDoc(collection(db, "notifications"), {
+      receiverEmail: input.value,
+      senderDisplayName: currUser.displayName,
+      senderEmail: currUser.email,
+      type: 'friend-request',
+      status: 'awaiting'
+    })
   }
 
   return (
@@ -32,7 +45,7 @@ const AddFriend = () => {
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4}>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e)}>
             Enter their email: <input id="add-email" type="email" required></input>
             <button type="submit">Add</button>
           </form>
@@ -44,4 +57,11 @@ const AddFriend = () => {
   )
 }
 
-export default AddFriend;
+function mapStatetoProps(state) {
+  const { currUser } = state;
+  return { currUser };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(AddFriend);

@@ -6,6 +6,7 @@ import FriendEntry from './FriendEntry';
 import { connect } from 'react-redux';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../../../../configs/config';
+import AddFriend from './AddFriend';
 
 const FriendsList = (props) => {
   const [allFriends, setAllFriends] = useState([]);
@@ -43,7 +44,7 @@ const FriendsList = (props) => {
     <div className={styles.friendsList}>
       <div className={styles.friendListHeader}>
         <h2>FriendsList</h2>
-        <button>Add Friend</button>
+        <AddFriend />
         <HStack>
           <input onChange={(e) => handleSearch(e)} type="text" placeholder='Search friends list ...' ></input>
           <BsSearch size={20} />
