@@ -1,5 +1,4 @@
 # Libre
-##
 
 Libre is a social app that allows users to import their Google Calendars, add friends, and plan events with them during their mutual free time.
 
@@ -15,18 +14,27 @@ npm install
 npm run dev
 ```
 
-### Demo and Screenshots
+# Demo and Screenshots
 
-#### Home Page
+### Demo
+
+
+### Home Page
 
 ![Login Page](/docs/Libre-Calendar-View.PNG)
 
-#### Friends List
+### Create Events
 
-#### Calendar Events
+![C](/docs/Libre-Calendar-Event-Modal.PNG)
 
-#### Notifications
+### Notifications
 
+![Login Page](/docs/Libre-Notifications.PNG)
 
+### Friends List
 
+![Login Page](/docs/Libre-Friends.PNG)
 
+### Add Friends
+
+![Login Page](/docs/Libre-Add-Friend.PNG)
