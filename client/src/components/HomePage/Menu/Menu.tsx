@@ -24,6 +24,10 @@ const Menu = (props) => {
     logout();
   }
 
+  function handleClickYourCalendar(){
+    console.log('handle click aclendar')
+  }
+
   return (
     <div className={styles.menu} id="menu">
       <div className={styles.spacer}></div>
@@ -32,7 +36,7 @@ const Menu = (props) => {
       </div>
       <div className={styles.listContainer}>
         <List spacing={3} >
-          <ListItem>
+          <ListItem onClick={handleClickYourCalendar}>
             <ListIcon as={BsCalendar3} />
             <Link>Your Calendar</Link>
           </ListItem>
@@ -55,10 +59,6 @@ const Menu = (props) => {
           <ListItem onClick={(e)=>{changeSideBar(e, 'notifications')}}>
             <ListIcon  as={IoNotificationsOutline} />
             <Link>Notifications</Link>
-          </ListItem>
-          <ListItem onClick={(e)=>{changeSideBar(e, 'account')}}>
-            <ListIcon  as={IoSettingsOutline} />
-            <Link>Account</Link>
           </ListItem>
           <ListItem onClick={handleLogout}>
             <ListIcon as={BiLogOut} />
