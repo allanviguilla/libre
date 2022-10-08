@@ -1,6 +1,5 @@
 # Libre
 
-### Tech Stack
 ![firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 ![vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
 ![redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
@@ -10,7 +9,47 @@
 ![javascript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 ![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-### Team
+Libre is a social app that allows users to import their Google Calendars, add friends, and plan events with them during their mutual free time.
+
+![Login Page](/docs/Libre-Login.PNG)
+
+### Running Locally
+
+```
+npm install
+```
+
+```
+npm run dev
+```
+
+# Demo and Screenshots
+
+### Demo
+
+
+### Home Page
+
+![Login Page](/docs/Libre-Calendar-View.PNG)
+
+### Create Events
+
+![C](/docs/Libre-Calendar-Event-Modal.PNG)
+
+### Notifications
+
+![Login Page](/docs/Libre-Notifications.PNG)
+
+### Friends List
+
+![Login Page](/docs/Libre-Friends.PNG)
+
+### Add Friends
+
+![Login Page](/docs/Libre-Add-Friend.PNG)
+
+
+# Team
 Thomas Hepner\
 [![Linkedin: LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/thomashepner/)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/hepnerthomas)
@@ -23,7 +62,7 @@ Daniel Tan\
 [![Linkedin: LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danieltan510/)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/dantan510)
 
-Nicoalas Nguyen\
+Nicolas Nguyen\
 [![Linkedin: LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nicolas--nguyen/)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nicolastiennguyen)
 
@@ -34,12 +73,3 @@ Qingzhou Yan\
 Allan Viguilla\
 [![Linkedin: LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/allanviguilla/)
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/allanviguilla)
-
-
-
-
-### INSTRUCTIONS
-
-npm install
-
-npm run dev
