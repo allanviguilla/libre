@@ -17,6 +17,9 @@ const Menu = (props) => {
   const { currUser, logout, toggleSideBar, removeAllAttendees } = props;
 
   function changeSideBar(e, sideBar){
+    if(sideBar !== 'friends'){
+      removeAllAttendees()
+    }
     toggleSideBar(sideBar)
   }
 
