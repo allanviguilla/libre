@@ -1,4 +1,4 @@
-import { getDoc, updateDoc, doc } from 'firebase/firestore';
+import { getDoc, updateDoc, doc, getDocFromCache } from 'firebase/firestore';
 import { db } from '../../../../../../configs/config';
 import React, { useState, useEffect } from 'react';
 import styles from './Notification.module.css';
@@ -6,12 +6,13 @@ import { BsXLg } from 'react-icons/bs'
 import { GiCheckMark } from 'react-icons/gi'
 import { Avatar, IconButton } from '@chakra-ui/react'
 import axios from 'axios';
+import { signin } from '../../../../redux/actions/currUser';
+import { connect } from 'react-redux';
 
-const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) => {
-  const { email, oauthAccessToken } = currUser
+const Notification = (props) => {
+  const { signin, currUser, document, currEvent, getAllDocs, currPhoto } = props
   const { senderDisplayName, senderEmail, type, eventName, id } = document
-
-  console.log(currEvent)
+  const { email, oauthAccessToken } = currUser;
 
   const acceptRequest = () => {
     const docRef = doc(db, 'notifications', id)
@@ -21,7 +22,11 @@ const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) 
     updateDoc(docRef, data)
       .then(() => {
         console.log('accept event successful')
-        getAllDocs()
+        getAllDocs();
+        getDoc(doc(db, "users", currUser.email))
+          .then((userData) => {
+            signin({...userData.data()});
+          })
       })
       .catch((err) => {
         console.log('did not update :', err)
@@ -131,4 +136,11 @@ const Notification = ({ document, currEvent, currUser, getAllDocs, currPhoto }) 
   )
 }
 
-export default Notification;
+function mapStatetoProps(state) {
+  const { currUser } = state;
+  return { currUser };
+};
+
+const mapDispatchToProps = { signin };
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Notification);

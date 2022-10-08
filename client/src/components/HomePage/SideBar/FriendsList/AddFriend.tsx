@@ -32,6 +32,7 @@ const AddFriend = (props) => {
       type: 'friend-request',
       status: 'awaiting'
     })
+    input.value = "";
   }
 
   return (
