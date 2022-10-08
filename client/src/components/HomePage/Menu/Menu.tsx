@@ -50,10 +50,6 @@ const Menu = (props) => {
             <ListIcon as={FiUsers} />
             <Link>Friends</Link>
           </ListItem>
-          <ListItem onClick={(e)=>{changeSideBar(e, 'groups')}}>
-            <ListIcon as={HiOutlineUserGroup} />
-            <Link>Groups</Link>
-          </ListItem>
           <ListItem onClick={(e)=>{changeSideBar(e, 'chats')}}>
             <ListIcon as={BsChatDots} />
             <Link>Chats</Link>
