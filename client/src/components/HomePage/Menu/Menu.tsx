@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { logout } from '../../../redux/actions/currUser';
 import { toggleSideBar } from '../../../redux/actions/sideBar';
+import { removeAllAttendees } from '../../../redux/actions/attendees';
 import Profile from './Profile/Profile';
 import styles from './Menu.module.css';
 import { Button, List, ListItem, ListIcon, Link } from '@chakra-ui/react';
@@ -13,7 +14,7 @@ import { FiUsers } from 'react-icons/fi';
 import { HiOutlineUserGroup, HiOutlineHome } from 'react-icons/hi';
 
 const Menu = (props) => {
-  const { currUser, logout, toggleSideBar } = props;
+  const { currUser, logout, toggleSideBar, removeAllAttendees } = props;
 
   function changeSideBar(e, sideBar){
     toggleSideBar(sideBar)
@@ -26,6 +27,7 @@ const Menu = (props) => {
 
   function handleClickYourCalendar(){
     console.log('handle click aclendar')
+    removeAllAttendees()
   }
 
   return (
@@ -79,6 +81,6 @@ function mapStatetoProps(state) {
 };
 
 // map methods to update the state
-const mapDispatchToProps = { logout, toggleSideBar };
+const mapDispatchToProps = { logout, toggleSideBar, removeAllAttendees };
 
 export default connect(mapStatetoProps, mapDispatchToProps)(Menu);
