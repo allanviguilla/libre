@@ -1,6 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { connect } from 'react-redux';
-import { useForm } from 'react-hook-form';
+import { connect } from "react-redux";
+import { useForm } from "react-hook-form";
+import { authentication, db } from "../../../../../configs/config";
+import {
+  doc,
+  setDoc,
+  addDoc,
+  getDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
+import { computeSegDraggable } from "@fullcalendar/react";
+import { resolve } from "path";
+import { addListener } from "process";
+import { getEvents, getToken } from "../../Utilities/http";
+import axios from "axios";
+import { format, parseISO } from "date-fns";
+import { createEvent } from "../../../redux/actions/newEvent";
+import styles from "./Calendar.module.css";
 import {
   Avatar,
   AvatarBadge,
@@ -21,87 +38,69 @@ import {
   VStack,
   Flex,
   FormErrorMessage,
-} from '@chakra-ui/react';
-import { MultiSelect } from 'chakra-multiselect';
+} from "@chakra-ui/react";
+import { MultiSelect } from "chakra-multiselect";
 import {
   AsyncCreatableSelect,
   AsyncSelect,
   CreatableSelect,
   Select,
 } from "chakra-react-select";
-import {
-  doc, setDoc, addDoc, getDoc, collection, writeBatch
-} from "firebase/firestore";
-import { authentication, db } from '../../../../../configs/config';
-import styles from './Calendar.module.css';
-import { computeSegDraggable } from "@fullcalendar/react";
-import { resolve } from "path";
-import { addListener } from "process";
-import { getEvents, getToken } from '../../Utilities/http';
-import axios from "axios";
-import { format, parseISO } from 'date-fns';
-import {createEvent} from '../../../redux/actions/newEvent'
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
+const NewEventForm = ({ isOpen, onClose, currUser, createEvent }) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm()
+  } = useForm();
 
   function onSubmit(values) {
     let { startTime, endTime, location, description, name } = values;
     let attendeesArray = Object.values(selectedOptions).map((attendee) => {
-      return {"email": attendee.value};
+      return { email: attendee.value };
     });
 
-    // const attendeesArray = attendees.split(',');
-    // startTime = format(parseISO(startTime), "yyyy-MM-dd'T'hh:mm:ss");
-    // endTime = format(parseISO(endTime), "yyyy-MM-dd'T'hh:mm:ss");
-    startTime = startTime.toString() + ':00'
-    endTime = endTime.toString() + ':00'
-
-    // console.log("selected options... ", Object.values(selectedOptions));
-    // console.log('attendees array... ', attendeesArray);
+    startTime = startTime.toString() + ":00";
+    endTime = endTime.toString() + ":00";
 
     const url = `https://www.googleapis.com/calendar/v3/calendars/${currUser.email}/events`;
 
     const requestBody = {
-      "end": {
-        "dateTime": endTime,
-        "timeZone": "America/Los_Angeles"
+      end: {
+        dateTime: endTime,
+        timeZone: "America/Los_Angeles",
       },
-      "start": {
-        "dateTime": startTime,
-        "timeZone": "America/Los_Angeles"
+      start: {
+        dateTime: startTime,
+        timeZone: "America/Los_Angeles",
       },
-      "attendees": attendeesArray,
-      "description": description,
-      "location": location,
+      attendees: attendeesArray,
+      description: description,
+      location: location,
       // "status": "awaiting",
-      "summary": name,
+      summary: name,
     };
 
     const requestConfig = {
       headers: {
-        'Authorization': `Bearer ${currUser.oauthAccessToken}`
-      }
+        Authorization: `Bearer ${currUser.oauthAccessToken}`,
+      },
     };
 
     // save calendar event into database
     addDoc(collection(db, "events"), {
-        hostEmail: currUser.email,
-        attendeesArray,
-        startTime,
-        endTime,
-        location,
-        description,
-      })
+      hostEmail: currUser.email,
+      attendeesArray,
+      startTime,
+      endTime,
+      location,
+      description,
+    })
       .then((docRef) => {
         for (let i = 0; i < attendeesArray.length; i++) {
           addDoc(collection(db, "notifications"), {
@@ -110,9 +109,9 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
             receiverEmail: attendeesArray[i],
             senderDisplayName: currUser.displayName,
             senderEmail: currUser.email,
-            type: 'event-invitation',
-            status: 'awaiting',
-          })
+            type: "event-invitation",
+            status: "awaiting",
+          });
         }
       })
       // save calendar event into user's Google Calendar
@@ -122,24 +121,19 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
       .then(() => {
         onClose();
         alert("Your event has been created!");
-        createEvent()
+        createEvent();
       })
       .catch((error) => {
         onClose();
         alert("Your event was not created - please try again!");
-      })
-
+      });
   }
 
   const [friends, setFriends] = useState([]);
   const [attendeesFormInput, setAttendeesFromInput] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // const [value, setValue] = useState([]);
-
   let attendeesArr = [];
-
-  // let sample = ["nicolastiennguyen@gmail.com", "qingzhouyan@gmail.com", "hepner.thomas2@gmail.com", "james.emerson.vo.2503@gmail.com", "kathryn.kuroko@gmail.com"];
 
   useEffect(() => {
     let hold = [];
@@ -149,59 +143,59 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
       getDoc(doc(db, "users", friend))
         .then((res) => {
           const friend = res.data();
-          getToken(friend.refreshToken)
-            .then((res) => {
-              friend.oauthAccessToken = res;
-            })
+          getToken(friend.refreshToken).then((res) => {
+            friend.oauthAccessToken = res;
+          });
           hold.push(friend);
-          // console.log(hold);
           if (hold.length === currUser.friends.length) {
-            setFriends(hold)
+            setFriends(hold);
           }
         })
-        .catch((err) => console.log(err))
-    })
+        .catch((err) => console.log(err));
+    });
     setAttendeesFromInput(attendeesArr);
-    // console.log('attendeesArr....', attendeesArr);
   }, [currUser]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create New Event</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <form id={styles.newEventForm} onSubmit={handleSubmit(onSubmit)}>
-              <VStack spacing='1.75rem'>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Create New Event</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <form id={styles.newEventForm} onSubmit={handleSubmit(onSubmit)}>
+            <VStack spacing="1.75rem">
               <FormControl isInvalid={errors.eventName}>
-                <FormLabel htmlFor='name' className={styles.red}>
+                <FormLabel htmlFor="name" className={styles.red}>
                   Event Name *
                 </FormLabel>
                 <Input
-                  id='name'
-                  placeholder='event name'
-                  {...register('name', {
-                    required: 'This is required',
-                    minLength: { value: 4, message: 'Minimum length should be 4' },
+                  id="name"
+                  placeholder="event name"
+                  {...register("name", {
+                    required: "This is required",
+                    minLength: {
+                      value: 4,
+                      message: "Minimum length should be 4",
+                    },
                   })}
-                  type='text'
+                  type="text"
                 />
                 <FormErrorMessage>
                   {errors.eventName && errors.eventName.message}
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors.attendees}>
-                <FormLabel htmlFor='attendees'>
-                  Attendees *
-                </FormLabel>
-                <FormLabel htmlFor='attendees-avatars'>
-                <AvatarGroup size='md' max={2}>
-                    {
-                      friends.map((friend, index) =>
-                        <Avatar name={friend.displayName} src={friend.photoUrl} key={index}/>
-                      )
-                    }
+                <FormLabel htmlFor="attendees">Attendees *</FormLabel>
+                <FormLabel htmlFor="attendees-avatars">
+                  <AvatarGroup size="md" max={2}>
+                    {friends.map((friend, index) => (
+                      <Avatar
+                        name={friend.displayName}
+                        src={friend.photoUrl}
+                        key={index}
+                      />
+                    ))}
                   </AvatarGroup>
                 </FormLabel>
                 <Select
@@ -213,102 +207,85 @@ const NewEventForm = ({isOpen, onClose, currUser, createEvent}) => {
                   closeMenuOnSelect={false}
                   hasStickyGroupHeaders
                 />
-                {/* <MultiSelect
-                  options={sample}
-                  value={value}
-                  onChange={setValue}
-                /> */}
-                {/* <Input
-                  id='attendees'
-                  placeholder='Who will be attending the event'
-                  {...register('attendees', {
-                    required: 'This is required',
-                  })}
-                  type='email'
-                  multiple
-                  required
-                /> */}
                 <FormErrorMessage>
                   {errors.eventName && errors.eventName.message}
                 </FormErrorMessage>
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='startTime'>Event Start Time *</FormLabel>
+                <FormLabel htmlFor="startTime">Event Start Time *</FormLabel>
                 <Input
-                  id='startTime'
-                  placeholder='start time of the event'
-                  {...register('startTime', {
-                    required: 'This is required',
+                  id="startTime"
+                  placeholder="start time of the event"
+                  {...register("startTime", {
+                    required: "This is required",
                   })}
-                  type='datetime-local'
+                  type="datetime-local"
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='endTime'>
-                  Event End Time *
-                </FormLabel>
+                <FormLabel htmlFor="endTime">Event End Time *</FormLabel>
                 <Input
-                  id='endTime'
-                  placeholder='end time of the event'
-                  {...register('endTime', {
-                    required: 'This is required',
+                  id="endTime"
+                  placeholder="end time of the event"
+                  {...register("endTime", {
+                    required: "This is required",
                   })}
-                  type='datetime-local'
+                  type="datetime-local"
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='location'>
-                  Location *
-                </FormLabel>
+                <FormLabel htmlFor="location">Location *</FormLabel>
                 <Input
-                  id='location'
-                  placeholder='event location'
-                  {...register('location', {
-                    required: 'This is required',
-                    minLength: { value: 4, message: 'Minimum length should be 4' },
+                  id="location"
+                  placeholder="event location"
+                  {...register("location", {
+                    required: "This is required",
+                    minLength: {
+                      value: 4,
+                      message: "Minimum length should be 4",
+                    },
                   })}
-                  type='text'
+                  type="text"
                 />
               </FormControl>
               <FormControl>
-                <FormLabel htmlFor='description'>
-                  Description
-                </FormLabel>
+                <FormLabel htmlFor="description">Description</FormLabel>
                 <Input
-                  id='descroiption'
-                  placeholder='event description'
-                  {...register('description')}
-                  type='text'
+                  id="descroiption"
+                  placeholder="event description"
+                  {...register("description")}
+                  type="text"
                 />
               </FormControl>
               <HStack mt={6}>
                 <Button
                   className={styles.button}
                   isLoading={isSubmitting}
-                  type='submit'
+                  type="submit"
                 >
                   Submit
                 </Button>
                 <Button
-                  onClick={onClose} type='submit'
+                  onClick={onClose}
+                  type="submit"
                   className={`${styles.button} ${styles.cancel}`}
                 >
                   Cancel
                 </Button>
               </HStack>
-              </VStack>
-            </form>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-  )
-}
+            </VStack>
+          </form>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};
 
 // map Redux state
 function mapStatetoProps(state) {
   const { currUser } = state;
   return { currUser };
-};
+}
 
 // export default LoginPage;
-export default connect(mapStatetoProps, {createEvent})(NewEventForm);
+export default connect(mapStatetoProps, { createEvent })(NewEventForm);
